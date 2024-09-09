@@ -37,6 +37,10 @@ target/
 *.iml
 *.ipr
 
+ProjectPlus/.idea/
+*.idea/
+*.idea
+
 ### Eclipse ###
 .apt_generated
 .classpath
