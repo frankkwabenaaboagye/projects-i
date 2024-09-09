@@ -37,7 +37,8 @@ target/
 *.iml
 *.ipr
 
-ProjectPlus/.idea/
+ProjectPulse/.idea
+ProjectPulse/.idea/*
 *.idea/
 *.idea
 
