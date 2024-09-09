@@ -37,10 +37,14 @@ target/
 *.iml
 *.ipr
 
-ProjectPulse/.idea
-ProjectPulse/.idea/*
+ProjectPlus/.idea
+ProjectPlus/.idea/*
+ProjectPlus/.mvn
+ProjectPlus/HELP.md
+ProjectPlus/**.class
 *.idea/
 *.idea
+.idea
 
 ### Eclipse ###
 .apt_generated
