@@ -12,12 +12,15 @@ Feel free to explore and learn as well
 ## Connect Hub
 ### Project Description
 
+#### Inspiration
+- [Gaurav Patil](https://www.youtube.com/@gauravpatil_13) 
+
 ### Project Features
 * User registration and login functionality 
 
 ### Core Skills
 
-### Inspiration
+
 
 
 
