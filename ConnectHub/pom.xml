@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.frankaboagye</groupId>
-    <artifactId>ProjectPlus</artifactId>
+    <artifactId>ConnectHub</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ProjectPlus</name>
     <description>ProjectPlus</description>
