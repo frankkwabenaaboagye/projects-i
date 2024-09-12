@@ -35,40 +35,42 @@
                 </a>
             </nav>
             <header>Hire the best freelancers for any job, online. Registration Here</header>
-            <form id="registrationForm" action="regdata" class="form" method="post" enctype="multipart/form-data">
+            <form id="registrationForm" action="register-company" class="form" method="post" > <!-- enctype="multipart/form-data" : we are not doing file upload-->
                 <div class="input-box">
                     <label>Personal Name/Organization Name</label>
-                    <input type="text" placeholder="Enter name" required name="name" pattern="[A-Za-z\s]{1,}" title="Name should only contain letters and spaces." />
+                    <input type="text" placeholder="Enter name" required name="companyName" pattern="[A-Za-z\s]{1,}" title="Name should only contain letters and spaces." />
                 </div>
+
+<!--                Note: name="name" , name="number" and the others >> should be the exact variable name you use-->
 
                 <div class="input-box">
                     <label>Email</label>
-                    <input type="email" placeholder="Enter email address" required name="email" />
+                    <input type="email" placeholder="Enter email address" required name="companyEmail" />
                 </div>
 
                 <div class="input-box">
                     <label>Phone Number</label>
-                    <input type="tel" placeholder="Enter Contact number" name="number" required pattern="\d{10}" title="Phone number should be 10 digits." />
+                    <input type="tel" placeholder="Enter Contact number" name="companyPhoneNumber" required pattern="\d{10}" title="Phone number should be 10 digits." />
                 </div>
 
                 <div class="input-box">
                     <label>Company Website</label>
-                    <input type="url" placeholder="Enter Company Website" name="website" required pattern="https?://.+" title="Enter a valid URL starting with http:// or https://." />
+                    <input type="url" placeholder="Enter Company Website" name="companyWebsite" required pattern="https?://.+" title="Enter a valid URL starting with http:// or https://." />
                 </div>
 
-                <div class="input-box">
-                    <label>Company Photo or Banner</label>
-                    <input type="file" name="filename" required accept="image/*" title="Please upload a valid image file." />
-                </div>
+<!--                <div class="input-box">-->
+<!--                    <label>Company Photo or Banner</label>-->
+<!--                    <input type="file" name="filename" required accept="image/*" title="Please upload a valid image file." />-->
+<!--                </div>-->
 
                 <div class="input-box">
                     <label>Password</label>
-                    <input type="password" name="password" placeholder="Enter Password" required pattern=".{8,}" title="Password must be at least 8 characters long." />
+                    <input type="password" name="companyPassword" placeholder="Enter Password" required pattern=".{8,}" title="Password must be at least 8 characters long." />
                 </div>
 
                 <div class="input-box">
                     <label>Confirm Password</label>
-                    <input type="password" name="confirmpassword" placeholder="Enter Confirm Password" required pattern=".{8,}" title="Password must be at least 8 characters long." />
+                    <input type="password" name="companyConfirmPassword" placeholder="Enter Confirm Password" required pattern=".{8,}" title="Password must be at least 8 characters long." />
                 </div>
 
                 <button type="submit">Register</button>

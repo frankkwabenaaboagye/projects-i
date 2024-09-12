@@ -19,7 +19,8 @@ Feel free to explore and learn as well
 * User registration and login functionality 
 
 ### Technologies & Skills
-PostgreSQL 🐘, Thymeleaf 🍃,  Java ☕️ Configurations, html, css🎨, js, 
+- PostgreSQL 🐘, Thymeleaf 🍃,  Java ☕️ Configurations, html, css🎨, js, 
+- Using Profiles, 
 
 
 

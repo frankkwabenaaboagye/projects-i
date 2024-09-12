@@ -2,6 +2,7 @@ package com.frankaboagye.connecthub.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class CompanyController {
@@ -15,4 +16,7 @@ public class CompanyController {
     String loginCompany(){
         return "loginCompany";
     }
+
+    @PostMapping("/register-company")
+    public String handleCompanyRegisteration(){}
 }
