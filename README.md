@@ -18,8 +18,8 @@ Feel free to explore and learn as well
 ### Project Features
 * User registration and login functionality 
 
-### Core Skills
-
+### Technologies & Skills
+PostgreSQL 🐘, Thymeleaf 🍃,  Java ☕️ Configurations, html, css🎨, js, 
 
 
 
