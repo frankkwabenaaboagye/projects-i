@@ -75,6 +75,7 @@ public class CompanyController {
             return "welcome";
 
         }
+        model.addAttribute("error", "Login Failed");
         return "loginCompany";
 
     }

@@ -1,208 +1,101 @@
 <!DOCTYPE html>
-<!---Coding By CodingLab | www.codinglabweb.com--->
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <!--<title>Registration Form in HTML CSS</title>-->
-        <!---Custom CSS File--->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Login Companies</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon-32x32.png}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <title>Login Companies</title>
-        <link rel="shortcut icon" href="/images/favicon-32x32.png" type="image/x-icon">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: url(https://images.pexels.com/photos/4348404/pexels-photo-4348404.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .container {
+            max-width: 400px; /* Reduced the max-width for a more sensible form size */
+            width: 100%;
+        }
+        .form-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 rounded">
+        <a class="navbar-brand mx-auto d-flex align-items-center" th:href="@{/SpringMVCPersonal_Project}">
+            <img th:src="@{/images/logo.png}" alt="logo here" class="me-2" style="height: 40px;" />
+            <span>Connect Hub</span>
+        </a>
+    </nav>
 
-        <style>
-            a{
-                text-decoration: none;
-                font-size: 25px;
-                text-align: center;
-                justify-content: center;
-            }
-        </style>
-    </head>
-    <body>
+    <header class="text-center mt-4">
+        <h4>Welcome Back to Connect Hub</h4>
+        <p class="fw-bold">Login Here</p>
+    </header>
 
+    <div class="form-container mt-3">
+        <form id="loginForm" th:action="@{/login-company}" method="post">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required />
+            </div>
 
-        <section class="container">
-            <nav class="navbar navbar-expand-lg custom_nav-container">
-                <a class="/" href="/SpringMVCPersonal_Project">
-                    <img src="/images/logo.png" alt="logo here" />
-                    <span>
-                      Connect Hub Company Login
-                    </span>
-                </a>
+            <div class="mb-3">
+                <label for="password" class="form-label">Enter Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required pattern=".{8,}" title="Password must be at least 8 characters long." />
+            </div>
 
-                <header>Welcome Back to Connect Hub Login Here</header>
-                <form id="loginForm" action="login-company" class="form" method="post">
-                    <div class="input-box">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="Enter Your email address" name="email" required />
-                    </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </div>
 
-                    <br>
-                    <div class="input-box">
-                        <label>Enter Password</label>
-                        <input type="password" placeholder="Enter Your Password" name="password" required pattern=".{8,}" title="Password must be at least 8 characters long." />
-                    </div>
+            <p class="text-danger text-center" th:text="${error}"></p>
 
-                    <button type="submit">Login</button>
-                    <br>
-                    <a href="register-company">
-                        <button type="button">Register Here</button>
-                    </a>
-                    Don't Have Account?
-                </form>
+            <div class="text-center">
+                <a th:href="@{/register-company}" class="btn btn-secondary w-100">Register Here</a>
+            </div>
 
-            </nav>
-        </section>
+            <div class="text-center mt-2">
+                <span>Don't Have an Account?</span>
+            </div>
+        </form>
+    </div>
+</div>
 
-        <script>
-            document.getElementById('loginForm').addEventListener('submit', function(event) {
-                var form = event.target;
-                var email = form.elements['email'].value;
-                var password = form.elements['password'].value;
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        var form = event.target;
+        var email = form.elements['email'].value;
+        var password = form.elements['password'].value;
 
-                // Simple email format validation (additional to HTML5 email type)
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailPattern.test(email)) {
-                    alert('Please enter a valid email address.');
-                    event.preventDefault(); // Prevent form submission
-                    return;
-                }
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            alert('Please enter a valid email address.');
+            event.preventDefault();
+            return;
+        }
 
-                // Password length validation (additional to HTML5 pattern)
-                if (password.length < 8) {
-                    alert('Password must be at least 8 characters long.');
-                    event.preventDefault(); // Prevent form submission
-                }
-            });
-        </script>
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long.');
+            event.preventDefault();
+        }
+    });
+</script>
 
-
-        <style>/* Import Google font - Poppins */
-            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: "Poppins", sans-serif;
-            }
-            body {
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-                background-image: url(https://images.pexels.com/photos/4348404/pexels-photo-4348404.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
-                background-size: cover;
-                background-repeat: no-repeat;
-            }
-            .container {
-                position: relative;
-                max-width: 700px;
-                width: 100%;
-                background: #fff;
-                padding: 25px;
-                border-radius: 8px;
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            }
-            .container header {
-                font-size: 1.5rem;
-                color: #333;
-                font-weight: 500;
-                text-align: center;
-            }
-            .container .form {
-                margin-top: 30px;
-            }
-            .form .input-box {
-                width: 100%;
-                margin-top: 20px;
-            }
-            .input-box label {
-                color: #333;
-            }
-            .form :where(.input-box input, .select-box) {
-                position: relative;
-                height: 50px;
-                width: 100%;
-                outline: none;
-                font-size: 1rem;
-                color: #707070;
-                margin-top: 8px;
-                border: 1px solid #ddd;
-                border-radius: 6px;
-                padding: 0 15px;
-            }
-            .input-box input:focus {
-                box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-            }
-            .form .column {
-                display: flex;
-                column-gap: 15px;
-            }
-            .form .gender-box {
-                margin-top: 20px;
-            }
-            .gender-box h3 {
-                color: #333;
-                font-size: 1rem;
-                font-weight: 400;
-                margin-bottom: 8px;
-            }
-            .form :where(.gender-option, .gender) {
-                display: flex;
-                align-items: center;
-                column-gap: 50px;
-                flex-wrap: wrap;
-            }
-            .form .gender {
-                column-gap: 5px;
-            }
-            .gender input {
-                accent-color: rgb(130, 106, 251);
-            }
-            .form :where(.gender input, .gender label) {
-                cursor: pointer;
-            }
-            .gender label {
-                color: #707070;
-            }
-            .address :where(input, .select-box) {
-                margin-top: 15px;
-            }
-            .select-box select {
-                height: 100%;
-                width: 100%;
-                outline: none;
-                border: none;
-                color: #707070;
-                font-size: 1rem;
-            }
-            .form button {
-                height: 55px;
-                width: 100%;
-                color: #fff;
-                font-size: 1rem;
-                font-weight: 400;
-                margin-top: 30px;
-                border: none;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                background: rgb(130, 106, 251);
-            }
-            .form button:hover {
-                background: rgb(88, 56, 250);
-            }
-            /*Responsive*/
-            @media screen and (max-width: 500px) {
-                .form .column {
-                    flex-wrap: wrap;
-                }
-                .form :where(.gender-option, .gender) {
-                    row-gap: 15px;
-                }
-            }
-        </style>
-    </body>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
