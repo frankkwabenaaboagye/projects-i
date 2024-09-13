@@ -4,6 +4,7 @@ import com.frankaboagye.connecthub.daos.CompanyDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,7 +62,12 @@ public class CompanyController {
     }
 
     @PostMapping("/login-company")
-    public String handleCompanyLogin(@RequestParam("email") String email, @RequestParam("password") String password, Model model){
+    public String handleCompanyLogin(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            Model model,
+            HttpSession session
+    ){
 
         Optional<Company> companyData = companyServiceImplementation.loginCompany(email, password);
         if(companyData.isPresent()){
@@ -72,10 +78,12 @@ public class CompanyController {
             model.addAttribute("companyPhoneNumber", company.getPhonenumber());
             model.addAttribute("companyWebsite", company.getWebsite());
             model.addAttribute("companyPictureName", company.getProfilepicturename());
+
+            session.setAttribute("SessionData",email);
             return "welcome";
 
         }
-        model.addAttribute("error", "Login Failed");
+        model.addAttribute("error", "Login Failed, Try Again");
         return "loginCompany";
 
     }
