@@ -22,8 +22,8 @@ discovering rewarding opportunities.
 * Company / Client registration and login functionality 
 
 ### Technologies & Skills
-- PostgreSQL 🐘, Thymeleaf 🍃,  Java ☕️ Configurations, HTML, CSS🎨, JS, 
-- Using Profiles, 
+- PostgreSQL 🐘 for dev, H2 for testing, Thymeleaf 🍃,  Java ☕️ Configurations, HTML, CSS🎨, JS, 
+- Using Profiles,
 
 
 
