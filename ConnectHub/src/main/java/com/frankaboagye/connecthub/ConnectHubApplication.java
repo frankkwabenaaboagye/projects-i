@@ -15,7 +15,7 @@ public class ConnectHubApplication {
     @Bean
     CommandLineRunner init(StorageServiceInterface storageServiceImplementation) {
         return (args) -> {
-            storageServiceImplementation.deleteAll();
+            // storageServiceImplementation.deleteAll();
             storageServiceImplementation.init();
         };
     }

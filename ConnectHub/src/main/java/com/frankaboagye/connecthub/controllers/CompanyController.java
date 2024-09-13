@@ -6,11 +6,14 @@ import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -56,4 +59,24 @@ public class CompanyController {
         return "loginCompany";
 
     }
+
+    @PostMapping("/login-company")
+    public String handleCompanyLogin(@RequestParam("email") String email, @RequestParam("password") String password, Model model){
+
+        Optional<Company> companyData = companyServiceImplementation.loginCompany(email, password);
+        if(companyData.isPresent()){
+            Company company = companyData.get();
+            model.addAttribute("companyId", company.getId());
+            model.addAttribute("companyName", company.getName());
+            model.addAttribute("companyEmail", company.getEmail());
+            model.addAttribute("companyPhoneNumber", company.getPhonenumber());
+            model.addAttribute("companyWebsite", company.getWebsite());
+            model.addAttribute("companyPictureName", company.getProfilepicturename());
+            return "welcome";
+
+        }
+        return "loginCompany";
+
+    }
+
 }

@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CompanyService implements CompanyServiceInterface {
@@ -18,5 +20,12 @@ public class CompanyService implements CompanyServiceInterface {
         // use aop here
         System.out.println("Registering company " + company.getName());
         companyRepository.save(company);
+    }
+
+    @Override
+    public Optional<Company> loginCompany(String email, String password) {
+        // ustilise aop, security e.t.c
+        return companyRepository.findByEmailAndPassword(email, password);
+
     }
 }

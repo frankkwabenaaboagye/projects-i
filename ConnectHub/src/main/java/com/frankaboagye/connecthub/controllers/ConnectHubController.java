@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ConnectHubController {
 
-    @GetMapping("/myTest")
-    public String welcome(@RequestParam(name = "theName", required = false, defaultValue = "frankTest") String theName, Model model){
-        model.addAttribute("theName", theName);
+    @GetMapping("/welcome")
+    public String welcome(Model model){
         return "welcome";
     }
 }
