@@ -12,7 +12,7 @@ public class CompanyDAO {
     private String companyName;
     private String companyEmail;
     private String companyPhoneNumber;
-    private String ompanyWebsite;
+    private String companyWebsite;
     private String companyPassword;
     private String companyConfirmPassword;
 }

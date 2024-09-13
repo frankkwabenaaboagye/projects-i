@@ -38,7 +38,7 @@ public class CompanyController {
                 .email(companyDAO.getCompanyEmail())
                 .phonenumber(companyDAO.getCompanyPhoneNumber())
                 .password(companyDAO.getCompanyPassword())
-                .website(companyDAO.getOmpanyWebsite())
+                .website(companyDAO.getCompanyWebsite())
                 .build();
 
         companyServiceImplementation.registerCompany(company);
