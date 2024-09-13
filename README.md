@@ -11,15 +11,18 @@ Feel free to explore and learn as well
 
 ## Connect Hub
 ### Project Description
+Connect Hub is a platform where clients / organisations can access a diverse pool 
+of skilled freelancers,and freelancers can showcase their expertise while 
+discovering rewarding opportunities.
 
 #### Inspiration
 - [Gaurav Patil](https://www.youtube.com/@gauravpatil_13) 
 
 ### Project Features
-* User registration and login functionality 
+* Company / Client registration and login functionality 
 
 ### Technologies & Skills
-- PostgreSQL 🐘, Thymeleaf 🍃,  Java ☕️ Configurations, html, css🎨, js, 
+- PostgreSQL 🐘, Thymeleaf 🍃,  Java ☕️ Configurations, HTML, CSS🎨, JS, 
 - Using Profiles, 
 
 
