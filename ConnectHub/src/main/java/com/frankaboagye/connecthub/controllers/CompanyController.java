@@ -80,7 +80,7 @@ public class CompanyController {
             model.addAttribute("companyPictureName", company.getProfilepicturename());
 
             session.setAttribute("SessionData",email);
-            return "welcome";
+            return "companyHomepage";
 
         }
         model.addAttribute("error", "Login Failed, Try Again");

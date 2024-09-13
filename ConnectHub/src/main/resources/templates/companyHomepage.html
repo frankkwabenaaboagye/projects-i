@@ -10,10 +10,10 @@
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg custom_nav-container">
                 <a class="navbar-brand" href="#" style="color:#fff;">
-                    <div th:each="e : ${kk}" style="width: 60px; height: 60px; border-radius: 50%; border: 1px solid white; overflow: hidden; margin-right: 10px;">
-                        <img class="profilecimage" alt="" th:src="@{/files/webimages/{img}(img=${e.profileimg})}" style="width: 100%; height: 100% auto;">
+                    <div  style="width: 60px; height: 60px; border-radius: 50%; border: 1px solid white; overflow: hidden; margin-right: 10px;">
+                        <img class="profilecimage" alt="" style="width: 100%; height: 100% auto;">
                     </div>
-                    <h4 th:text="${e.name}"></h4>
+                    <h4 >put the e.name here</h4>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,16 +26,16 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="/viewallfreelancer"><i class="fa-solid fa-users"></i>&nbsp;Hire</a>
                         </li>
-                        <div th:each="ef : ${kk}">
+                        <div >
                             <li class="nav-item">
                                 <form th:action="@{/getjobdata}" method="post">
-                                    <input type="hidden" name="email" th:value="${ef.email}">
+                                    <input type="hidden" name="email" >
                                     <button type="submit" style="background-color: transparent !important; border:none; color:#fff;"><i class="fa-solid fa-location-arrow"></i> &nbsp;Manage Jobs and Projects</button>
                                 </form>
                             </li>
                             <li class="nav-item">
                                 <form th:action="@{/getcandidatedata}" method="post">
-                                    <input type="hidden" name="email" th:value="${ef.email}">
+                                    <input type="hidden" name="email" >
                                     <button type="submit" style="background-color: transparent !important; border:none; color:#fff;"><i class="fa-solid fa-file-contract"></i> &nbsp;Candidates Applications</button>
                                 </form>
                             </li>
@@ -142,7 +142,7 @@
                         </div>
                         <div class="offset-md-1 col-md-4 img-container">
                             <div class="img-box">
-                                <img src="./files/images/slider-img.png" alt="">
+                                <img src="/images/slider-img.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                         </div>
                         <div class="offset-md-1 col-md-4 img-container">
                             <div class="img-box">
-                                <img src="./files/images/slider-img.png" alt="">
+                                <img src="/images/slider-img.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -197,7 +197,7 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="img-box">
-                    <img src="./files/images/experience-img.jpg" alt="">
+                    <img src="/images/experience-img.jpg" alt="">
                 </div>
             </div>
             <div class="col-md-7">
@@ -364,7 +364,7 @@
     </c:forEach>
 </div>
 
-<center> <a href="viewallfreelancer" title="LinkedIn" class="btn btn-linkedin btn-lg" style="background-color:#3a86ff;"">View More<i class="fa-solid fa-caret-right"></i><i class="fa-solid fa-caret-right"></i></a></center>
+<center> <a href="viewallfreelancer" title="LinkedIn" class="btn btn-linkedin btn-lg" style="background-color:#3a86ff;">View More<i class="fa-solid fa-caret-right"></i><i class="fa-solid fa-caret-right"></i></a></center>
 
 
 
@@ -379,7 +379,7 @@
         <div class="row">
             <div class="col-md-10 col-lg-9 mx-auto">
                 <div class="img-box">
-                    <img src="./files/images/about-img.jpg" alt="">
+                    <img src="/images/about-img.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -416,7 +416,7 @@
                         <div class="tab_container">
                             <div class="t-link-box" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 <div class="img-box">
-                                    <img src="./files/images/pngegg (1).png" alt="">
+                                    <img src="/images/pngegg (1).png" alt="">
                                 </div>
                                 <div class="detail-box">
                                     <h5>
@@ -429,7 +429,7 @@
                             </div>
                             <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                 <div class="img-box">
-                                    <img src="./files/images/f2.png" alt="">
+                                    <img src="/images/f2.png" alt="">
                                 </div>
                                 <div class="detail-box">
                                     <h5>
@@ -442,7 +442,7 @@
                             </div>
                             <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 <div class="img-box">
-                                    <img src="./files/images/f3.png" alt="">
+                                    <img src="/images/f3.png" alt="">
                                 </div>
                                 <div class="detail-box">
                                     <h5>
@@ -455,7 +455,7 @@
                             </div>
                             <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                 <div class="img-box">
-                                    <img src="./files/images/f4.png" alt="">
+                                    <img src="/images/f4.png" alt="">
                                 </div>
                                 <div class="detail-box">
                                     <h5>
@@ -473,22 +473,22 @@
                 <div class="col-md-6">
                     <div class="collapse show" id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="img-box">
-                            <img src="./files/images/freelance-img.jpg" alt="">
+                            <img src="/images/freelance-img.jpg" alt="">
                         </div>
                     </div>
                     <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
                         <div class="img-box">
-                            <img src="./files/images/freelance-img.jpg" alt="">
+                            <img src="/images/freelance-img.jpg" alt="">
                         </div>
                     </div>
                     <div class="collapse" id="collapseThree" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="img-box">
-                            <img src="./files/images/freelance-img.jpg" alt="">
+                            <img src="/images/freelance-img.jpg" alt="">
                         </div>
                     </div>
                     <div class="collapse" id="collapseFour" aria-labelledby="headingfour" data-parent="#accordion">
                         <div class="img-box">
-                            <img src="./files/images/freelance-img.jpg" alt="">
+                            <img src="/images/freelance-img.jpg" alt="">
                         </div>
                     </div>
                 </div>
@@ -520,7 +520,7 @@
                                 <p>
                                     This is Best Platform for Freelancer Where they can earn money through freelancing and get unlimited opprtunity to work on Sereval Project
                                 </p>
-                                <img src="./files/images/quote.png" alt="">
+                                <img src="/images/quote.png" alt="">
                             </div>
                         </div>
                         <div class="carousel-item">
@@ -531,7 +531,7 @@
                                 <p>
                                     Their platform is user-friendly, their team is responsive and professional, and their commitment to quality is unmatched. Thanks to ProjectPulse, we were able to find the perfect freelancer for our project, and the results exceeded our expectations.
                                 </p>
-                                <img src="./files/images/quote.png" alt="">
+                                <img src="/images/quote.png" alt="">
                             </div>
                         </div>
                         <div class="carousel-item">
@@ -542,7 +542,7 @@
                                 <p>
                                     The platform is intuitive, making it simple to browse profiles, communicate with freelancers, and manage projects. We've been consistently impressed with the quality of talent available on ProjectPulse, and the level of professionalism exhibited by both the freelancers and the ProjectPulse team.
                                 </p>
-                                <img src="./files/images/quote.png" alt="">
+                                <img src="/images/quote.png" alt="">
                             </div>
                         </div>
                     </div>
@@ -566,11 +566,9 @@
 
 <!-- Footer section Start -->
 
-<%@ include file="footerfile.jsp" %>
-
+<div th:replace="footerFile"></div>
 <!-- Footer Section end -->
 
-</body>
 </body>
 
 </html>
