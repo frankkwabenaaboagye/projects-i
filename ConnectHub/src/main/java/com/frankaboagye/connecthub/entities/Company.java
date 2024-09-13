@@ -24,4 +24,5 @@ public class Company {
     private String phonenumber;
     private String website;
     private String password;
+    private String profilepicturename;
 }
