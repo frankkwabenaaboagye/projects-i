@@ -15,9 +15,6 @@ Connect Hub is a platform where clients / organisations can access a diverse poo
 of skilled freelancers,and freelancers can showcase their expertise while 
 discovering rewarding opportunities.
 
-#### Inspiration
-- [Gaurav Patil](https://www.youtube.com/@gauravpatil_13) 
-
 ### Project Features
 * Company / Client registration and login functionality 
 * File System storage {not the best}
