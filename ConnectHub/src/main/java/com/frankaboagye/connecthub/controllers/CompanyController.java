@@ -34,7 +34,7 @@ public class CompanyController {
         return "loginCompany";
     }
 
-    @PostMapping("/register-company")
+    @PostMapping("/handle-register-company")
     public String handleCompanyRegisteration(@ModelAttribute CompanyDAO companyDAO, @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile){
 
         // use aspect over here
@@ -61,7 +61,7 @@ public class CompanyController {
 
     }
 
-    @PostMapping("/login-company")
+    @PostMapping("/handle-login-company")
     public String handleCompanyLogin(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
