@@ -19,8 +19,9 @@
                     <span>Company Login</span>
                 </h2>
                 <p class="instructions">
-                    Welocome back to Connect Hub
+                    Welcome back to Connect Hub
                 </p>
+                <p th:text="${registrationMessage}"></p>
                 <form action="/handle-login-company" method="POST" enctype="multipart/form-data">
 
                     <div class="form-group">

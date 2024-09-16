@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,8 +38,19 @@ public class CompanyController {
         return "loginCompany";
     }
 
+
+    @GetMapping("/logout-company")
+    String logoutCompany(HttpSession httpSession){
+        httpSession.invalidate();
+        return "loginCompany";
+    }
+
     @PostMapping("/handle-register-company")
-    public String handleCompanyRegisteration(@ModelAttribute CompanyDAO companyDAO, @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile){
+    public String handleCompanyRegisteration(
+            @ModelAttribute CompanyDAO companyDAO,
+            @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile,
+            ModelMap modelMap
+            ){
 
         // use aspect over here
             // we can do some serious checks
@@ -47,20 +59,34 @@ public class CompanyController {
 
         // compare the passwords... although we are doing it with js at the view side
 
-        storageServiceImplementation.store(companyPhotoFile);
+        if(!companyDAO.getCompanyPassword().equals(companyDAO.getCompanyConfirmPassword())){
+            modelMap.addAttribute("registrationMessage", "registration failed");
+            return "registerCompany";
+        }
 
-        Company company = Company.builder()
-                .name(companyDAO.getCompanyName())
-                .email(companyDAO.getCompanyEmail())
-                .phonenumber(companyDAO.getCompanyPhoneNumber())
-                .password(companyDAO.getCompanyPassword())
-                .website(companyDAO.getCompanyWebsite())
-                .profilepicturename(companyPhotoFile.getOriginalFilename())
-                .build();
+        try {
+            storageServiceImplementation.store(companyPhotoFile);
 
-        companyServiceImplementation.registerCompany(company);
+            Company company = Company.builder()
+                    .name(companyDAO.getCompanyName())
+                    .email(companyDAO.getCompanyEmail())
+                    .phonenumber(companyDAO.getCompanyPhoneNumber())
+                    .password(companyDAO.getCompanyPassword())
+                    .website(companyDAO.getCompanyWebsite())
+                    .profilepicturename(companyPhotoFile.getOriginalFilename())
+                    .build();
 
-        return "loginCompany";
+            companyServiceImplementation.registerCompany(company);
+
+            modelMap.addAttribute("registrationMessage", "registration successful");
+
+            return "loginCompany";
+        } catch (Exception e) {
+            modelMap.addAttribute("registrationMessage", "registration failed");
+            return "registerCompany";
+        }
+
+
 
     }
 
@@ -89,6 +115,16 @@ public class CompanyController {
         model.addAttribute("error", "Login Failed, Try Again");
         return "loginCompany";
 
+    }
+
+
+    @GetMapping("/companyHomepage")
+    public String getCompanyHompage(HttpSession httpSession){
+        String sessionKey = (String) httpSession.getAttribute("SessionData");
+        if(sessionKey == null){
+            return "loginCompany";
+        }
+        return "companyHomepage";
     }
 
 }
