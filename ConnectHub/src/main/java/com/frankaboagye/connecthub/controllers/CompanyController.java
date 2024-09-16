@@ -120,10 +120,10 @@ public class CompanyController {
 
     @GetMapping("/companyHomepage")
     public String getCompanyHompage(HttpSession httpSession){
-        String sessionKey = (String) httpSession.getAttribute("SessionData");
-        if(sessionKey == null){
-            return "loginCompany";
-        }
+//        String sessionKey = (String) httpSession.getAttribute("SessionData");
+//        if(sessionKey == null){
+//            return "loginCompany";
+//        }
         return "companyHomepage";
     }
 

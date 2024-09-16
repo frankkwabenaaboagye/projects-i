@@ -1,17 +1,183 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Company Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #1d3557;
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-link {
+            color: #f8f9fa !important;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(to right, #457b9d, #1d3557);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin: 20px 0;
+        }
+
+        .btn-primary {
+            background-color: #e63946;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Freelancers Section */
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* About Section */
+        .about {
+            padding: 60px 0;
+        }
+
+        .about h2 {
+            font-weight: 700;
+            color: #1d3557;
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1d3557;
+            color: #f1faee;
+            padding: 40px 0;
+        }
+
+        footer a {
+            color: #f1faee;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #e63946;
+        }
+
+        footer p {
+            margin-bottom: 0;
+        }
+
+    </style>
 </head>
 <body>
 
-<p>Welcome to the company homepage</p>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">Connect Hub</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Hire</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-<a th:href="@{logout-company}">logout</a>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1>Welcome to Connect Hub</h1>
+        <p>Your place to post jobs, projects, and connect with top freelancers.</p>
+        <a href="#" class="btn btn-primary">Post a Job</a>
+        <a href="#" class="btn btn-primary">Post a Project</a>
+    </div>
+</section>
 
+<!-- Freelancers Section -->
+<section class="container my-5">
+    <h2>All Freelancers with their Skills Here</h2>
+    <div class="row">
+        <!-- Freelancer Card -->
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top freelancer-img" src="/images/freelancer1.jpg" alt="Freelancer 1">
+                <div class="card-body">
+                    <h5 class="card-title">John Doe</h5>
+                    <p class="card-text">Expert in Web Development, JavaScript, and React.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Add more freelancer cards as needed -->
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about container my-5">
+    <h2>About Connect Hub</h2>
+    <p>Connect Hub helps companies connect with highly skilled freelancers to meet their project needs. Whether it's posting jobs or collaborating on projects, our platform ensures a smooth and efficient hiring process.</p>
+</section>
+
+<!-- Footer -->
+<footer class="text-center">
+    <div class="container">
+        <p>&copy; 2024 Connect Hub. All Rights Reserved.</p>
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
