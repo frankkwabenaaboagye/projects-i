@@ -181,6 +181,23 @@
         }
 
 
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        /*additons*/
+
+        .company-info {
+            margin-bottom: 30px;
+        }
+        .company-img {
+            max-width: 100%;
+            height: auto;
+            transform: scale(1.1);
+        }
+
     </style>
 </head>
 
@@ -268,16 +285,10 @@
 
 </div>
 
-<!-- current -->
+<!-- Section for Projects by Companies with Carousel -->
 <div class="container">
-    <!-- Section for Projects by Companies with Carousel -->
     <h2 class="text-center mt-5">Projects by Companies</h2>
     <div id="projectsCarousel" class="carousel slide" data-bs-ride="carousel">
-        <!-- Carousel Indicators (Optional) -->
-<!--        <div class="carousel-indicators">-->
-<!--            <button type="button" data-bs-target="#projectsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>-->
-<!--            <button type="button" data-bs-target="#projectsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>-->
-<!--        </div>-->
 
         <!-- Carousel Items -->
         <div class="carousel-inner">
@@ -296,11 +307,10 @@
                             </div>
                         </a>
                     </div>
-                    <!-- Add more project cards as needed -->
                     <div class="col-md-4 mb-4">
                         <a href="#" class="text-decoration-none">
                             <div class="card h-100">
-                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="card-img-top">
+                                <img src="images/companylogo-2.jpg" alt="Company Logo" class="card-img-top">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">XYZ Tech</h5>
                                     <p><strong>Project:</strong> Web Development Platform</p>
@@ -312,7 +322,7 @@
                     <div class="col-md-4 mb-4">
                         <a href="#" class="text-decoration-none">
                             <div class="card h-100">
-                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="card-img-top">
+                                <img src="images/companylogo-3.jpg" alt="Company Logo" class="card-img-top">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">XYZ Tech</h5>
                                     <p><strong>Project:</strong> Web Development Platform</p>
@@ -331,20 +341,7 @@
                     <div class="col-md-4 mb-4">
                         <a href="#" class="text-decoration-none">
                             <div class="card h-100">
-                                <img src="images/companylogo-2.jpg" alt="Company Logo" class="card-img-top">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">XYZ Tech</h5>
-                                    <p><strong>Project:</strong> Web Development Platform</p>
-                                    <p><strong>Skills Required:</strong> Python, Django, SQL</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Add more project cards as needed -->
-                    <div class="col-md-4 mb-4">
-                        <a href="#" class="text-decoration-none">
-                            <div class="card h-100">
-                                <img src="images/companylogo-2.jpg" alt="Company Logo" class="card-img-top">
+                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="card-img-top">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">XYZ Tech</h5>
                                     <p><strong>Project:</strong> Web Development Platform</p>
@@ -357,6 +354,18 @@
                         <a href="#" class="text-decoration-none">
                             <div class="card h-100">
                                 <img src="images/companylogo-2.jpg" alt="Company Logo" class="card-img-top">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">XYZ Tech</h5>
+                                    <p><strong>Project:</strong> Web Development Platform</p>
+                                    <p><strong>Skills Required:</strong> Python, Django, SQL</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <a href="#" class="text-decoration-none">
+                            <div class="card h-100">
+                                <img src="images/companylogo-3.jpg" alt="Company Logo" class="card-img-top">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">XYZ Tech</h5>
                                     <p><strong>Project:</strong> Web Development Platform</p>
@@ -386,9 +395,73 @@
 <section class="about text-center">
     <div class="container">
         <h2>About Connect Hub</h2>
-        <p>Connect Hub is a platform where clients can access a diverse pool of skilled freelancers, and freelancers can showcase their expertise while discovering rewarding opportunities.</p>
+        <p>
+            Connect Hub is a platform where clients and companies can access a diverse pool of skilled freelancers,
+            and freelancers can showcase their expertise while discovering rewarding opportunities.
+        </p>
     </div>
 </section>
+
+<!--aws sample-->
+<div class="container mt-5">
+
+    <div class="section-title">
+        <h1>Top Companies that Work with Us</h1>
+    </div>
+
+    <!-- First Company -->
+    <div class="row company-info align-items-center">
+        <div class="col-md-4">
+            <img src="images/partner-a.png" alt="Company 1 Image" class="company-img">
+        </div>
+        <div class="col-md-8">
+            <h2>Company 1</h2>
+            <p><strong>About:</strong> This is a description about Company 1. They specialize in technology solutions for businesses.</p>
+            <p><strong>Learn More:</strong> <a href="#">Visit Company 1</a></p>
+            <p><strong>Contact:</strong> <a href="mailto:info@company1.com">Email Company 1</a></p>
+        </div>
+    </div>
+
+    <!-- Second Company -->
+    <div class="row company-info align-items-center">
+        <div class="col-md-4">
+            <img src="images/partner-1.png" alt="Company 2 Image" class="company-img">
+        </div>
+        <div class="col-md-8">
+            <h2>Company 2</h2>
+            <p><strong>About:</strong> This is a description about Company 2. They are leaders in the automotive industry.</p>
+            <p><strong>Learn More:</strong> <a href="#">Visit Company 2</a></p>
+            <p><strong>Contact:</strong> <a href="mailto:info@company2.com">Email Company 2</a></p>
+        </div>
+    </div>
+
+    <!-- Third Company -->
+    <div class="row company-info align-items-center">
+        <div class="col-md-4">
+            <img src="images/partner-b.png" alt="Company 3 Image" class="company-img">
+        </div>
+        <div class="col-md-8">
+            <h2>Company 3</h2>
+            <p><strong>About:</strong> This is a description about Company 3. They provide financial services worldwide.</p>
+            <p><strong>Learn More:</strong> <a href="#">Visit Company 3</a></p>
+            <p><strong>Contact:</strong> <a href="mailto:info@company3.com">Email Company 3</a></p>
+        </div>
+    </div>
+
+    <div class="row company-info align-items-center">
+        <div class="col-md-4">
+            <img src="images/partner-h.jpg" alt="Company 3 Image" class="company-img">
+        </div>
+        <div class="col-md-8">
+            <h2>Company 3</h2>
+            <p><strong>About:</strong> This is a description about Company 3. They provide financial services worldwide.</p>
+            <p><strong>Learn More:</strong> <a href="#">Visit Company 3</a></p>
+            <p><strong>Contact:</strong> <a href="mailto:info@company3.com">Email Company 3</a></p>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- Statistics Section -->
 <section class="stats">
