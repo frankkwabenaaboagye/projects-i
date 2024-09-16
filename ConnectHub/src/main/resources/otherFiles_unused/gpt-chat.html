@@ -159,6 +159,28 @@
             font-weight: 700;
         }
 
+        /* card section*/
+        .freelancer-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .project-logo {
+            width: 80px;
+            height: 80px;
+        }
+
+        /*    current*/
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: blue;
+            background-size: 100%, 100%;
+            border-radius: 50%;
+        }
+
+
     </style>
 </head>
 
@@ -200,66 +222,159 @@
 </section>
 
 <!-- Freelancer and Companies Section -->
-<div class="container my-5">
-    <div class="row mb-5">
-        <div class="col-lg-6">
-            <h3 class="mb-4">Freelancers</h3>
-            <div class="card mb-4">
-                <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Freelancer Image">
-                <div class="card-body">
+<div class="container">
+    <!-- Section for Freelancers -->
+    <h2 class="text-center mt-4">Freelancers</h2>
+    <div class="row" id="freelancers-section">
+        <!-- Freelancer Card 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="images/freelancer-1.jpg" alt="Freelancer Image" class="freelancer-img mb-3" width="445" height="366">
                     <h5 class="card-title">John Doe</h5>
-                    <p class="card-text">LinkedIn: <a href="#">linkedin.com/johndoe</a></p>
-                    <p>Skills: Java, React, Spring Boot</p>
-                    <p>Education: MIT, Computer Science</p>
-                    <p>Charge: $4000/month</p>
-                    <a href="#" class="btn btn-primary">View More</a>
+                    <p><a href="#" target="_blank">LinkedIn Profile</a></p>
+                    <p><strong>Skills:</strong> JavaScript, React, Node.js</p>
+                    <p><strong>Education:</strong> BSc in Computer Science</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <h3 class="mb-4">Freelancers</h3>
-            <div class="card mb-4">
-                <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Freelancer Image">
-                <div class="card-body">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="images/freelancer-2.PNG" alt="Freelancer Image" class="freelancer-img mb-3">
                     <h5 class="card-title">John Doe</h5>
-                    <p class="card-text">LinkedIn: <a href="#">linkedin.com/johndoe</a></p>
-                    <p>Skills: Java, React, Spring Boot</p>
-                    <p>Education: MIT, Computer Science</p>
-                    <p>Charge: $4000/month</p>
-                    <a href="#" class="btn btn-primary">View More</a>
+                    <p><a href="#" target="_blank">LinkedIn Profile</a></p>
+                    <p><strong>Skills:</strong> JavaScript, React, Node.js</p>
+                    <p><strong>Education:</strong> BSc in Computer Science</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="images/freelancer-3.PNG" alt="Freelancer Image" class="freelancer-img mb-3">
+                    <h5 class="card-title">John Doe</h5>
+                    <p><a href="#" target="_blank">LinkedIn Profile</a></p>
+                    <p><strong>Skills:</strong> JavaScript, React, Node.js</p>
+                    <p><strong>Education:</strong> BSc in Computer Science</p>
+                    <a href="#" class="btn btn-primary">View Details</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <h3 class="mb-4">Companies</h3>
-            <div class="card mb-4">
-                <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Company Image">
-                <div class="card-body">
-                    <h5 class="card-title">Tech Innovations</h5>
-                    <p>Project: E-commerce Platform</p>
-                    <p>Required Skills: Python, Angular</p>
-                    <a href="#" class="btn btn-primary">View More</a>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- Project Section -->
-    <div class="row">
-        <h3 class="mb-4">Projects</h3>
-        <div class="col-lg-12">
-            <div class="card">
-                <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Project Image">
-                <div class="card-body">
-                    <h5 class="card-title">E-Commerce Website</h5>
-                    <p>Freelancers Needed: 3</p>
-                    <a href="#" class="btn btn-primary">View More</a>
+</div>
+
+<!-- current -->
+<div class="container">
+    <!-- Section for Projects by Companies with Carousel -->
+    <h2 class="text-center mt-5">Projects by Companies</h2>
+    <div id="projectsCarousel" class="carousel slide" data-bs-ride="carousel">
+        <!-- Carousel Indicators (Optional) -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#projectsCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#projectsCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        </div>
+
+        <!-- Carousel Items -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    <!-- Project Card 1 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="project-logo mb-3">
+                                <h5 class="card-title">XYZ Tech</h5>
+                                <p><strong>Project:</strong> Web Development Platform</p>
+                                <p><strong>Skills Required:</strong> Python, Django, SQL</p>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add more project cards as needed -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="project-logo mb-3">
+                                <h5 class="card-title">XYZ Tech</h5>
+                                <p><strong>Project:</strong> Web Development Platform</p>
+                                <p><strong>Skills Required:</strong> Python, Django, SQL</p>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="project-logo mb-3">
+                                <h5 class="card-title">XYZ Tech</h5>
+                                <p><strong>Project:</strong> Web Development Platform</p>
+                                <p><strong>Skills Required:</strong> Python, Django, SQL</p>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add more carousel items for additional project sets -->
+            <div class="carousel-item">
+                <div class="row">
+                    <!-- Project Card 2 -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="project-logo mb-3">
+                                <h5 class="card-title">XYZ Tech</h5>
+                                <p><strong>Project:</strong> Web Development Platform</p>
+                                <p><strong>Skills Required:</strong> Python, Django, SQL</p>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add more project cards as needed -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="project-logo mb-3">
+                                <h5 class="card-title">XYZ Tech</h5>
+                                <p><strong>Project:</strong> Web Development Platform</p>
+                                <p><strong>Skills Required:</strong> Python, Django, SQL</p>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img src="images/companylogo-1.PNG" alt="Company Logo" class="project-logo mb-3">
+                                <h5 class="card-title">XYZ Tech</h5>
+                                <p><strong>Project:</strong> Web Development Platform</p>
+                                <p><strong>Skills Required:</strong> Python, Django, SQL</p>
+                                <a href="#" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Carousel Controls (Arrows) -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#projectsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#projectsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
 </div>
+
 
 <!-- About Section -->
 <section class="about text-center">
