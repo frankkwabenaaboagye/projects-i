@@ -20,7 +20,7 @@ discovering rewarding opportunities.
 * File System storage {not the best}
 
 ### Technologies & Skills
-- PostgreSQL 🐘 for dev, H2 for testing, Thymeleaf 🍃,  Java ☕️ Configurations, HTML, CSS🎨, JS, 
+- PostgreSQL 🐘 for dev, H2 for testing, Thymeleaf 🍃,  Spring, Java ☕️ Configurations, Spring Boot, HTML, CSS🎨, JS, 
 - Using Profiles, Resource
 
 ### Lessons
