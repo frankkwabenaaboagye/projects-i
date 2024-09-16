@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,7 +27,8 @@ public class CompanyController {
 
     @GetMapping("/register-company")
     String registerCompany(Model model){
-        // model.addAttribute("message", "this is frank");
+        model.addAttribute("message", "this is frank");
+        model.addAttribute("companies", List.of("Microsoft", "Netflix", "Amazon"));
         return "registerCompany";
     }
 
