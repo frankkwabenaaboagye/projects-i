@@ -1,101 +1,55 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Login Companies</title>
-    <link rel="shortcut icon" th:href="@{/images/favicon-32x32.png}" type="image/x-icon">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/base_layout}" >
 
-    <style>
-        body {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background-image: url(https://images.pexels.com/photos/4348404/pexels-photo-4348404.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-        .container {
-            max-width: 400px; /* Reduced the max-width for a more sensible form size */
-            width: 100%;
-        }
-        .form-container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+<head>
+    <title>Login</title>
 </head>
 <body>
-<div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light p-3 rounded">
-        <a class="navbar-brand mx-auto d-flex align-items-center" th:href="@{/SpringMVCPersonal_Project}">
-            <img th:src="@{/images/logo.png}" alt="logo here" class="me-2" style="height: 40px;" />
-            <span>
-                Welcome Back to Connect Hub
-            </span>
-        </a>
-    </nav>
 
-    <header class="text-center mt-4" style="color: #1d3557;">
-    </header>
+<section class="the-form-body">
 
-    <div class="form-container mt-3">
-        <form id="loginForm" th:action="@{/handle-login-company}" method="post">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required />
+    <section layout:fragment="content">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="text-center" style="color: #1d3557;">
+                    <img th:src="@{/images/logo.png}" alt="Company Logo">
+                    <span>Company Login</span>
+                </h2>
+                <p class="instructions">
+                    Welocome back to Connect Hub
+                </p>
+                <form action="/submit" method="POST" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label for="email">
+                            Email <i class="bi bi-envelope-at-fill"></i> :
+                        </label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            Password <i class="bi bi-key-fill"></i> :
+                        </label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">log in</button>
+
+                    <div class="text-center mt-2">
+                        <span>Don't Have an Account?
+                            <a th:href="@{register-company}">Register</a>
+                        </span>
+                    </div>
+                </form>
             </div>
+        </div>
+    </section>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Enter Password</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required pattern=".{8,}" title="Password must be at least 8 characters long." />
-            </div>
+</section>
 
-            <div class="mb-3">
-                <button type="submit" class="btn btn-primary w-100">Login</button>
-            </div>
-
-            <p class="text-danger text-center" th:text="${error}"></p>
-
-            <div class="text-center">
-                <a th:href="@{/register-company}" class="btn btn-secondary w-100">Register Here</a>
-            </div>
-
-            <div class="text-center mt-2">
-                <span>Don't Have an Account?</span>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        var form = event.target;
-        var email = form.elements['email'].value;
-        var password = form.elements['password'].value;
-
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            alert('Please enter a valid email address.');
-            event.preventDefault();
-            return;
-        }
-
-        if (password.length < 8) {
-            alert('Password must be at least 8 characters long.');
-            event.preventDefault();
-        }
-    });
-</script>
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
