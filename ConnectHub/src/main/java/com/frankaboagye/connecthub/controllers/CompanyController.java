@@ -26,6 +26,7 @@ public class CompanyController {
     private final CompanyServiceInterface companyServiceImplementation;
     private final StorageServiceInterface storageServiceImplementation; // it will use the FileSystemStorageService .. since that is what has been configured
 
+    // company registration
     @GetMapping("/register-company")
     String registerCompany(Model model){
         model.addAttribute("message", "this is frank");
