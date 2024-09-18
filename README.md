@@ -9,8 +9,10 @@ Feel free to explore and learn as well
 # Project List
 
 1. [Connect Hub](#connect-hub)
+ 
 
 ## Connect Hub
+* [Project Board](https://github.com/users/frankkwabenaaboagye/projects/1)
 
 ### Project Description
 
