@@ -21,19 +21,21 @@
                 <!-- Header Section -->
                 <div class="header text-center">
                     <h1 th:text="${company.getName()} + ' Profile'"></h1>
-<!--                    <p>Manage your company details here</p>-->
                 </div>
 
                 <div class="text-center mb-4">
                     <img th:src="${profilePicturePath}" alt="Company Profile Picture" class="profile-pic img-fluid">
-
-                    <div class="mt-3">
-                        <button class="btn btn-outline-primary">Change Profile Picture</button>
-                    </div>
                 </div>
 
                 <!-- Company Details Form -->
-                <form>
+                <form th:action="@{/handle-company-profile-update/{id}(id=${company.id})}" method="POST" enctype="multipart/form-data">
+
+                    <div class="mt-3 text-center">
+                        <label for="companyPhoto" class="form-label">Change Profile Picture</label>
+                        <input class="btn btn-outline-primary" type="file" id="companyPhoto" name="companyPhotoFile" accept=".jpg,.jpeg,.png,.gif">
+                    </div>
+                    <br>
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="companyName" class="form-label">Company Name</label>
@@ -47,7 +49,7 @@
 
                     <div class="mb-3">
                         <label for="companyEmail" class="form-label">Company Email</label>
-                        <input type="email" class="form-control" id="companyEmail" name="companyEmail" th:value="*{company.getEmail()}">
+                        <input type="email" class="form-control" id="companyEmail" name="companyEmail" th:value="*{company.getEmail()}" readonly>
                     </div>
 
                     <div class="mb-3">
@@ -57,7 +59,7 @@
 
                     <div class="mb-3">
                         <label for="companyDescription" class="form-label">Company Description</label>
-                        <textarea class="form-control" id="companyDescription" rows="4">Brief description of the company...</textarea>
+                        <textarea class="form-control" id="companyDescription" rows="4" th:text="${company.getDescription()}"></textarea>
                     </div>
 
                     <div class="text-center">

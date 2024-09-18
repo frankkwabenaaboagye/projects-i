@@ -15,4 +15,5 @@ public class CompanyDAO {
     private String companyWebsite;
     private String companyPassword;
     private String companyConfirmPassword;
+    private String companyDescription;
 }

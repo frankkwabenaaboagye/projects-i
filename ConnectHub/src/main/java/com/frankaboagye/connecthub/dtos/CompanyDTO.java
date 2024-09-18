@@ -14,4 +14,5 @@ public class CompanyDTO {
     private String companyEmail;
     private String companyPhoneNumber;
     private String companyWebsite;
+    private String companyDescription;
 }

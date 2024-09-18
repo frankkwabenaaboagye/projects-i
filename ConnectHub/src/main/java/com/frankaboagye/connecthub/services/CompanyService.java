@@ -26,6 +26,15 @@ public class CompanyService implements CompanyServiceInterface {
     public Optional<Company> loginCompany(String email, String password) {
         // ustilise aop, security e.t.c
         return companyRepository.findByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public Optional<Company> updateCompanyProfile(Long id, Company companyUpdate) {
+
+        boolean companyExists = companyRepository.existsByIdAndEmail(id, companyUpdate.getEmail());
+        if(!companyExists){ return Optional.empty(); }
+
+        return Optional.of(companyRepository.save(companyUpdate));
 
     }
 }

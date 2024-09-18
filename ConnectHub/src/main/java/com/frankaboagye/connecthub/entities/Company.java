@@ -25,5 +25,5 @@ public class Company {
     private String website;
     private String password;
     private String profilepicturename;
-    // private String description;
+    private String description;
 }

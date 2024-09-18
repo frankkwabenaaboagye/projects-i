@@ -11,4 +11,5 @@ public interface CompanyServiceInterface {
     void registerCompany(Company company);
 
     Optional<Company> loginCompany(String email, String password);
+    Optional<Company> updateCompanyProfile(Long companyId, Company companyUpdate);
 }
