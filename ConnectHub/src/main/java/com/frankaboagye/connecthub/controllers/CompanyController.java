@@ -95,36 +95,46 @@ public class CompanyController {
     public String handleCompanyLogin(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            Model model,
+            ModelMap modelMap,
             HttpSession session
     ){
 
         Optional<Company> companyData = companyServiceImplementation.loginCompany(email, password);
         if(companyData.isPresent()){
             Company company = companyData.get();
+            /*
             model.addAttribute("companyId", company.getId());
             model.addAttribute("companyName", company.getName());
             model.addAttribute("companyEmail", company.getEmail());
             model.addAttribute("companyPhoneNumber", company.getPhonenumber());
             model.addAttribute("companyWebsite", company.getWebsite());
             model.addAttribute("companyPictureName", company.getProfilepicturename());
+            */
 
             session.setAttribute("SessionData",email);
+            session.setAttribute("companyData", company);
             return "redirect:/companyHomepage";
 
         }
-        model.addAttribute("error", "Login Failed, Try Again");
+        modelMap.addAttribute("errorMessage", "Login Failed, Try Again");
         return "loginCompany";
 
     }
 
 
     @GetMapping("/companyHomepage")
-    public String getCompanyHompage(HttpSession httpSession){
-//        String sessionKey = (String) httpSession.getAttribute("SessionData");
-//        if(sessionKey == null){
-//            return "loginCompany";
-//        }
+    public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
+        String sessionKey = (String) httpSession.getAttribute("SessionData");
+        if(sessionKey == null){
+            return "loginCompany";
+        }
+
+        Company theCompany = (Company) httpSession.getAttribute("companyData");
+
+        // modelMap.addAttribute("companyName", theCompany.getName());
+        modelMap.addAttribute("company", theCompany);
+
+
         return "companyHomepage";
     }
 
