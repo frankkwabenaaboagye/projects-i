@@ -4,8 +4,10 @@ import com.frankaboagye.connecthub.daos.CompanyDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
+import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,7 +16,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +32,7 @@ public class CompanyController {
     // note the use of interfaces here
     private final CompanyServiceInterface companyServiceImplementation;
     private final StorageServiceInterface storageServiceImplementation; // it will use the FileSystemStorageService .. since that is what has been configured
+    private final CompanyRepository companyRepository;
 
     // company registration
     @GetMapping("/register-company")
@@ -137,5 +145,42 @@ public class CompanyController {
 
         return "companyHomepage";
     }
+
+
+    @GetMapping("/companyProfilepage")
+    public String getCompanyProfilePage(HttpSession httpSession, ModelMap modelMap) throws IOException {
+
+
+
+        Optional<Company> co = companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco");
+        if(co.isPresent()){
+            Company theCompany = co.get();
+
+            Path path = storageServiceImplementation.load(theCompany.getProfilepicturename());
+            String profileSrc =  MvcUriComponentsBuilder
+                    .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                    .build()
+                    .toUri()
+                    .toString();
+
+
+            Resource companyPictureResource =  storageServiceImplementation.loadAsResource(theCompany.getProfilepicturename());
+            URL companyPictureURI = companyPictureResource.getURL();
+
+            modelMap.addAttribute("company", theCompany);
+            modelMap.addAttribute("profilePicturePath", profileSrc);
+
+            return "companyProfilepage";
+        }
+
+        // Path companyPicturePath = storageServiceImplementation.load(theCompany.getProfilepicturename());
+
+        return null;
+
+
+
+
+    }
+
 
 }
