@@ -44,7 +44,7 @@ It is designed to connect freelancers with companies or clients looking to hire 
 
 ### Technologies & Skills
 
-- PostgreSQL 🐘 for dev, H2 for testing, Thymeleaf 🍃, Spring, Java ☕️ Configurations, Spring Boot, HTML, CSS🎨, JS,
+- PostgreSQL 🐘 for dev, H2 for testing, Thymeleaf 🍃, Thymeleaf Layout Dialect, Spring, Java ☕️ Configurations, Spring Boot, HTML, CSS🎨, JS,
 - Using Profiles, Resource, Model, Model Map, HttpSession
 
 ### Lessons
