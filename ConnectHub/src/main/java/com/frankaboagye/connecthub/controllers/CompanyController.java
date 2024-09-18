@@ -110,7 +110,7 @@ public class CompanyController {
             model.addAttribute("companyPictureName", company.getProfilepicturename());
 
             session.setAttribute("SessionData",email);
-            return "companyHomepage";
+            return "redirect:/companyHomepage";
 
         }
         model.addAttribute("error", "Login Failed, Try Again");
