@@ -21,8 +21,7 @@
                 <p class="instructions">
                     Welcome back to Connect Hub
                 </p>
-                <p th:if="${registrationMessage != null}" th:text="${registrationMessage}"></p>
-                <p th:if="${errorMessage != null}" th:text="${errorMessage}"></p>
+                <p th:if="${message != null}" th:text="${message}"></p>
                 <form action="/handle-login-company" method="POST" enctype="multipart/form-data">
 
                     <div class="form-group">

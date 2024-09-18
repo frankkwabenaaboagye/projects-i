@@ -28,11 +28,11 @@
                 </div>
 
                 <!-- Company Details Form -->
-                <form th:action="@{/handle-company-profile-update/{id}(id=${company.id})}" method="POST" enctype="multipart/form-data">
+                <form th:action="@{/handle-company-profile-update/{id}(id=${company.getId()})}" method="POST" enctype="multipart/form-data">
 
                     <div class="mt-3 text-center">
-                        <label for="companyPhoto" class="form-label">Change Profile Picture</label>
-                        <input class="btn btn-outline-primary" type="file" id="companyPhoto" name="companyPhotoFile" accept=".jpg,.jpeg,.png,.gif">
+                        <label for="companyPhotoFile" class="form-label">Change Profile Picture</label>
+                        <input class="btn btn-outline-primary" type="file" id="companyPhotoFile" name="companyPhotoFile" accept=".jpg,.jpeg,.png,.gif" th:value="*{company.getProfilepicturename()}">
                     </div>
                     <br>
 
@@ -59,7 +59,7 @@
 
                     <div class="mb-3">
                         <label for="companyDescription" class="form-label">Company Description</label>
-                        <textarea class="form-control" id="companyDescription" rows="4" th:text="${company.getDescription()}"></textarea>
+                        <textarea class="form-control" id="companyDescription" name= "companyDescription" rows="4" th:text="${company.getDescription()}"></textarea>
                     </div>
 
                     <div class="text-center">

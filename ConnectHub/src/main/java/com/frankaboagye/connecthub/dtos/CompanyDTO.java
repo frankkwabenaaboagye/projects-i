@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CompanyDTO {
     private String companyName;
-    private String companyEmail;
-    private String companyPhoneNumber;
+    private String companyEmail; // we will not update email
+    private String companyPhonenumber;
     private String companyWebsite;
     private String companyDescription;
 }

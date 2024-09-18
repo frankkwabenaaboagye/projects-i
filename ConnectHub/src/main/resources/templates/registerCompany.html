@@ -21,21 +21,21 @@
                 <p class="instructions">
                     Welocome to Connect Hub company registration
                 </p>
-                <p th:text="${registrationMessage}"></p>
+                <p th:text="${message}"></p>
                 <form action="/handle-register-company" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="name">Company Name <i class="bi bi-buildings-fill"></i> :</label>
-                        <input type="text" id="name" name="companyName" required>
+                        <label for="companyName">Company Name <i class="bi bi-buildings-fill"></i> :</label>
+                        <input type="text" id="companyName" name="companyName" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email <i class="bi bi-envelope-at-fill"></i> :</label>
-                        <input type="email" id="email" name="companyEmail" required>
+                        <label for="companyEmail">Email <i class="bi bi-envelope-at-fill"></i> :</label>
+                        <input type="email" id="companyEmail" name="companyEmail" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="phone">Phone Number <i class="bi bi-telephone-fill"></i> :</label>
-                        <input type="tel" id="phone" name="companyPhonenumber" required>
+                        <label for="companyPhonenumber">Phone Number <i class="bi bi-telephone-fill"></i> :</label>
+                        <input type="tel" id="companyPhonenumber" name="companyPhonenumber" required>
                     </div>
 
                     <div class="form-group">
@@ -49,13 +49,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password <i class="bi bi-key-fill"></i>  :</label>
-                        <input type="password" id="password" name="companyPassword" required>
+                        <label for="companyPassword">Password <i class="bi bi-key-fill"></i>  :</label>
+                        <input type="password" id="companyPassword" name="companyPassword" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="confirmPassword">Confirm Password <i class="bi bi-key-fill"></i>  :</label>
-                        <input type="password" id="confirmPassword" name="companyConfirmPassword" required>
+                        <label for="companyConfirmPassword">Confirm Password <i class="bi bi-key-fill"></i>  :</label>
+                        <input type="password" id="companyConfirmPassword" name="companyConfirmPassword" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-block">Register</button>
