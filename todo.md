@@ -7,3 +7,5 @@
  - change logic for redirect
  - handle the nulls
  - check updating photo
+ - error message / toasters e.t.c
+ - temp image as place holders

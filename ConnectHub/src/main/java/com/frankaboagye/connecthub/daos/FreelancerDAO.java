@@ -1,0 +1,27 @@
+package com.frankaboagye.connecthub.daos;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FreelancerDAO {
+
+    private String email;
+    private String fullName;
+    private String dateOfBirth;
+    private String linkedin;
+    private String phoneNumber;
+    private String education;
+    private String profilepicturename;
+    private String basicCharge;
+    private String gender;
+    private List<String> skills;
+}
