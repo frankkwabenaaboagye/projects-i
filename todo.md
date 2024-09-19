@@ -12,3 +12,4 @@
  - helper class - write it up
  - file uploads with the same name
  - take a look at the http session
+ - fix home page on the registration and login page

@@ -112,19 +112,24 @@ public class FreelancerController {
     }
 
     @GetMapping("/freelancerHomepage")
-    public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
+    public String getFreelancerHompage(HttpSession httpSession, ModelMap modelMap){
         String sessionKey = (String) httpSession.getAttribute("SessionData");
-        if(sessionKey == null){
-            return "loginCompany";
+        Freelancer theFreelancer = (Freelancer) httpSession.getAttribute("freelancerData");
+        if(sessionKey == null || theFreelancer == null){
+            return "loginFreelancer";
         }
 
-        Company theCompany = (Company) httpSession.getAttribute("companyData");
-
         // modelMap.addAttribute("companyName", theCompany.getName());
-        modelMap.addAttribute("company", theCompany);
+        modelMap.addAttribute("freelancer", theFreelancer);
 
 
-        return "companyHomepage";
+        return "freelancerHomepage";
+    }
+
+    @GetMapping("/logout-freelancer")
+    public String logoutCompany(HttpSession httpSession){
+        httpSession.invalidate();
+        return "loginFreelancer";
     }
 
 }
