@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class FreelancerDAO {
 
-
     private String fullName;
     private String email;
     private String dateOfBirth;
