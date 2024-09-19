@@ -30,7 +30,7 @@
                     Welocome to Connect Hub freelancer registration
                 </p>
                 <p th:text="${message}"></p>
-                <form action="#" method="POST" enctype="multipart/form-data">
+                <form action="handle-register-freelancer" method="POST" enctype="multipart/form-data">
                     <!-- Full Name -->
                     <div class="form-group mb-3">
                         <label for="fullName">Full Name <i class="bi bi-person-fill"></i>:</label>
@@ -98,9 +98,10 @@
 
                     <!-- Add Skills -->
                     <div class="form-group mb-3">
-                        <label >Add Skills <i class="bi bi-tools"></i>:</label>
+                        <label for="skills">Add Skills <i class="bi bi-tools"></i>:</label>
                         <div id="skills-container">
                             <div class="input-group mb-2">
+
                                     <input type="text" class="form-control" name="skills[]" placeholder="Skill">
 
                                 <button type="button" class="btn btn-outline-secondary add-skill"><i class="bi bi-plus-lg"></i></button>
@@ -110,14 +111,14 @@
 
                     <!-- Password -->
                     <div class="form-group mb-3">
-                        <label for="password">Password <i class="bi bi-lock-fill"></i>:</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <label for="freelancerPassword">Password <i class="bi bi-lock-fill"></i>:</label>
+                        <input type="password" class="form-control" id="freelancerPassword" name="freelancerPassword" required>
                     </div>
 
                     <!-- Confirm Password -->
                     <div class="form-group mb-3">
-                        <label for="confirmPassword">Confirm Password <i class="bi bi-lock-fill"></i>:</label>
-                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        <label for="freelancerConfirmPassword">Confirm Password <i class="bi bi-lock-fill"></i>:</label>
+                        <input type="password" class="form-control" id="freelancerConfirmPassword" name="freelancerConfirmPassword" required>
                     </div>
 
                     <!-- Submit Button -->
@@ -135,10 +136,22 @@
                                     <input type="text" class="form-control" name="skills[]" placeholder="Skill">
                                     <button type="button" class="btn btn-outline-secondary remove-skill"><i class="bi bi-dash-lg"></i></button>
                                 </div>`;
-                        document.getElementById('skills-container').insertAdjacentHTML('beforeend', skillInput);
+                        document
+                            .getElementById('skills-container')
+                            .insertAdjacentHTML('beforeend', skillInput);
 
                         // Add event listener to remove skill
-                        document.querySelectorAll('.remove-skill').forEach(button => { button.addEventListener('click', function () {this.parentElement.remove();});});
+                        document
+                            .querySelectorAll('.remove-skill')
+                            .forEach(
+                                button => {
+                                    button.addEventListener(
+                                        'click', function () {
+                                            this.parentElement.remove();
+                                        }
+                                    );
+                                }
+                            );
                     }
                 );
         </script>

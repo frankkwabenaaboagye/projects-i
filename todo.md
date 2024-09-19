@@ -9,3 +9,4 @@
  - check updating photo
  - error message / toasters e.t.c
  - temp image as place holders
+ - helper class - write it up

@@ -24,6 +24,9 @@ public class Freelancer {
     @Column(unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)  // Store as STRING in the database
+    private Gender gender;
+
     private String fullName;
     private LocalDate dateOfBirth;
     private String linkedin;
@@ -31,7 +34,8 @@ public class Freelancer {
     private String education;
     private String profilepicturename;
     private Double basicCharge;
-    private Gender gender;
+    private String password;
+
 
     @ElementCollection
     @CollectionTable(name = "freelancer_skills", joinColumns = @JoinColumn(name = "freelancer_id"))

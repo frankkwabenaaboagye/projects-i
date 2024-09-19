@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface FreelancerRepository extends JpaRepository<Freelancer, Long> {
 
     Optional<Freelancer> findByIdAndEmail(Long id, String email);
+    Optional<Freelancer> findByEmailAndPassword(String email, String password);
 
 }

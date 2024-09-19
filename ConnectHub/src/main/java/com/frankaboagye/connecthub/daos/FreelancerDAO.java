@@ -14,8 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 public class FreelancerDAO {
 
-    private String email;
+
     private String fullName;
+    private String email;
     private String dateOfBirth;
     private String linkedin;
     private String phoneNumber;
@@ -24,4 +25,6 @@ public class FreelancerDAO {
     private String basicCharge;
     private String gender;
     private List<String> skills;
+    private String freelancerPassword;
+    private String freelancerConfirmPassword;
 }
