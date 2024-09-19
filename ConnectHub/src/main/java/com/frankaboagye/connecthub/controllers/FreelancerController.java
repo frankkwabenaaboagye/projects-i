@@ -1,6 +1,7 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.FreelancerDAO;
+import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.enums.Gender;
 import com.frankaboagye.connecthub.interfaces.FreelancerServiceInterface;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -90,11 +92,39 @@ public class FreelancerController {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             ModelMap modelMap,
-            HttpSession session
+            HttpSession httpSession
     ){
 
-        String stop = "here";
-        return null;
+        Optional<Freelancer> optionalFreelancer =  freelancerServiceImplementation.loginFreelancer(email, password);
+        if(optionalFreelancer.isEmpty()){
+            modelMap.addAttribute("message", "user does not exit - try again");
+            return "loginFreelancer";
+        }
+        Freelancer freelancer = optionalFreelancer.get();
+
+        modelMap.addAttribute("freelancer", freelancer);
+
+        httpSession.setAttribute("SessionData", email);
+        httpSession.setAttribute("freelancerData", freelancer);
+
+        return "freelancerHomepage";
 
     }
+
+    @GetMapping("/freelancerHomepage")
+    public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
+        String sessionKey = (String) httpSession.getAttribute("SessionData");
+        if(sessionKey == null){
+            return "loginCompany";
+        }
+
+        Company theCompany = (Company) httpSession.getAttribute("companyData");
+
+        // modelMap.addAttribute("companyName", theCompany.getName());
+        modelMap.addAttribute("company", theCompany);
+
+
+        return "companyHomepage";
+    }
+
 }

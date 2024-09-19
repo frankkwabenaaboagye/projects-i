@@ -11,3 +11,4 @@
  - temp image as place holders
  - helper class - write it up
  - file uploads with the same name
+ - take a look at the http session
