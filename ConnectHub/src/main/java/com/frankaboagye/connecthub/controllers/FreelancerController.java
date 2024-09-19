@@ -1,21 +1,25 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.FreelancerDAO;
+import com.frankaboagye.connecthub.dtos.CompanyDTO;
+import com.frankaboagye.connecthub.dtos.FreelancerDTO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.enums.Gender;
 import com.frankaboagye.connecthub.interfaces.FreelancerServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
+import com.frankaboagye.connecthub.repositories.FreelancerRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URL;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -25,6 +29,7 @@ public class FreelancerController {
 
     private final FreelancerServiceInterface freelancerServiceImplementation;
     private final StorageServiceInterface storageServiceImplementation;
+    private final FreelancerRepository freelancerRepository;
 
     @GetMapping("/register-freelancer")
     public String registerFreelancer(){
@@ -130,6 +135,40 @@ public class FreelancerController {
     public String logoutCompany(HttpSession httpSession){
         httpSession.invalidate();
         return "loginFreelancer";
+    }
+
+    @GetMapping("/freelancerProfilePage")
+    public String getFreelancerProfilePage(HttpSession httpSession, ModelMap modelMap){
+
+        Optional<Freelancer> fo = freelancerRepository.findByEmailAndPassword("frankgye18@gmail.com", "frank"); // we will change this
+        if(fo.isPresent()){
+            Freelancer freelancer = fo.get();
+
+            // duplicate here
+            Path path = storageServiceImplementation.load(freelancer.getProfilepicturename());
+            String profileSrc =  MvcUriComponentsBuilder
+                    .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                    .build()
+                    .toUri()
+                    .toString();
+
+            modelMap.addAttribute("freelancer", freelancer);
+            modelMap.addAttribute("profilePicturePath", profileSrc);
+
+            return "freelancerProfilepage";
+        }
+
+        return null; // will change this
+    }
+
+    @PostMapping("/handle-freelancer-profile-update/{id}")
+    public String updateFreelancerProfile(
+            @PathVariable(name = "id") String freelancerId,
+            @ModelAttribute FreelancerDTO freelancerDTO,
+            @RequestParam("freelancerPhotoFile") MultipartFile freelancerPhotoFile,
+            ModelMap modelMap
+    ){
+        return null;
     }
 
 }
