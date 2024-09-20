@@ -1,11 +1,13 @@
 package com.frankaboagye.connecthub.services;
 
+import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
+import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class CompanyService implements CompanyServiceInterface {
 
     private final CompanyRepository companyRepository;
+    private final StorageServiceInterface storageServiceImplementation;
 
     @Override
     public void registerCompany(Company company) {
@@ -26,6 +29,28 @@ public class CompanyService implements CompanyServiceInterface {
     public Optional<Company> loginCompany(String email, String password) {
         // ustilise aop, security e.t.c
         return companyRepository.findByEmailAndPassword(email, password);
+    }
 
+    @Override
+    public Company updateCompany(Long id, CompanyDTO companyDTO, boolean updateFile, MultipartFile companyPhotoFile) {
+
+        Optional<Company> companyOptional = companyRepository.findByIdAndEmail(id, companyDTO.getCompanyEmail());
+        if(companyOptional.isEmpty()){return null;} // handle this well
+
+        Company company = companyOptional.get();
+
+        company.setName(companyDTO.getCompanyName());
+        company.setPhonenumber(companyDTO.getCompanyPhonenumber());
+        company.setWebsite(companyDTO.getCompanyWebsite());
+        company.setDescription(companyDTO.getCompanyDescription());
+
+        //profile picture
+        if(updateFile){
+            storageServiceImplementation.store(companyPhotoFile);
+            company.setProfilepicturename(companyPhotoFile.getOriginalFilename());
+        }
+
+
+        return companyRepository.save(company);
     }
 }

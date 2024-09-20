@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyDTO {
+public class FreelancerDTO {
     private String companyName;
     private String companyEmail; // we will not update email
     private String companyPhonenumber;

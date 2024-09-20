@@ -5,7 +5,7 @@
       layout:decorate="~{/fragments/base_layout}" >
 
 <head>
-    <title>Login - Company</title>
+    <title>Login - Freelancer</title>
 </head>
 <body>
 
@@ -16,13 +16,13 @@
             <div class="form-container">
                 <h2 class="text-center" style="color: #1d3557;">
                     <img th:src="@{/images/logo.png}" alt="Company Logo">
-                    <span>Company Login</span>
+                    <span>Freelancer Login</span>
                 </h2>
                 <p class="instructions">
                     Welcome back to Connect Hub
                 </p>
                 <p th:if="${message != null}" th:text="${message}"></p>
-                <form action="/handle-login-company" method="POST" enctype="multipart/form-data">
+                <form action="/handle-login-freelancer" method="POST" enctype="multipart/form-data">
 
                     <div class="form-group">
                         <label for="email">
@@ -42,7 +42,7 @@
 
                     <div class="text-center mt-2">
                         <span>Don't Have an Account?
-                            <a th:href="@{register-company}">Register</a>
+                            <a th:href="@{register-freelancer}">Register</a>
                         </span>
                     </div>
                 </form>

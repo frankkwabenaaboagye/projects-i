@@ -2,11 +2,11 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/homepage_layout}" >
+      layout:decorate="~{/fragments/freelancerHomepage_layout}" >
 
 <head>
-    <title>Company Homepage</title>
-    <link th:href="@{/css/companyHomepageStyling.css}" rel="stylesheet" >
+    <title>Freelancer Homepage</title>
+    <link th:href="@{/css/freelancerHomepageStyling.css}" rel="stylesheet" >
 </head>
 <body>
 
@@ -16,11 +16,11 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="container">
-<!--                <h1 th:text="'Welcome, ' + ${companyName} + '!'"></h1>-->
-                <h1 th:text="'Welcome, ' + ${company.getName()} + '!'"></h1>
-                <p>Your place to post jobs, projects, and connect with top freelancers.</p>
-                <a href="#" class="btn btn-primary">Post a Job</a>
-                <a href="#" class="btn btn-primary">Post a Project</a>
+                <!--                <h1 th:text="'Welcome, ' + ${companyName} + '!'"></h1>-->
+                <h1 th:text="'Welcome, ' + ${freelancer.getFullName()} + '!'"></h1>
+                <p>YhYh. Your place to post jobs, projects, and connect with top freelancers.</p>
+                <a href="#" class="btn btn-primary">Explore Jobs</a>
+                <a href="#" class="btn btn-primary">Explore Projects</a>
             </div>
         </section>
 

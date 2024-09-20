@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
-    // folder location for storing files
-    private String location = "upload-dir";
+    // folder location for storing files: folder at the src level
+    private String location = "src/main/resources/upload-dir";
 }
