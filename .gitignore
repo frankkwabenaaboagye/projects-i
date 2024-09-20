@@ -37,14 +37,16 @@ target/
 *.iml
 *.ipr
 
-ProjectPlus/.idea
-ProjectPlus/.idea/*
-ProjectPlus/.mvn
-ProjectPlus/HELP.md
-ProjectPlus/**.class
+ConnectHub/.idea
+ConnectHub/.idea/*
+ConnectHub/.mvn
+ConnectHub/HELP.md
+ConnectHub/**.class
 *.idea/
 *.idea
 .idea
+ConnectHub/src/main/resources/upload-dir/*
+
 
 ### Eclipse ###
 .apt_generated

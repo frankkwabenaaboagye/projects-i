@@ -132,7 +132,7 @@ public class FreelancerController {
     }
 
     @GetMapping("/logout-freelancer")
-    public String logoutCompany(HttpSession httpSession){
+    public String logoutFreelancer(HttpSession httpSession){
         httpSession.invalidate();
         return "redirect:/login-freelancer";
     }
