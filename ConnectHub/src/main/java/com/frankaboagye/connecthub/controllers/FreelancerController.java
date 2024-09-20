@@ -46,7 +46,7 @@ public class FreelancerController {
         // will make the password check better
         if(!freelancerDAO.getFreelancerPassword().equals(freelancerDAO.getFreelancerConfirmPassword())){
             modelMap.addAttribute("message", "Passwords do not match");
-            return "registerFreelancer";
+            return "redirect:/register-freelancer";
         }
 
         // do the conversion in the helper class
@@ -82,7 +82,7 @@ public class FreelancerController {
         freelancerServiceImplementation.registerFreelanceer(freelancer);
 
         modelMap.addAttribute("message", "Freelancer registered successfully");
-        return "loginFreelancer";
+        return "redirect:/login-freelancer";
 
     }
 
@@ -103,7 +103,7 @@ public class FreelancerController {
         Optional<Freelancer> optionalFreelancer =  freelancerServiceImplementation.loginFreelancer(email, password);
         if(optionalFreelancer.isEmpty()){
             modelMap.addAttribute("message", "user does not exit - try again");
-            return "loginFreelancer";
+            return "redirect:/login-freelancer";
         }
         Freelancer freelancer = optionalFreelancer.get();
 
@@ -112,7 +112,7 @@ public class FreelancerController {
         httpSession.setAttribute("SessionData", email);
         httpSession.setAttribute("freelancerData", freelancer);
 
-        return "freelancerHomepage";
+        return "redirect:/freelancerHomepage";
 
     }
 
@@ -134,7 +134,7 @@ public class FreelancerController {
     @GetMapping("/logout-freelancer")
     public String logoutCompany(HttpSession httpSession){
         httpSession.invalidate();
-        return "loginFreelancer";
+        return "redirect:/login-freelancer";
     }
 
     @GetMapping("/freelancerProfilePage")

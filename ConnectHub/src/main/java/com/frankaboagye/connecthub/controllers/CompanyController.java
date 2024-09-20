@@ -116,15 +116,14 @@ public class CompanyController {
     @GetMapping("/companyHomepage")
     public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
         String sessionKey = (String) httpSession.getAttribute("SessionData");
-        if(sessionKey == null){
-            return "loginCompany";
-        }
-
         Company theCompany = (Company) httpSession.getAttribute("companyData");
+
+        if(sessionKey == null || theCompany == null){
+            return "redirect:/login-company";
+        }
 
         // modelMap.addAttribute("companyName", theCompany.getName());
         modelMap.addAttribute("company", theCompany);
-
 
         return "companyHomepage";
     }
@@ -143,10 +142,6 @@ public class CompanyController {
                     .build()
                     .toUri()
                     .toString();
-
-
-            Resource companyPictureResource =  storageServiceImplementation.loadAsResource(theCompany.getProfilepicturename());
-            URL companyPictureURI = companyPictureResource.getURL();
 
             modelMap.addAttribute("company", theCompany);
             modelMap.addAttribute("profilePicturePath", profileSrc);
