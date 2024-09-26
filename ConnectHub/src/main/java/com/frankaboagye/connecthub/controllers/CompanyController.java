@@ -124,6 +124,7 @@ public class CompanyController {
 
         // modelMap.addAttribute("companyName", theCompany.getName());
         modelMap.addAttribute("company", theCompany);
+        modelMap.addAttribute("SessionData", sessionKey);
 
         return "companyHomepage";
     }
@@ -176,6 +177,10 @@ public class CompanyController {
 
         return "redirect:/companyProfilepage";
 
+    }
+
+    public String postAJob(){
+        return ""
     }
 
 
