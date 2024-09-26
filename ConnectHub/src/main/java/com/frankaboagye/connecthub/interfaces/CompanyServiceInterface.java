@@ -10,7 +10,8 @@ public interface CompanyServiceInterface {
 
     // List<Company> getAllCompanies();
     void registerCompany(Company company);
-
     Optional<Company> loginCompany(String email, String password);
     Company updateCompany(Long companyId, CompanyDTO companyDTO, boolean updateFile,MultipartFile companyPhotoFile);
+
+    void postAJob(CompanyDTO companyDTO);
 }

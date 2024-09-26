@@ -1,6 +1,7 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.CompanyDAO;
+import com.frankaboagye.connecthub.daos.JobDAO;
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
@@ -8,7 +9,6 @@ import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -185,7 +184,12 @@ public class CompanyController {
     }
 
     @PostMapping("/handle-post-a-job")
-    public String handleJobPosting(){
+    public String handleJobPosting(@ModelAttribute JobDAO jobDAO){
+        // add securuty stuffs later
+
+        String stop = "here";
+
+        companyServiceImplementation.
         return null;
     }
 
