@@ -28,5 +28,5 @@ public class Job {
     private Double salary;
     private String skills;
     private LocalDate deadline;
-    private String jobLocation;
+    private String location;
 }

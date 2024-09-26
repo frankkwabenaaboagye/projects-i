@@ -16,4 +16,5 @@ public class JobDAO {
     private String salary;
     private String deadline;
     private String location;
+    private String skills;
 }

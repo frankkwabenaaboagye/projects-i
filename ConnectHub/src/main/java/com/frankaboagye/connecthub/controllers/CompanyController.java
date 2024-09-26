@@ -4,9 +4,11 @@ import com.frankaboagye.connecthub.daos.CompanyDAO;
 import com.frankaboagye.connecthub.daos.JobDAO;
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.Company;
+import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
+import com.frankaboagye.connecthub.repositories.JobRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,6 +31,7 @@ public class CompanyController {
     private final CompanyServiceInterface companyServiceImplementation;
     private final StorageServiceInterface storageServiceImplementation; // it will use the FileSystemStorageService .. since that is what has been configured
     private final CompanyRepository companyRepository;
+    private final JobRepository jobRepository;
 
     // company registration
     @GetMapping("/register-company")
@@ -114,16 +119,24 @@ public class CompanyController {
 
     @GetMapping("/companyHomepage")
     public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
+        /*
         String sessionKey = (String) httpSession.getAttribute("SessionData");
         Company theCompany = (Company) httpSession.getAttribute("companyData");
+        */
+        Company theCompany = getCisco();
 
-        if(sessionKey == null || theCompany == null){
+        if(theCompany == null){
             return "redirect:/login-company";
         }
 
         // modelMap.addAttribute("companyName", theCompany.getName());
         modelMap.addAttribute("company", theCompany);
-        modelMap.addAttribute("SessionData", sessionKey);
+        // modelMap.addAttribute("SessionData", sessionKey);
+
+        // get the jobs
+        List<Job> companyJobs = jobRepository.findAllByCompanyId(theCompany.getId());
+
+        modelMap.addAttribute("companyJobs", companyJobs);
 
         return "companyHomepage";
     }
@@ -184,13 +197,41 @@ public class CompanyController {
     }
 
     @PostMapping("/handle-post-a-job")
-    public String handleJobPosting(@ModelAttribute JobDAO jobDAO){
-        // add securuty stuffs later
+    public String handleJobPosting(@ModelAttribute JobDAO jobDAO, ModelMap modelMap, HttpSession httpSession){
+        // add securuty stuffs later, converstion stuffs
 
         String stop = "here";
 
-        companyServiceImplementation.
-        return null;
+        var date = LocalDate.parse(jobDAO.getDeadline());
+
+        // use cisco id for now
+
+        // convert form dao to the object
+        Job newJob = Job.builder()
+                .companyId(getCisco().getId())
+                .title(jobDAO.getJobTitle())
+                .description(jobDAO.getJobDescription())
+                .salary(Double.valueOf(jobDAO.getSalary()))
+                .skills(jobDAO.getSkills())
+                .deadline(date)
+                .location(jobDAO.getLocation())
+                .build();
+
+
+        companyServiceImplementation.postAJob(newJob);
+
+        modelMap.addAttribute("company", getCisco());
+        modelMap.addAttribute("SessionData", getCisco().getEmail());
+
+        return "redirect:/companyHomepage";
+    }
+
+
+    // will delete later - for dev purpose
+    public Company getCisco(){
+        Optional<Company> co =  companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco");
+        return co.orElse(null);
+
     }
 
 
