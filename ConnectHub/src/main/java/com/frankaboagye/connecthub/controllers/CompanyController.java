@@ -179,8 +179,14 @@ public class CompanyController {
 
     }
 
+    @GetMapping("/post-a-job")
     public String postAJob(){
-        return ""
+        return "postJob";
+    }
+
+    @PostMapping("/handle-post-a-job")
+    public String handleJobPosting(){
+        return null;
     }
 
 
