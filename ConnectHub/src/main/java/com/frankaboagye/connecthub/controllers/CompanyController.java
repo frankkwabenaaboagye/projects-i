@@ -145,26 +145,23 @@ public class CompanyController {
     @GetMapping("/companyProfilepage")
     public String getCompanyProfilePage(HttpSession httpSession, ModelMap modelMap) throws IOException {
 
-        Optional<Company> co = companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco"); // we will change this
-        if(co.isPresent()){
-            Company theCompany = co.get();
 
-            Path path = storageServiceImplementation.load(theCompany.getProfilepicturename());
-            String profileSrc =  MvcUriComponentsBuilder
-                    .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
-                    .build()
-                    .toUri()
-                    .toString();
+        Company theCompany = getCisco();
 
-            modelMap.addAttribute("company", theCompany);
-            modelMap.addAttribute("profilePicturePath", profileSrc);
+        Path path = storageServiceImplementation.load(theCompany.getProfilepicturename());
+        String profileSrc = MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                .build()
+                .toUri()
+                .toString();
 
-            return "companyProfilepage";
-        }
+        modelMap.addAttribute("company", theCompany);
+        modelMap.addAttribute("profilePicturePath", profileSrc);
+
+        return "companyProfilepage";
+
 
         // Path companyPicturePath = storageServiceImplementation.load(theCompany.getProfilepicturename());
-
-        return null;
 
     }
 

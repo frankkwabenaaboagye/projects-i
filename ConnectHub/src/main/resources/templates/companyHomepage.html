@@ -30,16 +30,16 @@
             <div class="row">
                 <!-- Job Cards -->
                 <div class="col-md-4" th:each="job : ${companyJobs}">
-                    <a href="#" class="text-decoration-none" >
+                    <a th:href="@{/view-job/{id}(id=${job.getId()})}" class="text-decoration-none" >
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Company: <span th:text="${company.getName()}">Company Name</span></h5>
-                                <h6 class="card-subtitle mb-2 text-muted">Job Title: <span th:text="${job.title}">Job Title</span></h6>
-                                <p class="card-text">Description: <span th:text="${job.description}">This is a brief job description.</span></p>
-                                <p class="card-text">Salary: <span th:text="${job.salary}">$5000</span></p>
-                                <p class="card-text">Skills: <span th:text="${job.skills}">JavaScript, React</span></p>
-                                <p class="card-text">Deadline: <span th:text="${job.deadline}">2024-09-30</span></p>
-                                <p class="card-text">Location: <span th:text="${job.location}">Remote</span></p>
+<!--                                <h5 class="card-title">Company: <span th:text="${company.getName()}">Company Name</span></h5>-->
+                                <h6 class="card-subtitle mb-2 text-muted">Job Title: <span th:text="${job.getTitle()}">Job Title</span></h6>
+                                <p class="card-text">Description: <span th:text="${job.getDescription()}">This is a brief job description.</span></p>
+                                <p class="card-text">Salary: <span th:text="${job.getSalary()}">$5000</span></p>
+                                <p class="card-text">Skills: <span th:text="${job.getSkills()}">JavaScript, React</span></p>
+                                <p class="card-text">Deadline: <span th:text="${job.getDeadline()}">2024-09-30</span></p>
+                                <p class="card-text">Location: <span th:text="${job.getLocation()}">Remote</span></p>
                             </div>
                         </div>
                     </a>
