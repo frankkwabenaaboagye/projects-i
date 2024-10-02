@@ -17,6 +17,5 @@ public class ProjectDAO {
     private String skills;
     private String deadline;
     private String documentName;
-    private String documentUrl; // will do this later
     private String location;
 }

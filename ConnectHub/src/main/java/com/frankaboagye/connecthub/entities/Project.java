@@ -29,4 +29,5 @@ public class Project {
     private LocalDate deadline;
     private String location;
     private String documentName;
+    private String documentUrl; // will do this later
 }
