@@ -132,7 +132,7 @@ public class CompanyController {
         // modelMap.addAttribute("companyName", theCompany.getName());
         modelMap.addAttribute("company", theCompany);
         // modelMap.addAttribute("SessionData", sessionKey);
-        
+
 
         // get the jobs
         List<Job> companyJobs = jobRepository.findAllByCompanyId(theCompany.getId());
