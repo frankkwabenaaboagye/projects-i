@@ -17,20 +17,20 @@
 
         <div class="container my-5">
             <h2 class="text-center mb-4">Post a Job</h2>
-            <form th:action="@{/handle-post-a-job}" method="POST">
+            <form th:action="@{/handle-post-a-project}" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="jobTitle">Job Title</label>
-                    <input type="text" class="form-control" id="jobTitle" name="jobTitle" placeholder="Enter job title" required>
+                    <label for="title">Project Title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter job title" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="jobDescription">Job Description</label>
-                    <textarea class="form-control" id="jobDescription" name="jobDescription" rows="5" placeholder="Describe the job" required></textarea>
+                    <label for="description">Project Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="5" placeholder="Describe the project" required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="salary">Salary</label>
-                    <input type="text" class="form-control" id="salary"  name="salary" placeholder="Enter salary" required>
+                    <label for="documentFile">Project Description</label>
+                    <input type="file" id="documentFile" name="documentFile" >
                 </div>
 
                 <div class="form-group">
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="deadline">Application Deadline</label>
+                    <label for="deadline">Project Deadline</label>
                     <input type="date" class="form-control" id="deadline" name="deadline" required>
                 </div>
 
