@@ -7,7 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface JobRepository extends JpaRepository<Job, Long> {
-
     List<Job> findAllByCompanyId(Long id);
-
 }

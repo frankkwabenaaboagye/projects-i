@@ -2,13 +2,16 @@ package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.CompanyDAO;
 import com.frankaboagye.connecthub.daos.JobDAO;
+import com.frankaboagye.connecthub.daos.ProjectDAO;
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Job;
+import com.frankaboagye.connecthub.entities.Project;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import com.frankaboagye.connecthub.repositories.JobRepository;
+import com.frankaboagye.connecthub.repositories.ProjectRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -32,6 +35,7 @@ public class CompanyController {
     private final StorageServiceInterface storageServiceImplementation; // it will use the FileSystemStorageService .. since that is what has been configured
     private final CompanyRepository companyRepository;
     private final JobRepository jobRepository;
+    private final ProjectRepository projectRepository;
 
     // company registration
     @GetMapping("/register-company")
@@ -136,8 +140,10 @@ public class CompanyController {
 
         // get the jobs
         List<Job> companyJobs = jobRepository.findAllByCompanyId(theCompany.getId());
+        List<Project> companyProject = projectRepository.findAllByCompanyId(theCompany.getId());
 
         modelMap.addAttribute("companyJobs", companyJobs);
+        modelMap.addAttribute("companyProject", companyProject);
 
         return "companyHomepage";
     }
@@ -223,6 +229,52 @@ public class CompanyController {
 
         return "redirect:/companyHomepage";
     }
+
+    @GetMapping("/post-a-project")
+    public String postAProject(){
+        return "postProject";
+    }
+
+    @PostMapping("/handle-post-a-project")
+    public String handleProjectPosting(
+            @ModelAttribute ProjectDAO projectDAO,
+            ModelMap modelMap,
+            HttpSession httpSession,
+            @RequestParam("documentFile") MultipartFile documentFile
+    ) {
+        // add securuty stuffs later, converstion stuffs
+
+        String stop = "here";
+
+        var date = LocalDate.parse(projectDAO.getDeadline());
+
+        // use cisco id for now
+
+        // storageServiceImplementation.store(documentFile); // commented out for the purpose of testing
+
+        // convert form dao to the object
+        Project project = Project.builder()
+                .companyId(getCisco().getId())
+                .title(projectDAO.getTitle())
+                .description(projectDAO.getDescription())
+                .skills(projectDAO.getSkills())
+                .deadline(date)
+                .location(projectDAO.getLocation())
+                .documentName(documentFile != null ? documentFile.getOriginalFilename() : "a-file-name")
+                .documentUrl("default")
+                .build();
+
+
+        companyServiceImplementation.postAProject(project);
+
+        modelMap.addAttribute("compnayProject", project);
+        modelMap.addAttribute("company", getCisco());
+        modelMap.addAttribute("SessionData", getCisco().getEmail());
+
+        return "redirect:/companyHomepage";
+    }
+
+
 
 
     // will delete later - for dev purpose
