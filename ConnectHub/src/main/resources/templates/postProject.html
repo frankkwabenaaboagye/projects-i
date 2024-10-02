@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/homepage_layout}" >
+
+<head>
+    <title>Post A Project</title>
+    <link th:href="@{/css/companyHomepageStyling.css}" rel="stylesheet" >
+</head>
+<body>
+
+<section class="company-homepage-body">
+    <section layout:fragment="content">
+
+<!--code here-->
+
+        <div class="container my-5">
+            <h2 class="text-center mb-4">Post a Job</h2>
+            <form th:action="@{/handle-post-a-job}" method="POST">
+                <div class="form-group">
+                    <label for="jobTitle">Job Title</label>
+                    <input type="text" class="form-control" id="jobTitle" name="jobTitle" placeholder="Enter job title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="jobDescription">Job Description</label>
+                    <textarea class="form-control" id="jobDescription" name="jobDescription" rows="5" placeholder="Describe the job" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="salary">Salary</label>
+                    <input type="text" class="form-control" id="salary"  name="salary" placeholder="Enter salary" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="skills">Skills Needed</label>
+                    <input type="text" class="form-control" id="skills" name="skills" placeholder="Enter required skills" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="deadline">Application Deadline</label>
+                    <input type="date" class="form-control" id="deadline" name="deadline" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Job Location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="Enter job location" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Post Job</button>
+            </form>
+        </div>
+
+<!--        -->
+
+
+    </section>
+</section>
+
+</body>
+</html>

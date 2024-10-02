@@ -2,9 +2,11 @@ package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.CompanyDAO;
 import com.frankaboagye.connecthub.daos.JobDAO;
+import com.frankaboagye.connecthub.daos.ProjectDAO;
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Job;
+import com.frankaboagye.connecthub.entities.Project;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
@@ -223,6 +225,49 @@ public class CompanyController {
 
         return "redirect:/companyHomepage";
     }
+
+    @GetMapping("/post-a-project")
+    public String postAProject(){
+        return "postProject";
+    }
+
+    @PostMapping("/handle-post-a-project")
+    public String handleProjectPosting(
+            @ModelAttribute ProjectDAO projectDAO,
+            ModelMap modelMap,
+            HttpSession httpSession,
+            @RequestParam("documentFile") MultipartFile documentFile
+    ) {
+        // add securuty stuffs later, converstion stuffs
+
+        String stop = "here";
+
+        var date = LocalDate.parse(projectDAO.getDeadline());
+
+        // use cisco id for now
+
+        // convert form dao to the object
+        Project project = Project.builder()
+                .companyId(getCisco().getId())
+                .title(projectDAO.getTitle())
+                .description(projectDAO.getDescription())
+                .skills(projectDAO.getSkills())
+                .deadline(date)
+                .location(projectDAO.getLocation())
+                .documentName()
+                .build();
+
+
+
+        companyServiceImplementation.postAJob();
+
+        modelMap.addAttribute("company", getCisco());
+        modelMap.addAttribute("SessionData", getCisco().getEmail());
+
+        return "redirect:/companyHomepage";
+    }
+
+
 
 
     // will delete later - for dev purpose
