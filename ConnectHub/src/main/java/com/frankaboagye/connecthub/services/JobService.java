@@ -1,0 +1,21 @@
+package com.frankaboagye.connecthub.services;
+
+import com.frankaboagye.connecthub.entities.Job;
+import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
+import com.frankaboagye.connecthub.repositories.JobRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class JobService implements JobServiceInterface {
+
+    private final JobRepository jobRepository;
+
+    @Override
+    public Job getJobById(Long Id) {
+        return jobRepository.findById(Id).orElse(null);
+    }
+}

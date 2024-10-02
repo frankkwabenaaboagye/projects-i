@@ -19,27 +19,33 @@
 <!--                <h1 th:text="'Welcome, ' + ${companyName} + '!'"></h1>-->
                 <h1 th:text="'Welcome, ' + ${company.getName()} + '!'"></h1>
                 <p>Your place to post jobs, projects, and connect with top freelancers.</p>
-                <a href="#" class="btn btn-primary">Post a Job</a>
+                <a href="post-a-job" class="btn btn-primary">Post a Job</a>
                 <a href="#" class="btn btn-primary">Post a Project</a>
             </div>
         </section>
 
-        <!-- Freelancers Section -->
+        <!-- Jobs Section -->
         <section class="container my-5">
-            <h2>All Freelancers with their Skills Here</h2>
+            <h2 class="scheme-1">All Posted Jobs</h2>
             <div class="row">
-                <!-- Freelancer Card -->
-                <div class="col-md-4">
-                    <div class="card">
-                        <img class="card-img-top freelancer-img" src="/images/freelancer1.jpg" alt="Freelancer 1">
-                        <div class="card-body">
-                            <h5 class="card-title">John Doe</h5>
-                            <p class="card-text">Expert in Web Development, JavaScript, and React.</p>
+                <!-- Job Cards -->
+                <div class="col-md-4" th:each="job : ${companyJobs}">
+                    <a th:href="@{/view-job/{id}(id=${job.getId()})}" class="text-decoration-none" >
+                        <div class="card">
+                            <div class="card-body">
+<!--                                <h5 class="card-title">Company: <span th:text="${company.getName()}">Company Name</span></h5>-->
+                                <h6 class="card-subtitle mb-2 text-muted">Job Title: <span th:text="${job.getTitle()}">Job Title</span></h6>
+                                <p class="card-text">Description: <span th:text="${job.getDescription()}">This is a brief job description.</span></p>
+                                <p class="card-text">Salary: <span th:text="${job.getSalary()}">$5000</span></p>
+                                <p class="card-text">Skills: <span th:text="${job.getSkills()}">JavaScript, React</span></p>
+                                <p class="card-text">Deadline: <span th:text="${job.getDeadline()}">2024-09-30</span></p>
+                                <p class="card-text">Location: <span th:text="${job.getLocation()}">Remote</span></p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
-                <!-- Add more freelancer cards as needed -->
             </div>
+
         </section>
 
         <!-- About Section -->

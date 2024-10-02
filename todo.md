@@ -14,3 +14,4 @@
  - take a look at the http session
  - fix home page on the registration and login page
  - should you be able to change the gender in the profile?
+ - handle dto and dao well

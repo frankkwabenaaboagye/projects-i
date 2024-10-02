@@ -2,9 +2,11 @@ package com.frankaboagye.connecthub.services;
 
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.Company;
+import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
+import com.frankaboagye.connecthub.repositories.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,7 @@ public class CompanyService implements CompanyServiceInterface {
 
     private final CompanyRepository companyRepository;
     private final StorageServiceInterface storageServiceImplementation;
+    private final JobRepository jobRepository;
 
     @Override
     public void registerCompany(Company company) {
@@ -52,5 +55,13 @@ public class CompanyService implements CompanyServiceInterface {
 
 
         return companyRepository.save(company);
+    }
+
+
+    @Override
+    public void postAJob(Job job) {
+
+        jobRepository.save(job);
+
     }
 }
