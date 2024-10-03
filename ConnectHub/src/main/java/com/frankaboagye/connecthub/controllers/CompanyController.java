@@ -233,8 +233,6 @@ public class CompanyController {
 
 
 
-
-
     // will delete later - for dev purpose
     public Company getCisco(){
         Optional<Company> co =  companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco");
