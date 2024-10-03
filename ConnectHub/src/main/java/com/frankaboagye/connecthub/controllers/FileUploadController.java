@@ -4,6 +4,7 @@ import com.frankaboagye.connecthub.exceptions.StorageFileNotFoundException;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class FileUploadController {
         return "uploadFormTryOut";
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/d_files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
@@ -61,6 +62,22 @@ public class FileUploadController {
                 )
                 .body(file);
     }
+
+
+    @GetMapping("/files/{fileName:.+}")
+    @ResponseBody // added this
+    public ResponseEntity<Resource> displayFile(@PathVariable String fileName) {
+        Resource file = storageServiceImplementation.loadAsResource(fileName);
+
+        if (file == null)
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF) // Or other content types based on file extension
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"") // inline ensures it's displayed
+                .body(file);
+    }
+
 
     @PostMapping("/handleform")
     public String handleFileUpload(

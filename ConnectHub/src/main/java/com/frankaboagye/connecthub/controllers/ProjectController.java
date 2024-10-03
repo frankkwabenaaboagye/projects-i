@@ -123,7 +123,7 @@ public class ProjectController {
     public String getDocumentSrc(String filename){
         Path path = storageServiceImplementation.load(filename);
         return MvcUriComponentsBuilder
-                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                .fromMethodName(FileUploadController.class, "displayFile", path.getFileName().toString())
                 .build()
                 .toUri()
                 .toString();
