@@ -15,3 +15,7 @@
  - fix home page on the registration and login page
  - should you be able to change the gender in the profile?
  - handle dto and dao well
+
+## company project
+   - restructure services
+   - change logic
