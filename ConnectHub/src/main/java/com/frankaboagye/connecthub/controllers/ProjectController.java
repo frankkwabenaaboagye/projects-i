@@ -101,7 +101,17 @@ public class ProjectController {
 
         boolean updateFile = !documentFile.isEmpty(); // will change the way documents are handled
 
-        Project project = projectServiceImplementation.updateProject(projectDAO, id, Long.parseLong(projectDAO.getCompanyId()), updateFile, documentFile);
+        Project project = null;
+
+        if(documentFile.isEmpty()){
+            project = projectServiceImplementation.updateProjectWithoutFile(projectDAO, Long.parseLong(projectId), getCisco().getId());
+        }else{
+            project = projectServiceImplementation.updateProject(projectDAO, id, getCisco().getId(), documentFile);
+
+        }
+
+
+
         modelMap.addAttribute("message", "update successful");
 
         modelMap.addAttribute("project", project);

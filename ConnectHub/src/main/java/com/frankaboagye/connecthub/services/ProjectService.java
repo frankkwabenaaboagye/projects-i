@@ -30,10 +30,30 @@ public class ProjectService implements ProjectServiceInterface {
 
 
     @Override
-    public Project updateProject(ProjectDAO projectDAO, Long projectId, Long CompanyId, boolean updateFile, MultipartFile documentFile) {
+    public Project updateProject(ProjectDAO projectDAO, Long projectId, Long companyId, MultipartFile documentFile) {
 
         // TODO: checks for the project id, company id, e.t.c
-        Project project = projectRepository.findByIdAndCompanyId(projectId, CompanyId);
+        Project project = runUpdate(projectId, companyId, projectDAO);
+
+        // project document
+        storageServiceImplementation.store(documentFile);
+        Path filePath =  storageServiceImplementation.load(documentFile.getOriginalFilename());
+        project.setDocumentUrl(filePath.toString());
+
+        return projectRepository.save(project);
+    }
+
+
+    @Override
+    public Project updateProjectWithoutFile (ProjectDAO projectDAO, Long projectId, Long CompanyId) {
+
+        // TODO: checks for the project id, company id, e.t.c
+        return runUpdate(projectId, CompanyId, projectDAO);
+    }
+
+    private Project runUpdate(Long projectId, Long companyId, ProjectDAO projectDAO){
+
+        Project project = projectRepository.findByIdAndCompanyId(projectId, companyId);
 
         project.setTitle(projectDAO.getTitle());
         project.setDescription(projectDAO.getDescription());
@@ -43,14 +63,7 @@ public class ProjectService implements ProjectServiceInterface {
         project.setDocumentName(projectDAO.getDocumentName());
         project.setLocation(projectDAO.getLocation());
 
-        // project document
-        if(updateFile) {
-            storageServiceImplementation.store(documentFile);
-           Path filePath =  storageServiceImplementation.load(documentFile.getOriginalFilename());
-
-            project.setDocumentUrl(filePath.toString());
-        }
-
         return projectRepository.save(project);
+
     }
 }

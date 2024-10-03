@@ -49,6 +49,11 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="documentFile" class="form-label">Change Document</label>
+                    <input type="file" class="form-control btn btn-outline-primary" id="documentFile" name="documentFile" accept="application/pdf" th:value="*{project.getDocumentName()}">
+                </div>
+
+                <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
                     <input type="text" class="form-control" id="location" name="location" th:value="*{project.getLocation()}">
                 </div>
