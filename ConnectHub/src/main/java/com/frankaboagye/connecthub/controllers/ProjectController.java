@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -37,6 +38,8 @@ public class ProjectController {
 
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("project", project);
+        modelMap.addAttribute("documentSrc", getDocumentSrc(project.getDocumentName()));
+
 
         return "viewProject";
     }
@@ -75,9 +78,11 @@ public class ProjectController {
 
         companyServiceImplementation.postAProject(project);
 
+
         modelMap.addAttribute("companyProject", project);
         modelMap.addAttribute("company", getCisco());
         modelMap.addAttribute("SessionData", getCisco().getEmail());
+
 
         return "redirect:/companyHomepage";
     }
@@ -101,6 +106,8 @@ public class ProjectController {
 
         modelMap.addAttribute("project", project);
 
+        modelMap.addAttribute("documentSrc", getDocumentSrc(project.getDocumentName()));
+
         return "redirect:/view-project/" + id;
 
     }
@@ -111,5 +118,14 @@ public class ProjectController {
         Optional<Company> co =  companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco");
         return co.orElse(null);
 
+    }
+
+    public String getDocumentSrc(String filename){
+        Path path = storageServiceImplementation.load(filename);
+        return MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                .build()
+                .toUri()
+                .toString();
     }
 }

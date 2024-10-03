@@ -29,7 +29,49 @@
             <p class="scheme-1" th:text="${project.getDocumentUrl()}"> </p>
             <p class="scheme-1" th:text="${project.getDocumentName()}"> </p>
             <p class="scheme-1" th:text="${project.getDeadline()}"> </p>
+
+            <form th:action="@{/handle-company-project-update/{id}(id=${project.getId()})}" method="POST" enctype="multipart/form-data">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="title" class="form-label">Project Title</label>
+                        <input type="text" class="form-control" id="title" name="title" th:value="*{project.getTitle()}" >
+                    </div>
+                    <div class="col-md-6">
+                        <label for="documentName" class="form-label">Project Document Name</label>
+                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getDocumentName()}">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="document" class="form-label">Document</label>
+                    <embed class="form-control" id="document" name="document" type="application/pdf" th:src="@{${documentSrc}}" width="100%" height="600px" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" th:value="*{project.getLocation()}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="skills" class="form-label">Skills</label>
+                    <input type="text" class="form-control" id="skills" name= "skills" th:value="*{project.getSkills()}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Project Description</label>
+                    <textarea class="form-control" id="description" name= "description" rows="4" th:text="${project.getDescription()}"></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
         </section>
+
+
+
+
 
     </section>
 </section>
