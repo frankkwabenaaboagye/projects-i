@@ -33,27 +33,30 @@ public class ProjectService implements ProjectServiceInterface {
     public Project updateProject(ProjectDAO projectDAO, Long projectId, Long companyId, MultipartFile documentFile) {
 
         // TODO: checks for the project id, company id, e.t.c
-        Project project = runUpdate(projectId, companyId, projectDAO);
+        Project project = runUpdate(projectDAO, projectId, companyId);
 
         // project document
         storageServiceImplementation.store(documentFile);
         Path filePath =  storageServiceImplementation.load(documentFile.getOriginalFilename());
         project.setDocumentUrl(filePath.toString());
+        project.setDocumentName(documentFile.getOriginalFilename());
 
         return projectRepository.save(project);
     }
 
 
     @Override
-    public Project updateProjectWithoutFile (ProjectDAO projectDAO, Long projectId, Long CompanyId) {
+    public Project updateProjectWithoutFile (ProjectDAO projectDAO, Long projectId, Long companyId) {
 
         // TODO: checks for the project id, company id, e.t.c
-        return runUpdate(projectId, CompanyId, projectDAO);
+        return runUpdate(projectDAO, projectId, companyId);
     }
 
-    private Project runUpdate(Long projectId, Long companyId, ProjectDAO projectDAO){
+    private Project runUpdate(ProjectDAO projectDAO, Long projectId, Long companyId){
 
         Project project = projectRepository.findByIdAndCompanyId(projectId, companyId);
+
+        // TODO: null checks or use the Null Object Pattern
 
         project.setTitle(projectDAO.getTitle());
         project.setDescription(projectDAO.getDescription());

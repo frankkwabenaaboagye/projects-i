@@ -40,7 +40,6 @@ public class ProjectController {
         modelMap.addAttribute("project", project);
         modelMap.addAttribute("documentSrc", getDocumentSrc(project.getDocumentName()));
 
-
         return "viewProject";
     }
 
@@ -103,10 +102,13 @@ public class ProjectController {
 
         Project project = null;
 
+        projectDAO.setCompanyId(String.valueOf(getCisco().getId()));
+
         if(documentFile.isEmpty()){
             project = projectServiceImplementation.updateProjectWithoutFile(projectDAO, Long.parseLong(projectId), getCisco().getId());
         }else{
             project = projectServiceImplementation.updateProject(projectDAO, id, getCisco().getId(), documentFile);
+            modelMap.addAttribute("documentSrc", getDocumentSrc(documentFile.getOriginalFilename()));
 
         }
 
@@ -116,7 +118,7 @@ public class ProjectController {
 
         modelMap.addAttribute("project", project);
 
-        modelMap.addAttribute("documentSrc", getDocumentSrc(project.getDocumentName()));
+
 
         return "redirect:/view-project/" + id;
 

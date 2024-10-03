@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="documentName" class="form-label">Project Document Name</label>
-                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getDocumentName()}">
+                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getDocumentName()}" readonly>
                     </div>
                 </div>
 
@@ -57,6 +57,12 @@
                     <label for="location" class="form-label">Location</label>
                     <input type="text" class="form-control" id="location" name="location" th:value="*{project.getLocation()}">
                 </div>
+
+                <div class="mb-3">
+                    <label for="deadline">Project Deadline</label>
+                    <input type="date" class="form-control" id="deadline" name="deadline" th:value="*{project.getDeadline()}">
+                </div>
+
 
                 <div class="mb-3">
                     <label for="skills" class="form-label">Skills</label>
