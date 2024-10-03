@@ -1,6 +1,5 @@
 package com.frankaboagye.connecthub.interfaces;
 
-import com.frankaboagye.connecthub.daos.JobDAO;
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Job;
@@ -15,7 +14,6 @@ public interface CompanyServiceInterface {
     void registerCompany(Company company);
     Optional<Company> loginCompany(String email, String password);
     Company updateCompany(Long companyId, CompanyDTO companyDTO, boolean updateFile,MultipartFile companyPhotoFile);
-
     void postAJob(Job job);
     void postAProject(Project project);
 }

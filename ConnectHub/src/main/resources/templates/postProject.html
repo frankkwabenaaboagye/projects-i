@@ -16,11 +16,11 @@
 <!--code here-->
 
         <div class="container my-5">
-            <h2 class="text-center mb-4">Post a Job</h2>
+            <h2 class="text-center mb-4">Post a Project</h2>
             <form th:action="@{/handle-post-a-project}" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Project Title</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter job title" required>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter project title" required>
                 </div>
 
                 <div class="form-group">
@@ -29,7 +29,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="documentFile">Project Description</label>
+                    <label for="documentName">Document File Name</label>
+                    <input type="text" class="form-control" id="documentName" name="documentName" placeholder="Enter document name (optional) ">
+                </div>
+
+                <div class="form-group">
+                    <label for="documentFile">Upload Project File</label>
                     <input type="file" id="documentFile" name="documentFile" >
                 </div>
 
@@ -44,7 +49,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="location">Job Location</label>
+                    <label for="location">Project Location</label>
                     <input type="text" class="form-control" id="location" name="location" placeholder="Enter job location" required>
                 </div>
 
