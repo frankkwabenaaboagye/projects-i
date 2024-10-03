@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/homepage_layout}" >
+
+<head>
+    <title>Company Homepage</title>
+    <link th:href="@{/css/companyHomepageStyling.css}" rel="stylesheet" >
+</head>
+<body>
+
+<section class="company-homepage-body">
+    <section layout:fragment="content">
+
+        <!-- Jobs Section -->
+        <section class="container my-5">
+            <h2 class="scheme-1" th:text="'Project with id, ' + ${project.getId()} + '!'"> </h2>
+
+        </section>
+
+        <!-- About Section -->
+        <section class="about container my-5">
+            <h2>Additional Stuffs</h2>
+            <p class="scheme-1" th:text="${project.getTitle()}"> </p>
+            <p class="scheme-1" th:text="${project.getLocation()}"> </p>
+            <p class="scheme-1" th:text="${project.getSkills()}"> </p>
+            <p class="scheme-1" th:text="${project.getDescription()}"> </p>
+            <p class="scheme-1" th:text="${project.getDocumentUrl()}"> </p>
+            <p class="scheme-1" th:text="${project.getDocumentName()}"> </p>
+            <p class="scheme-1" th:text="${project.getDeadline()}"> </p>
+        </section>
+
+    </section>
+</section>
+
+</body>
+</html>
