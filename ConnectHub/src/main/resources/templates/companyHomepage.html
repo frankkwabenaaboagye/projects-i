@@ -55,7 +55,7 @@
             <div class="row">
                 <!-- Job Cards -->
                 <div class="col-md-4" th:each="project : ${companyProject}">
-                    <a th:href="@{/view-job/{id}(id=${project.getId()})}" class="text-decoration-none" >
+                    <a th:href="@{/view-project/{id}(id=${project.getId()})}" class="text-decoration-none" >
                         <div class="card">
                             <div class="card-body">
                                 <!--                                <h5 class="card-title">Company: <span th:text="${company.getName()}">Company Name</span></h5>-->
