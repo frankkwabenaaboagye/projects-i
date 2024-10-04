@@ -1,10 +1,12 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.entities.Company;
+import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
-import com.frankaboagye.connecthub.services.JobService;
+import com.frankaboagye.connecthub.repositories.FreelancerRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,6 +19,7 @@ public class JobController {
 
     private final JobServiceInterface jobServiceImplementation;
     private final CompanyRepository companyRepository;
+    private final FreelancerRepository freelancerRepository;
 
     @GetMapping("/view-job/{id}")
     public String viewJob(@PathVariable Long id, ModelMap modelMap){
@@ -28,5 +31,16 @@ public class JobController {
         modelMap.addAttribute("job", job);
 
         return "viewJob";
+    }
+
+    @GetMapping("/explore-jobs/{freelancerId}")
+    public String exploreJobs(@PathVariable Long freelancerId, ModelMap modelMap, HttpSession httpSession) {
+
+        // for dev-purpose - will change this
+        Freelancer freelancer = freelancerRepository.findById(freelancerId).orElse(null);
+        modelMap.addAttribute("freelancer", freelancer);
+
+        return "/jobs/exploreJobsPage";
+
     }
 }

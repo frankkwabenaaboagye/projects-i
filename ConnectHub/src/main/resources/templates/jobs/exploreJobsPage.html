@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/freelancerHomepage_layout}" >
+
+<head>
+    <title>Freelancer Homepage</title>
+    <link th:href="@{/css/freelancerHomepageStyling.css}" rel="stylesheet" >
+</head>
+<body>
+
+<section class="company-homepage-body">
+    <section layout:fragment="content">
+
+        <section class="hero">
+            <div class="container">
+                <h1 th:text="'Explore Jobs, ' + ${freelancer.getFullName()} + '!'"></h1>
+            </div>
+        </section>
+
+
+    </section>
+</section>
+
+</body>
+</html>
