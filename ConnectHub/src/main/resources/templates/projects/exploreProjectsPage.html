@@ -59,17 +59,18 @@
                     <th scope="col">Skills</th>
                     <th scope="col">Deadline (m/d/y)</th>
                     <th scope="col">Location</th>
-                    <th scope="col">Document</th> <!-- should be a link -->
+                    <th scope="col">Document</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="job : ${jobs}">
-                    <th scope="row" th:text="${job.getTitle()}" >Prompt Engineer</th>
-                    <td th:text="${job.getCompanyId()}">Perplexity</td>
-                    <td th:text="${job.getSalary()}" >2000</td>
-                    <td th:text="${job.getSkills()}" >CUDA, C++, Vhdl, Linux, GenAI, PSS</td>
-                    <td th:text="${job.getDeadline()}" >06-03-2027</td>
-                    <td th:text="${job.getLocation()}">Canada</td>
+                <tr th:each="project : ${projects}">
+                    <th scope="row" th:text="${project.getTitle()}" >Prompt Engineer</th>
+                    <td th:text="${project.getCompanyId()}">Perplexity</td>
+                    <td th:text="${project.getDescription()}" >2000</td>
+                    <td th:text="${project.getSkills()}" >CUDA, C++, Vhdl, Linux, GenAI, PSS</td>
+                    <td th:text="${project.getDeadline()}" >06-03-2027</td>
+                    <td th:text="${project.getLocation()}">Canada</td>
+                    <td th:text="${project.getDocumentName()}">Canada</td> <!-- should be a link -->
                 </tr>
                 </tbody>
             </table>
