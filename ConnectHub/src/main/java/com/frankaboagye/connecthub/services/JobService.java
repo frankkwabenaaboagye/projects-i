@@ -6,6 +6,7 @@ import com.frankaboagye.connecthub.repositories.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,5 +18,11 @@ public class JobService implements JobServiceInterface {
     @Override
     public Job getJobById(Long Id) {
         return jobRepository.findById(Id).orElse(null);
+    }
+
+
+    @Override
+    public List<Job> getAllJobs() {
+        return jobRepository.findAll();
     }
 }
