@@ -19,3 +19,7 @@
 ## company project
    - restructure services
    - change logic
+
+## freelancer
+   -  the respective html, css
+      - structure them well
