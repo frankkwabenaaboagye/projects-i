@@ -23,3 +23,6 @@
 ## freelancer
    -  the respective html, css
       - structure them well
+
+## others
+ - jobDTO
