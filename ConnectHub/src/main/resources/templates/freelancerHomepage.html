@@ -20,7 +20,7 @@
                 <h1 th:text="'Welcome, ' + ${freelancer.getFullName()} + '!'"></h1>
                 <p>YhYh. Your place to post jobs, projects, and connect with top freelancers.</p>
                 <a th:href="@{/explore-jobs/{freelancerId}(freelancerId=${freelancer.getId()})}" class="btn btn-primary">Explore Jobs</a>
-                <a href="#" class="btn btn-primary">Explore Projects</a>
+                <a th:href="@{/explore-projects/{freelancerId}(freelancerId=${freelancer.getId()})}" class="btn btn-primary">Explore Projects</a>
             </div>
         </section>
 

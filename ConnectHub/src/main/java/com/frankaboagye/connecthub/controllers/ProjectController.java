@@ -2,11 +2,14 @@ package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.ProjectDAO;
 import com.frankaboagye.connecthub.entities.Company;
+import com.frankaboagye.connecthub.entities.Freelancer;
+import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.entities.Project;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.ProjectServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
+import com.frankaboagye.connecthub.repositories.FreelancerRepository;
 import com.frankaboagye.connecthub.repositories.ProjectRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -29,6 +33,7 @@ public class ProjectController {
     private final StorageServiceInterface storageServiceImplementation;
     private final CompanyRepository companyRepository;
     private final ProjectRepository projectRepository;
+    private final FreelancerRepository freelancerRepository;
 
     @GetMapping("/view-project/{id}")
     public String viewProject(@PathVariable Long id, ModelMap modelMap){
@@ -121,6 +126,22 @@ public class ProjectController {
 
 
         return "redirect:/view-project/" + id;
+
+    }
+
+
+    @GetMapping("/explore-projects/{freelancerId}")
+    public String exploreJobs(@PathVariable Long freelancerId, ModelMap modelMap, HttpSession httpSession) {
+
+        // for dev-purpose - will change this
+        //TODO
+        Freelancer freelancer = freelancerRepository.findById(freelancerId).orElse(null);
+        modelMap.addAttribute("freelancer", freelancer);
+
+        List<Project> projects = projectServiceImplementation.getAllProjects();
+        modelMap.addAttribute("projects", projects);
+
+        return "/projects/exploreProjectsPage";
 
     }
 

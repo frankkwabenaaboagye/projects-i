@@ -30,4 +30,5 @@ public class Project {
     private String location;
     private String documentName;
     private String documentUrl; // will do this later
+    // what about salaray??
 }

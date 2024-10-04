@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +51,12 @@ public class ProjectService implements ProjectServiceInterface {
 
         // TODO: checks for the project id, company id, e.t.c
         return runUpdate(projectDAO, projectId, companyId);
+    }
+
+
+    @Override
+    public List<Project> getAllProjects() {
+        return projectRepository.findAll();
     }
 
     private Project runUpdate(ProjectDAO projectDAO, Long projectId, Long companyId){
