@@ -13,6 +13,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Controller
 public class JobController {
@@ -20,6 +22,7 @@ public class JobController {
     private final JobServiceInterface jobServiceImplementation;
     private final CompanyRepository companyRepository;
     private final FreelancerRepository freelancerRepository;
+
 
     @GetMapping("/view-job/{id}")
     public String viewJob(@PathVariable Long id, ModelMap modelMap){
@@ -39,6 +42,9 @@ public class JobController {
         // for dev-purpose - will change this
         Freelancer freelancer = freelancerRepository.findById(freelancerId).orElse(null);
         modelMap.addAttribute("freelancer", freelancer);
+
+        List<Job> jobs  = jobServiceImplementation.getAllJobs();
+        modelMap.addAttribute("jobs", jobs);
 
         return "/jobs/exploreJobsPage";
 
