@@ -140,7 +140,7 @@ public class FreelancerController {
     @GetMapping("/freelancerProfilePage")
     public String getFreelancerProfilePage(HttpSession httpSession, ModelMap modelMap){
 
-        Optional<Freelancer> fo = freelancerRepository.findByEmailAndPassword("frankgye18@gmail.com", "frank"); // we will change this
+        Optional<Freelancer> fo = freelancerRepository.findByEmailAndPassword("kat@gmail.com", "kat"); // we will change this
         if(fo.isPresent()){
             Freelancer freelancer = fo.get();
 
