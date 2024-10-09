@@ -84,6 +84,7 @@ public class ProjectController {
             // convert form dao to the object
             Project project = Project.builder()
                     .companyId(companyData.getId())
+                    .companyName(companyData.getName())
                     .title(projectDAO.getTitle())
                     .description(projectDAO.getDescription())
                     .skills(projectDAO.getSkills())

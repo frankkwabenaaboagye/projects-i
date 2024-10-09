@@ -64,7 +64,7 @@
                 <tbody>
                 <tr th:each="job : ${jobs}">
                     <th scope="row" th:text="${job.getTitle()}" >Prompt Engineer</th>
-                    <td th:text="${job.getCompanyId()}">Perplexity</td>
+                    <td th:text="${job.getCompanyName()}">Perplexity</td>
                     <td th:text="${job.getSalary()}" >2000</td>
                     <td th:text="${job.getSkills()}" >CUDA, C++, Vhdl, Linux, GenAI, PSS</td>
                     <td th:text="${job.getDeadline()}" >06-03-2027</td>

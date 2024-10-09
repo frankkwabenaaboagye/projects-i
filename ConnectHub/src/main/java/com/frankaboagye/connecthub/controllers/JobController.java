@@ -87,6 +87,7 @@ public class JobController {
         // convert form dao to the object
         Job newJob = Job.builder()
                 .companyId(companyData.getId())
+                .companyName(companyData.getName())
                 .title(jobDAO.getJobTitle())
                 .description(jobDAO.getJobDescription())
                 .salary(Double.valueOf(jobDAO.getSalary()))

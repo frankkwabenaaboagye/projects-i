@@ -65,7 +65,7 @@
                 <tbody>
                 <tr th:each="project : ${projects}">
                     <th scope="row" th:text="${project.getTitle()}" >Prompt Engineer</th>
-                    <td th:text="${project.getCompanyId()}">Perplexity</td>
+                    <td th:text="${project.getCompanyName()}">Perplexity</td>
                     <td th:text="${project.getDescription()}" >2000</td>
                     <td th:text="${project.getSkills()}" >CUDA, C++, Vhdl, Linux, GenAI, PSS</td>
                     <td th:text="${project.getDeadline()}" >06-03-2027</td>

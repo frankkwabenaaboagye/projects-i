@@ -23,6 +23,7 @@ public class Project {
     private Long id;
 
     private Long companyId; // company who posted the project
+    private String companyName;
     private String title;
     private String description;
     private String skills;

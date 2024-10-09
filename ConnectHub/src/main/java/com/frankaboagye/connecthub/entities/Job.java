@@ -22,7 +22,8 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long companyId; // company who posted the job
+    private Long companyId;
+    private String companyName;
     private String title;
     private String description;
     private Double salary;
