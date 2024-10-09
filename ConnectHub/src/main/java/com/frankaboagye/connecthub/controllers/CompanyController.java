@@ -172,60 +172,27 @@ public class CompanyController {
 
     @PostMapping("/handle-company-profile-update/{id}")
     public String updateCompanyProfile(
-            @PathVariable(name = "id") String companyId,
+            @PathVariable(name = "id") Long companyId,
             @ModelAttribute CompanyDTO companyDTO,
             @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile,
-            ModelMap modelMap
+            ModelMap modelMap,
+            HttpSession httpSession
     ){
-
-        Long id = Long.parseLong(companyId);
 
         boolean updateFile =  false;
 
         if(!companyPhotoFile.isEmpty()){updateFile = true;}
 
-        Company company = companyServiceImplementation.updateCompany(id, companyDTO, updateFile,companyPhotoFile);
+        Company company = companyServiceImplementation.updateCompany(companyId, companyDTO, updateFile,companyPhotoFile);
         modelMap.addAttribute("message", "update successful");
 
         modelMap.addAttribute("company", company);
 
-        return "redirect:/companyProfilepage";
+        httpSession.setAttribute("sessionData",company.getEmail());
+        httpSession.setAttribute("companyData", company);
 
-    }
+        return "redirect:/companyProfilepage/" + company.getId();
 
-    @GetMapping("/post-a-job")
-    public String postAJob(){
-        return "postJob";
-    }
-
-    @PostMapping("/handle-post-a-job")
-    public String handleJobPosting(@ModelAttribute JobDAO jobDAO, ModelMap modelMap, HttpSession httpSession){
-        // add securuty stuffs later, converstion stuffs
-
-        String stop = "here";
-
-        var date = LocalDate.parse(jobDAO.getDeadline());
-
-        // use cisco id for now
-
-        // convert form dao to the object
-        Job newJob = Job.builder()
-                .companyId(getCisco().getId())
-                .title(jobDAO.getJobTitle())
-                .description(jobDAO.getJobDescription())
-                .salary(Double.valueOf(jobDAO.getSalary()))
-                .skills(jobDAO.getSkills())
-                .deadline(date)
-                .location(jobDAO.getLocation())
-                .build();
-
-
-        companyServiceImplementation.postAJob(newJob);
-
-        modelMap.addAttribute("company", getCisco());
-        modelMap.addAttribute("SessionData", getCisco().getEmail());
-
-        return "redirect:/companyHomepage";
     }
 
 

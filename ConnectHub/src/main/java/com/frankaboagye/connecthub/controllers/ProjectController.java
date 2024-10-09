@@ -49,8 +49,18 @@ public class ProjectController {
     }
 
 
-    @GetMapping("/post-a-project")
-    public String postAProject(){
+    @GetMapping("/post-a-project/{companyId}")
+    public String postAProject(@PathVariable Long companyId, HttpSession httpSession, ModelMap modelMap){
+        Optional<Company> companyOptional = companyRepository.findById(companyId);
+
+        if(companyOptional.isEmpty()){return "redirect:/login-company";}
+
+        Company company = companyOptional.get();
+        modelMap.addAttribute("company", company);
+
+        httpSession.setAttribute("companyData", company);
+        httpSession.setAttribute("sessionData", company.getEmail());
+
         return "postProject";
     }
 
@@ -58,37 +68,47 @@ public class ProjectController {
     public String handleProjectPosting(@ModelAttribute ProjectDAO projectDAO, ModelMap modelMap, HttpSession httpSession, @RequestParam("documentFile") MultipartFile documentFile) {
         // add securuty stuffs later, converstion stuffs
 
-        String stop = "here";
+        String sessionData = (String) httpSession.getAttribute("sessionData");
+        Company companyData = (Company) httpSession.getAttribute("companyData");
 
-        var date = LocalDate.parse(projectDAO.getDeadline());
+        if(companyData != null && sessionData != null){
+            String stop = "here";
 
-        // use cisco id for now
+            var date = LocalDate.parse(projectDAO.getDeadline());
 
-        storageServiceImplementation.store(documentFile); // commented out for the purpose of testing
-        Path filePath = storageServiceImplementation.load(documentFile.getOriginalFilename()); // will make this better  later
+            // use cisco id for now
 
-        // convert form dao to the object
-        Project project = Project.builder()
-                .companyId(getCisco().getId())
-                .title(projectDAO.getTitle())
-                .description(projectDAO.getDescription())
-                .skills(projectDAO.getSkills())
-                .deadline(date)
-                .location(projectDAO.getLocation())
-                .documentName(documentFile.getOriginalFilename())
-                .documentUrl(filePath.toString())
-                .build();
+            storageServiceImplementation.store(documentFile); // commented out for the purpose of testing
+            Path filePath = storageServiceImplementation.load(documentFile.getOriginalFilename()); // will make this better  later
 
-
-        companyServiceImplementation.postAProject(project);
-
-
-        modelMap.addAttribute("companyProject", project);
-        modelMap.addAttribute("company", getCisco());
-        modelMap.addAttribute("SessionData", getCisco().getEmail());
+            // convert form dao to the object
+            Project project = Project.builder()
+                    .companyId(companyData.getId())
+                    .title(projectDAO.getTitle())
+                    .description(projectDAO.getDescription())
+                    .skills(projectDAO.getSkills())
+                    .deadline(date)
+                    .location(projectDAO.getLocation())
+                    .documentName(documentFile.getOriginalFilename())
+                    .documentUrl(filePath.toString())
+                    .build();
 
 
-        return "redirect:/companyHomepage";
+            companyServiceImplementation.postAProject(project);
+
+
+            modelMap.addAttribute("companyProject", project);
+            modelMap.addAttribute("company", companyData);
+
+            httpSession.setAttribute("sessionData", sessionData);
+            httpSession.setAttribute("companyData", companyData);
+
+
+            return "redirect:/companyHomepage";
+        }
+
+        return "redirect:/login-company";
+
     }
 
 
