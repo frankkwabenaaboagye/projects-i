@@ -2,7 +2,6 @@ package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.CompanyDAO;
 import com.frankaboagye.connecthub.daos.JobDAO;
-import com.frankaboagye.connecthub.daos.ProjectDAO;
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Job;
@@ -127,28 +126,32 @@ public class CompanyController {
         String sessionData = (String) httpSession.getAttribute("sessionData");
         Company companyData = (Company) httpSession.getAttribute("companyData");
 
-        if(companyData != null && sessionData == null){
+        if(companyData != null && sessionData != null){
             List<Job> companyJobs = jobRepository.findAllByCompanyId(companyData.getId());
             List<Project> companyProject = projectRepository.findAllByCompanyId(companyData.getId());
             modelMap.addAttribute("companyJobs", companyJobs);
             modelMap.addAttribute("companyProject", companyProject);
+            modelMap.addAttribute("company", companyData);
+            modelMap.addAttribute("sessionData", companyData.getEmail());
         } else {
             return "redirect:/login-company";
 
         }
 
-        modelMap.addAttribute("company", companyData);
-        modelMap.addAttribute("sessionData", sessionData);
 
         return "companyHomepage";
     }
 
 
-    @GetMapping("/companyProfilepage")
-    public String getCompanyProfilePage(HttpSession httpSession, ModelMap modelMap) throws IOException {
+    @GetMapping("/companyProfilepage/{companyId}")
+    public String getCompanyProfilePage(@PathVariable("companyId") Long companyId, HttpSession httpSession, ModelMap modelMap) throws IOException {
 
 
-        Company theCompany = getCisco();
+        Optional<Company> companyOptional = companyRepository.findById(companyId);
+
+        if(companyOptional.isEmpty()){ return "redirect:/loginCompany"; }
+
+        Company theCompany = companyOptional.get();
 
         Path path = storageServiceImplementation.load(theCompany.getProfilepicturename());
         String profileSrc = MvcUriComponentsBuilder
@@ -160,10 +163,10 @@ public class CompanyController {
         modelMap.addAttribute("company", theCompany);
         modelMap.addAttribute("profilePicturePath", profileSrc);
 
+        httpSession.setAttribute("sessionData", theCompany.getEmail());
+        httpSession.setAttribute("companyData", theCompany);
+
         return "companyProfilepage";
-
-
-        // Path companyPicturePath = storageServiceImplementation.load(theCompany.getProfilepicturename());
 
     }
 
