@@ -103,15 +103,15 @@ public class CompanyController {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             ModelMap modelMap,
-            HttpSession session
+            HttpSession httpSession
     ){
 
         Optional<Company> companyData = companyServiceImplementation.loginCompany(email, password);
         if(companyData.isPresent()){
             Company company = companyData.get();
 
-            session.setAttribute("SessionData",email);
-            session.setAttribute("companyData", company);
+            httpSession.setAttribute("sessionData",email);
+            httpSession.setAttribute("companyData", company);
             return "redirect:/companyHomepage";
 
         }
@@ -123,27 +123,22 @@ public class CompanyController {
 
     @GetMapping("/companyHomepage")
     public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
-        /*
-        String sessionKey = (String) httpSession.getAttribute("SessionData");
-        Company theCompany = (Company) httpSession.getAttribute("companyData");
-        */
-        Company theCompany = getCisco();
 
-        if(theCompany == null){
+        String sessionData = (String) httpSession.getAttribute("sessionData");
+        Company companyData = (Company) httpSession.getAttribute("companyData");
+
+        if(companyData != null && sessionData == null){
+            List<Job> companyJobs = jobRepository.findAllByCompanyId(companyData.getId());
+            List<Project> companyProject = projectRepository.findAllByCompanyId(companyData.getId());
+            modelMap.addAttribute("companyJobs", companyJobs);
+            modelMap.addAttribute("companyProject", companyProject);
+        } else {
             return "redirect:/login-company";
+
         }
 
-        // modelMap.addAttribute("companyName", theCompany.getName());
-        modelMap.addAttribute("company", theCompany);
-        // modelMap.addAttribute("SessionData", sessionKey);
-
-
-        // get the jobs
-        List<Job> companyJobs = jobRepository.findAllByCompanyId(theCompany.getId());
-        List<Project> companyProject = projectRepository.findAllByCompanyId(theCompany.getId());
-
-        modelMap.addAttribute("companyJobs", companyJobs);
-        modelMap.addAttribute("companyProject", companyProject);
+        modelMap.addAttribute("company", companyData);
+        modelMap.addAttribute("sessionData", sessionData);
 
         return "companyHomepage";
     }
