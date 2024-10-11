@@ -64,9 +64,8 @@
                 <tbody>
                 <tr th:each="job : ${jobs}">
                     <th scope="row" th:text="${job.getTitle()}" >
-                        <a th:href="@{view-and-apply-job/{jobId}(jobId=${job.getId()})}">
-                            Prompt Engineer
-                        </a>
+                        <a th:href="@{}">Prompt Engineer</a>
+
                     </th>
                     <td th:text="${job.getCompanyName()}">Perplexity</td>
                     <td th:text="${job.getSalary()}" >2000</td>

@@ -20,4 +20,8 @@ public class ConnectHubApplication {
         };
     }
 
+    void populateDB(){
+        // TODO
+    }
+
 }

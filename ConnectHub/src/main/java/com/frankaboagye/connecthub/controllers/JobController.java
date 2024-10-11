@@ -107,4 +107,10 @@ public class JobController {
         return "redirect:/companyHomepage";
     }
 
+    @GetMapping("view-and-apply-job/{jobId}")
+    public String viewAndApplyJob(@PathVariable Long jobId, ModelMap modelMap, HttpSession httpSession){
+
+        return "viewAndApplyJob";
+    }
+
 }
