@@ -5,3 +5,4 @@
  - entry level for the company
  - other fields too
  - structure the model attribute, dont send all the data
+ - fields are not to display
