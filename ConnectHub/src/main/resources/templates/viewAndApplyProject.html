@@ -69,6 +69,11 @@
                         <h3>Skills</h3>
                         <p th:text="${project.getSkills()}"></p>
 
+                        <h3>Project Details</h3>
+                        <div class="mb-3">
+                            <iframe th:src="@{${documentSrc}}" id="document" name="document"></iframe>
+                        </div>
+
                     </div>
 
                     <div>

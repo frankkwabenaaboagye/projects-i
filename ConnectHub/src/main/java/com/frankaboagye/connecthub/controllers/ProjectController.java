@@ -195,6 +195,8 @@ public class ProjectController {
                 .toString();
         modelMap.addAttribute("profilePicturePath", profileSrc);
 
+        modelMap.addAttribute("documentSrc", getDocumentSrc(project.getDocumentName()));
+
 
 
         return "viewAndApplyProject";
