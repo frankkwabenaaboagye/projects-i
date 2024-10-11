@@ -166,6 +166,27 @@ public class ProjectController {
 
     }
 
+    @GetMapping("view-and-apply-project/{projectId}")
+    public String viewAndApplyProject(@PathVariable Long projectId, ModelMap modelMap, HttpSession httpSession){
+
+        Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
+        if(freelancer == null){return "redirect:/login-freelancer";}
+
+        modelMap.addAttribute("freelancer", freelancer);
+
+        Project project = projectServiceImplementation.getProjectById(projectId);
+        Company company = companyRepository.findById(project.getCompanyId()).orElse(null);
+
+        if(company == null){return "redirect:/login-company";}
+
+        modelMap.addAttribute("company", company);
+        modelMap.addAttribute("project", project);
+
+
+        return "viewAndApplyProject";
+
+    }
+
 
     // will delete later - for dev purpose.
     public Company getCisco(){

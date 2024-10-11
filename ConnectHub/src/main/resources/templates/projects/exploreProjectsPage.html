@@ -64,7 +64,11 @@
                 </thead>
                 <tbody>
                 <tr th:each="project : ${projects}">
-                    <th scope="row" th:text="${project.getTitle()}" >Prompt Engineer</th>
+                    <th scope="row">
+                        <a th:href="@{/view-and-apply-project/{projectId}(projectId=${project.getId()})}" th:text="${project.getTitle()}">
+                            Prompt Engineer
+                        </a>
+                    </th>
                     <td th:text="${project.getCompanyName()}">Perplexity</td>
                     <td th:text="${project.getDescription()}" >2000</td>
                     <td th:text="${project.getSkills()}" >CUDA, C++, Vhdl, Linux, GenAI, PSS</td>
