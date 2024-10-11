@@ -54,6 +54,8 @@ public class JobController {
         List<Job> jobs  = jobServiceImplementation.getAllJobs();
         modelMap.addAttribute("jobs", jobs);
 
+        httpSession.setAttribute("freelancer", freelancer);
+
         return "/jobs/exploreJobsPage";
 
     }
@@ -109,6 +111,18 @@ public class JobController {
 
     @GetMapping("view-and-apply-job/{jobId}")
     public String viewAndApplyJob(@PathVariable Long jobId, ModelMap modelMap, HttpSession httpSession){
+
+        Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
+        if(freelancer == null){return "redirect:/login-freelancer";}
+
+        modelMap.addAttribute("freelancer", freelancer);
+
+        Job job = jobServiceImplementation.getJobById(jobId);
+        Company company = companyRepository.findById(job.getCompanyId()).orElse(null);
+
+        modelMap.addAttribute("company", company);
+        modelMap.addAttribute("job", job);
+
 
         return "viewAndApplyJob";
     }
