@@ -62,7 +62,6 @@
                     <br>
 
                     <div>
-
                         <h3>Description</h3>
                         <p th:text="${project.getDescription()}"></p>
 
@@ -71,9 +70,13 @@
 
                         <h3>Project Details</h3>
                         <div class="mb-3">
-                            <iframe th:src="@{${documentSrc}}" id="document" name="document"></iframe>
+                            <iframe
+                                    th:src="@{${documentSrc}}"
+                                    id="document"
+                                    name="document"
+                                    style="width: 100%; height: 500px; border: none;">
+                            </iframe>
                         </div>
-
                     </div>
 
                     <div>
