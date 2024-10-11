@@ -9,6 +9,7 @@ import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import com.frankaboagye.connecthub.repositories.FreelancerRepository;
+import com.frankaboagye.connecthub.repositories.JobRepository;
 import com.frankaboagye.connecthub.services.CompanyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class JobController {
     private final FreelancerRepository freelancerRepository;
     private final CompanyServiceInterface companyServiceImplementation;
     private final StorageServiceInterface storageServiceImplementation;
+    private final JobRepository jobRepository;
 
 
     @GetMapping("/view-job/{id}")
@@ -128,6 +130,10 @@ public class JobController {
 
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("job", job);
+
+        // company specific jobs
+        List<Job> companyJobs = jobServiceImplementation.getAllJobsByCompanyId(company.getId());
+        modelMap.addAttribute("companyJobs", companyJobs);
 
         Path path = storageServiceImplementation.load(company.getProfilepicturename());
         String profileSrc = MvcUriComponentsBuilder

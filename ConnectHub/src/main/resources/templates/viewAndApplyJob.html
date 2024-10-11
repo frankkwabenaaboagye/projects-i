@@ -121,18 +121,21 @@
 
                     <hr>
 
-                    <h3 th:text="${company.getName()} + ' Jobs'"></h3>
-                    <p>Check out other jobs posted by this company:</p>
-
-                    <!-- company logo -->
-                    <div class="text-center mb-4">
-                        <img th:src="${profilePicturePath}" alt="Company Profile Picture" class="profile-pic img-fluid">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 th:text="${company.getName()} + ' Jobs'"></h3>
+                            <p>Check out other jobs posted by this company:</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <!-- Company logo (smaller) -->
+                            <img th:src="${profilePicturePath}" alt="Company Profile Picture" class="profile-pic img-fluid" style="max-width: 100px;">
+                        </div>
                     </div>
 
                     <!-- job listings -->
                     <div>
                         <ul>
-                            <li th:each="job : ${company.getJobs()}" th:text="${job.getTitle()}"></li>
+                            <li th:each="cJob, iterStat : ${companyJobs}" th:if="${iterStat.index < 4}" th:text="${cJob.title}"></li>
                         </ul>
                     </div>
 
