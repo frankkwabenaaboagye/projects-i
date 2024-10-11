@@ -158,6 +158,7 @@ public class ProjectController {
         //TODO
         Freelancer freelancer = freelancerRepository.findById(freelancerId).orElse(null);
         modelMap.addAttribute("freelancer", freelancer);
+        httpSession.setAttribute("freelancer", freelancer);
 
         List<Project> projects = projectServiceImplementation.getAllProjects();
         modelMap.addAttribute("projects", projects);
@@ -181,6 +182,19 @@ public class ProjectController {
 
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("project", project);
+
+        // company specific projects
+        List<Project> companyProjects = projectServiceImplementation.getAllProjectsByCompanyId(company.getId());
+        modelMap.addAttribute("companyProjects", companyProjects);
+
+        Path path = storageServiceImplementation.load(company.getProfilepicturename());
+        String profileSrc = MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                .build()
+                .toUri()
+                .toString();
+        modelMap.addAttribute("profilePicturePath", profileSrc);
+
 
 
         return "viewAndApplyProject";

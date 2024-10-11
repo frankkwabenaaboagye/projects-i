@@ -59,6 +59,12 @@ public class ProjectService implements ProjectServiceInterface {
         return projectRepository.findAll();
     }
 
+
+    @Override
+    public List<Project> getAllProjectsByCompanyId(Long companyId) {
+        return projectRepository.findAllByCompanyId(companyId);
+    }
+
     private Project runUpdate(ProjectDAO projectDAO, Long projectId, Long companyId){
 
         Project project = projectRepository.findByIdAndCompanyId(projectId, companyId);

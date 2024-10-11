@@ -135,7 +135,7 @@
                     <!-- job listings -->
                     <div>
                         <ul>
-                            <li th:each="cJob, iterStat : ${companyJobs}" th:if="${iterStat.index < 4}" th:text="${cJob.title}"></li>
+                            <li th:each="cJob, iterStat : ${companyJobs}" th:if="${iterStat.index < 4}" th:text="${cJob.getTitle()}"></li>
                         </ul>
                     </div>
 

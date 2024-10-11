@@ -40,8 +40,8 @@
                                         <div th:text="${project.getLocation()}"></div>
                                     </li>
                                     <li class="pb-1">
-                                        <div class="fields-data_label text-uppercase">salary</div>
-                                        <div th:text="${job.getSalary()}"></div>
+                                        <div class="fields-data_label text-uppercase">experience level</div>
+                                        <div>Expert</div>
                                     </li>
                                 </ul>
                             </div>
@@ -49,11 +49,11 @@
                                 <ul>
                                     <li class="pb-2">
                                         <div class="fields-data_label text-uppercase">deadline</div>
-                                        <div th:text="${job.getDeadline()}"></div>
+                                        <div th:text="${project.getDeadline()}"></div>
                                     </li>
                                     <li class="pb-2">
-                                        <div class="fields-data_label text-uppercase">Job Id</div>
-                                        <div th:text="${job.getId()}"></div>
+                                        <div class="fields-data_label text-uppercase">Project Id</div>
+                                        <div th:text="${project.getId()}"></div>
                                     </li>
                                 </ul>
                         </div>
@@ -64,10 +64,10 @@
                     <div>
 
                         <h3>Description</h3>
-                        <p th:text="${job.getDescription()}"></p>
+                        <p th:text="${project.getDescription()}"></p>
 
                         <h3>Skills</h3>
-                        <p th:text="${job.getSkills()}"></p>
+                        <p th:text="${project.getSkills()}"></p>
 
                     </div>
 
@@ -132,10 +132,10 @@
                         </div>
                     </div>
 
-                    <!-- job listings -->
+                    <!-- projects listings -->
                     <div>
                         <ul>
-                            <li th:each="cJob, iterStat : ${companyJobs}" th:if="${iterStat.index < 4}" th:text="${cJob.title}"></li>
+                            <li th:each="cProject, iterStat : ${companyProjects}" th:if="${iterStat.index < 4}" th:text="${cProject.getTitle()}"></li>
                         </ul>
                     </div>
 

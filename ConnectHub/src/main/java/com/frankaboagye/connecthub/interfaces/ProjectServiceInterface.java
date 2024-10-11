@@ -12,5 +12,6 @@ public interface ProjectServiceInterface {
     Project updateProject(ProjectDAO projectDAO, Long projectId, Long companyId, MultipartFile documentFile);
     Project updateProjectWithoutFile(ProjectDAO projectDAO, Long projectId, Long companyId);
     List<Project> getAllProjects();// change the wording
+    List<Project> getAllProjectsByCompanyId(Long companyId);
 
 }
