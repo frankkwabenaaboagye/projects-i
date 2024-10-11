@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/freelancerHomepage_layout}" >
+
+<head>
+    <title>Freelancer Homepage</title>
+    <link th:href="@{/css/freelancerHomepageStyling.css}" rel="stylesheet" >
+    <link th:href="@{/css/view-and-apply-job.css}" rel="stylesheet">
+</head>
+<body>
+
+<section class="company-homepage-body">
+    <section layout:fragment="content">
+
+        <section class="hero">
+            <div class="container">
+                <h1 th:text="'View & Apply Jobs, ' + ${freelancer.getFullName()} + '!'"></h1>
+            </div>
+        </section>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 th:text="${job.getTitle()}"></h1>
+
+                    <div class="container fields-data_wrapper">
+                        <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul>
+                                    <li class="pb-2">
+                                        <div class="fields-data_label text-uppercase">company</div>
+                                        <div th:text="${company.getName()}" class="fields-data_value"></div>
+                                    </li>
+
+                                    <li class="pb-2">
+                                        <div class="fields-data_label text-uppercase">location</div>
+                                        <div th:text="${job.getLocation()}"></div>
+                                    </li>
+                                    <li class="pb-1">
+                                        <div class="fields-data_label text-uppercase">salary</div>
+                                        <div th:text="${job.getSalary()}"></div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul>
+                                    <li class="pb-2">
+                                        <div class="fields-data_label text-uppercase">deadline</div>
+                                        <div th:text="${job.getDeadline()}"></div>
+                                    </li>
+                                    <li class="pb-2">
+                                        <div class="fields-data_label text-uppercase">Job Id</div>
+                                        <div th:text="${job.getId()}"></div>
+                                    </li>
+                                </ul>
+                        </div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div>
+
+                        <h3>Description</h3>
+                        <p th:text="${job.getDescription()}"></p>
+
+                        <h3>Skills</h3>
+                        <p th:text="${job.getSkills()}"></p>
+
+                    </div>
+
+                    <div>
+
+                        <h3 th:text="'About ' + ${company.getName()}" ></h3>
+                        <p th:text="${company.getDescription()}"></p>
+
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+
+                    <h3>Join Us!</h3>
+                    <p>Are you ready to take the next step in your journey?</p>
+
+                    <div>
+                        <button type="button" class="btn btn-outline-primary">I’m Interested!</button>
+                    </div>
+
+                    <hr>
+
+                    <div class="box">
+                        <h3>Share this Job</h3>
+                        <div class="social-links">
+                            <a href="">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="">
+                                <i class="bi bi-twitter-x"></i>
+                            </a>
+                            <a href="">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                            <a href="">
+                                <i class="bi bi-envelope-open"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h3>Job notifications</h3>
+                    <p>Sign up to receive notifications of similar jobs</p>
+
+                    <div>
+                        <button type="button" class="btn notify-btn ">
+                            <i class="bi bi-bell"></i> Notify Me
+                        </button>
+                    </div>
+
+                    <hr>
+
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 th:text="${company.getName()} + ' Jobs'"></h3>
+                            <p>Check out other jobs posted by this company:</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <!-- Company logo (smaller) -->
+                            <img th:src="${profilePicturePath}" alt="Company Profile Picture" class="profile-pic img-fluid" style="max-width: 100px;">
+                        </div>
+                    </div>
+
+                    <!-- job listings -->
+                    <div>
+                        <ul>
+                            <li th:each="cJob, iterStat : ${companyJobs}" th:if="${iterStat.index < 4}" th:text="${cJob.title}"></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+    </section>
+</section>
+
+
+
+</body>
+</html>
