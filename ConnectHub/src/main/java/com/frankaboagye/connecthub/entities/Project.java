@@ -32,4 +32,6 @@ public class Project {
     private String documentName;
     private String documentUrl; // will do this later
     // what about salaray??
+//    private LocalDate postedDate;
+//    private String experienceLevel;
 }
