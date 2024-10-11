@@ -6,6 +6,7 @@ import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
+import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import com.frankaboagye.connecthub.repositories.FreelancerRepository;
 import com.frankaboagye.connecthub.services.CompanyService;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +33,7 @@ public class JobController {
     private final CompanyRepository companyRepository;
     private final FreelancerRepository freelancerRepository;
     private final CompanyServiceInterface companyServiceImplementation;
+    private final StorageServiceInterface storageServiceImplementation;
 
 
     @GetMapping("/view-job/{id}")
@@ -120,8 +124,18 @@ public class JobController {
         Job job = jobServiceImplementation.getJobById(jobId);
         Company company = companyRepository.findById(job.getCompanyId()).orElse(null);
 
+        if(company == null){return "redirect:/login-company";}
+
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("job", job);
+
+        Path path = storageServiceImplementation.load(company.getProfilepicturename());
+        String profileSrc = MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                .build()
+                .toUri()
+                .toString();
+        modelMap.addAttribute("profilePicturePath", profileSrc);
 
 
         return "viewAndApplyJob";

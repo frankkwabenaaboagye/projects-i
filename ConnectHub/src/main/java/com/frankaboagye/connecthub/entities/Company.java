@@ -26,4 +26,9 @@ public class Company {
     private String password;
     private String profilepicturename;
     private String description;
+
+    // the list of Jobs -> a company can have multiplejobs
+    // OneToMany relationship with Job entity
+//    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Job> jobs;
 }

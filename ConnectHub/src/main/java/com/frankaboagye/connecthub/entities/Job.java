@@ -1,15 +1,13 @@
 package com.frankaboagye.connecthub.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -27,7 +25,14 @@ public class Job {
     private String title;
     private String description;
     private Double salary;
-    private String skills;
+    private String skills; // change the skills
     private LocalDate deadline;
     private String location;
+
+    // job Type - Professional?
+    // technology interest
+
+//    @ElementCollection
+//    private List<String> responsibilities;
+
 }
