@@ -7,3 +7,7 @@
  - structure the model attribute, dont send all the data
  - fields are not to display
  - add save for later - feature [to the Job]
+ 
+## feature
+- create an application portal?
+    - custom company specific questions?

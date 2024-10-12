@@ -89,25 +89,50 @@
 <!--                    </div>-->
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewAndApplyModal">
                         I’m Interested!
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="viewAndApplyModal" tabindex="-1" aria-labelledby="viewAndApplyModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered ">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                    <h1 class="modal-title fs-5" id="viewAndApplyModalLabel">Job Application Form</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    ...
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="fullName" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="fullName" th:value="*{freelancer.getFullName()}" >
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email address</label>
+                                            <input type="email" class="form-control" id="email" th:value="*{freelancer.getEmail()}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" id="phoneNumber" th:value="*{freelancer.getPhoneNumber()}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="resume" class="form-label">Upload Resume</label>
+                                            <input type="file" class="form-control" id="resume" accept=".pdf">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="coverLetter" class="form-label">Cover Letter</label>
+                                            <textarea class="form-control" id="coverLetter" rows="3" placeholder="Write your cover letter"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="linkedin" class="form-label">LinkedIn</label>
+                                            <input type="text" class="form-control" id="linkedin" th:value="*{freelancer.getLinkedin()}" >
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn-primary">Apply</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
