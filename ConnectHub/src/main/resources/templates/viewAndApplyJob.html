@@ -102,35 +102,36 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form>
+                                    <form th:action="@{/submit-job-application/{id}(id=${job.getId()})}" method="POST" enctype="multipart/form-data">
                                         <div class="mb-3">
                                             <label for="fullName" class="form-label">Full Name</label>
-                                            <input type="text" class="form-control" id="fullName" th:value="*{freelancer.getFullName()}" >
+                                            <input type="text" class="form-control" id="fullName" name="fullName" th:value="*{freelancer.getFullName()}" >
                                         </div>
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email address</label>
-                                            <input type="email" class="form-control" id="email" th:value="*{freelancer.getEmail()}">
+                                            <input type="email" class="form-control" id="email" name="email" th:value="*{freelancer.getEmail()}">
                                         </div>
                                         <div class="mb-3">
                                             <label for="phoneNumber" class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" id="phoneNumber" th:value="*{freelancer.getPhoneNumber()}">
+                                            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" th:value="*{freelancer.getPhoneNumber()}">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="resume" class="form-label">Upload Resume</label>
-                                            <input type="file" class="form-control" id="resume" accept=".pdf">
+                                            <label for="resumeFile" class="form-label">Upload Resume</label>
+                                            <input type="file" class="form-control" id="resumeFile" name="resumeFile" accept=".pdf">
                                         </div>
                                         <div class="mb-3">
                                             <label for="coverLetter" class="form-label">Cover Letter</label>
-                                            <textarea class="form-control" id="coverLetter" rows="3" placeholder="Write your cover letter"></textarea>
+                                            <textarea class="form-control" id="coverLetter" rows="3" name="coverLetter" placeholder="Write your cover letter"></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label for="linkedin" class="form-label">LinkedIn</label>
-                                            <input type="text" class="form-control" id="linkedin" th:value="*{freelancer.getLinkedin()}" >
+                                            <input type="text" class="form-control" id="linkedin" name="linkedin" th:value="*{freelancer.getLinkedin()}" >
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Apply</button>
                                         </div>
                                     </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary">Apply</button>
                                 </div>
 
                             </div>
