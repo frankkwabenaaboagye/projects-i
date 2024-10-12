@@ -29,6 +29,10 @@ public class Job {
     private LocalDate deadline;
     private String location;
 
+//    @Lob
+//    @Column(columnDefinition = "TEXT")
+//    private String moreInformation;
+
     // job Type - Professional?
     // technology interest
 

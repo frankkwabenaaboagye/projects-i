@@ -121,6 +121,9 @@ public class JobController {
         Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
         if(freelancer == null){return "redirect:/login-freelancer";}
 
+        String successMessage = (String) modelMap.get("successMessage");
+        modelMap.addAttribute("successMessage", successMessage);
+
         modelMap.addAttribute("freelancer", freelancer);
 
         Job job = jobServiceImplementation.getJobById(jobId);
