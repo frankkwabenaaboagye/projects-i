@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -42,7 +43,8 @@ public class JobApplicationController {
             @PathVariable long jobId,
             HttpSession httpSession,
             MultipartFile resumeFile,
-            ModelMap modelMap
+            ModelMap modelMap,
+            RedirectAttributes redirectAttributes
     ){
 
         //TODO
@@ -89,11 +91,16 @@ public class JobApplicationController {
 
         modelMap.addAttribute("freelancer", freelancer);
         modelMap.addAttribute("job", job);
+        modelMap.addAttribute("company", company);
 
         httpSession.setAttribute("freelancer", freelancer);
         httpSession.setAttribute("job", job);
+        httpSession.setAttribute("company", company);
 
-        return "successPage";
+        redirectAttributes.addFlashAttribute ("successMessage", "Success! Job Application submitted successfully.");
+
+
+        return "redirect:/view-and-apply-job/" + job.getId();
     }
 
 

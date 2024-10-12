@@ -20,6 +20,13 @@
             </div>
         </section>
 
+        <div class="container mt-5" th:if="${successMessage != null}">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Warning!</strong> <span th:text="${successMessage}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-8">
@@ -56,7 +63,7 @@
                                         <div th:text="${job.getId()}"></div>
                                     </li>
                                 </ul>
-                        </div>
+                            </div>
                         </div>
                     </div>
                     <br>
@@ -84,9 +91,9 @@
                     <h3>Join Us!</h3>
                     <p>Are you ready to take the next step in your journey?</p>
 
-<!--                    <div>-->
-<!--                        <button type="button" class="btn btn-outline-primary">I’m Interested!</button>-->
-<!--                    </div>-->
+                    <!--                    <div>-->
+                    <!--                        <button type="button" class="btn btn-outline-primary">I’m Interested!</button>-->
+                    <!--                    </div>-->
 
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewAndApplyModal">
