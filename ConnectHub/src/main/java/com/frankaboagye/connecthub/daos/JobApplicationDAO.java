@@ -18,9 +18,8 @@ public class JobApplicationDAO {
 
     private String fullName;
     private String email;
-    private String linkedIn;
+    private String linkedin;
     private String phoneNumber;
-    private String resumeLocation;
     private String coverLetter;
 
 }

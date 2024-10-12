@@ -20,6 +20,7 @@ public class JobApplicationService implements JobApplicationServiceInterface {
 
     @Override
     public void submitJobApplication(JobApplication jobApplication) {
+        System.out.println("saving job application....");
         jobApplicationRepository.save(jobApplication);
     }
 }

@@ -16,12 +16,12 @@ import java.time.LocalDate;
 public class JobApplication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String fullName;
     private String email;
-    private String linkedIn;
+    private String linkedin;
     private String phoneNumber;
     private String resumeLocation;
     private LocalDate applicationDate; // for dateApplied

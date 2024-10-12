@@ -1,6 +1,7 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.JobApplicationDAO;
+import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.entities.JobApplication;
@@ -63,7 +64,7 @@ public class JobApplicationController {
         JobApplication jobApplication = JobApplication.builder()
                 .fullName(jobApplicationDAO.getFullName())
                 .email(jobApplicationDAO.getEmail())
-                .linkedIn(jobApplicationDAO.getLinkedIn())
+                .linkedin(jobApplicationDAO.getLinkedin())
                 .phoneNumber(jobApplicationDAO.getPhoneNumber())
                 .applicationDate(LocalDate.now())
                 .coverLetter(jobApplicationDAO.getCoverLetter())
@@ -73,6 +74,15 @@ public class JobApplicationController {
         storageServiceImplementation.store(resumeFile);
         Path resumePath = storageServiceImplementation.load(resumeFile.getOriginalFilename());
         jobApplication.setResumeLocation(resumePath.toString());
+
+        // company, Job
+        jobApplication.setJob(job);
+
+        Company company = companyRepository.findById(job.getCompanyId()).orElse(null);
+        if(company == null){
+            return "redirect:/login-company";
+        }
+        jobApplication.setCompany(company);
 
         jobApplicationServiceImplementation.submitJobApplication(jobApplication);
 
