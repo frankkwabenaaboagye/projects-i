@@ -7,6 +7,7 @@ import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.entities.JobApplication;
 import com.frankaboagye.connecthub.enums.ApplicationStatus;
 import com.frankaboagye.connecthub.enums.ConnectHubConstant;
+import com.frankaboagye.connecthub.enums.ConnectHubProfile;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobApplicationServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
@@ -29,7 +30,8 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 
 import static com.frankaboagye.connecthub.enums.ApplicationStatus.SUBMITTED;
-import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.*;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
 
 @RequiredArgsConstructor
 @Controller
@@ -55,7 +57,7 @@ public class JobApplicationController {
 
         //TODO
 
-        Long sessionData = (Long) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
         if(sessionData == null){
             return "redirect:/login-freelancer";
         }
@@ -100,9 +102,8 @@ public class JobApplicationController {
         modelMap.addAttribute("job", job);
         modelMap.addAttribute("company", company);
 
-        httpSession.setAttribute("freelancer", freelancer);
-        httpSession.setAttribute("job", job);
-        httpSession.setAttribute("company", company);
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());
 
         redirectAttributes.addFlashAttribute ("successMessage", "Success! Job Application submitted successfully.");
 

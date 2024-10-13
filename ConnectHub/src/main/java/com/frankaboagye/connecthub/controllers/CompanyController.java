@@ -104,8 +104,8 @@ public class CompanyController {
         if(companyData.isPresent()){
             Company company = companyData.get();
 
-            httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-            httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+            httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+            httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
             return "redirect:/companyHomepage";
 
@@ -125,7 +125,7 @@ public class CompanyController {
     @GetMapping("/companyHomepage")
     public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
 
-        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        String sessionData = (String) httpSession.getAttribute(SESSION_DATA.getDescription());
         if(sessionData == null){ return "redirect:/login-company"; }
 
         Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
@@ -139,8 +139,8 @@ public class CompanyController {
             modelMap.addAttribute("companyProjects", companyProjects);
             modelMap.addAttribute("profile", company);
 
-            httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-            httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+            httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+            httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
         } else {
             return "redirect:/login-company";

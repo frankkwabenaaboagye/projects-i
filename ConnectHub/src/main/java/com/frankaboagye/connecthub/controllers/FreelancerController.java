@@ -25,8 +25,8 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_PROFILE;
-import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
 
@@ -119,8 +119,8 @@ public class FreelancerController {
         httpSession.setAttribute("SessionData", email);
         httpSession.setAttribute("freelancerData", freelancer);
 
-        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), freelancer.getId());  // e.g. ("sessionData", 29919)  // for the freelancer
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());  // e.g. ("sessionData", 29919)  // for the freelancer
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
 
         return "redirect:/freelancerHomepage";
@@ -130,7 +130,7 @@ public class FreelancerController {
     @GetMapping("/freelancerHomepage")
     public String getFreelancerHompage(HttpSession httpSession, ModelMap modelMap){
 
-        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        String sessionData = (String) httpSession.getAttribute(SESSION_DATA.getDescription());
         if(sessionData == null){
             modelMap.addAttribute("message", "session data does not exist");
             return "redirect:/login-freelancer";
@@ -144,8 +144,8 @@ public class FreelancerController {
 
         modelMap.addAttribute("freelancer", freelancer);
 
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), FREELANCER.getValue());
-        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), freelancer.getId());
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());
 
 
         return "freelancerHomepage";
@@ -160,7 +160,7 @@ public class FreelancerController {
     @GetMapping("/freelancerProfilePage")
     public String getFreelancerProfilePage(HttpSession httpSession, ModelMap modelMap){
 
-        Long sessionData = (Long) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription()); // the id of the freelancer
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription()); // the id of the freelancer
 
         Freelancer freelancer = freelancerRepository.findById(sessionData).orElse(null);
 

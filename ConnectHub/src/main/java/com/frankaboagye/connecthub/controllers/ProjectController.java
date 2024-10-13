@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_PROFILE;
-import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
 
@@ -49,7 +49,7 @@ public class ProjectController {
             HttpSession httpSession
     ) {
 
-        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        String sessionData = (String) httpSession.getAttribute(SESSION_DATA.getDescription());
         if (sessionData == null) {
             return "redirect:/login-company";
         }
@@ -88,8 +88,8 @@ public class ProjectController {
         modelMap.addAttribute("availableSkills", availableSkills );
 
 
-        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
         return "postProject";
     }
@@ -103,7 +103,7 @@ public class ProjectController {
     ) {
         // add securuty stuffs later, converstion stuffs
 
-        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        String sessionData = (String) httpSession.getAttribute(SESSION_DATA.getDescription());
         Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
 
         if (company == null) {
@@ -144,8 +144,8 @@ public class ProjectController {
         modelMap.addAttribute("project", project);
         modelMap.addAttribute("company", company);
 
-        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
 
         return "redirect:/companyHomepage";
@@ -163,7 +163,7 @@ public class ProjectController {
             HttpSession httpSession
     ) {
 
-        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        String sessionData = (String) httpSession.getAttribute(SESSION_DATA.getDescription());
         if (sessionData == null) {
             return "redirect:/login-company";
         }
@@ -188,8 +188,8 @@ public class ProjectController {
         modelMap.addAttribute("message", "update successful");
         modelMap.addAttribute("project", project);
 
-        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), FREELANCER.getValue());  // e.g. ("company", company)
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());  // e.g. ("company", company)
 
 
         return "redirect:/view-project/" + projectId;
@@ -220,20 +220,25 @@ public class ProjectController {
             HttpSession httpSession
     ) {
 
-        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription()); // this is the id of the freelancer
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription()); // this is the id of the freelancer
 
         if (sessionData == null) {
+            return "redirect:/login-freelancer";
+        }
+
+        Freelancer freelancer = freelancerRepository.findById(sessionData).orElse(null);
+        if (freelancer == null) {
             return "redirect:/login-freelancer";
         }
 
         modelMap.addAttribute("freelancer", freelancer);
 
         Project project = projectServiceImplementation.getProjectById(projectId);
-        Company company = companyRepository.findById().orElse(null);
-
-        if (company == null) {
+        if (project == null) {
             return "redirect:/login-company";
         }
+
+        Company company = project.getCompany();
 
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("project", project);

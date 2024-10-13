@@ -27,9 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_PROFILE;
-import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
 
 @RequiredArgsConstructor
 @Controller
@@ -60,12 +61,16 @@ public class JobController {
 
         // for dev-purpose - will change this
         Freelancer freelancer = freelancerRepository.findById(freelancerId).orElse(null);
+        if(freelancer == null) {
+            return "redirect:/login-freelancer" + freelancerId;
+        }
         modelMap.addAttribute("freelancer", freelancer);
 
         List<Job> jobs  = jobServiceImplementation.getAllJobs();
         modelMap.addAttribute("jobs", jobs);
 
-        httpSession.setAttribute("freelancer", freelancer);
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());
 
         return "/jobs/exploreJobsPage";
 
@@ -80,8 +85,8 @@ public class JobController {
         Company company = companyOptional.get();
         modelMap.addAttribute(COMPANY.getValue(), company);
 
-        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
         List<String> availableSkills = GeneralSkills.getAvailableSkills();
         modelMap.addAttribute("availableSkills", availableSkills );
@@ -97,7 +102,7 @@ public class JobController {
     ){
         // add securuty stuffs later, converstion stuffs
 
-        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription()); // company Id
+        String sessionData = (String) httpSession.getAttribute(SESSION_DATA.getDescription()); // company Id
 
         Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
         if(company == null){ return "redirect:/login-company"; }
@@ -122,8 +127,8 @@ public class JobController {
 
         modelMap.addAttribute(COMPANY.getValue(), company);
 
-        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
 
         return "redirect:/companyHomepage";
@@ -132,7 +137,10 @@ public class JobController {
     @GetMapping("view-and-apply-job/{jobId}")
     public String viewAndApplyJob(@PathVariable Long jobId, ModelMap modelMap, HttpSession httpSession){
 
-        Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
+        Long sessionData = (Long) httpSession.getAttribute(FREELANCER.getValue());
+        if(sessionData == null){ return "redirect:/login-company"; }
+
+        Freelancer freelancer = freelancerRepository.findById(sessionData).orElse(null);
         if(freelancer == null){return "redirect:/login-freelancer";}
 
         String successMessage = (String) modelMap.get("successMessage");
@@ -159,6 +167,9 @@ public class JobController {
                 .toUri()
                 .toString();
         modelMap.addAttribute("profilePicturePath", profileSrc);
+
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());
 
 
         return "viewAndApplyJob";
