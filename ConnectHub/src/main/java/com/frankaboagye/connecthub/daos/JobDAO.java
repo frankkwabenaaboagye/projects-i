@@ -5,16 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobDAO {
 
-    private String jobTitle;
-    private String jobDescription;
+    private String title;
+    private String description;
     private String salary;
     private String deadline;
     private String location;
-    private String skills;
+    private List<String> skills;
+    private List<String> otherSkills;
+    private String moreInformation;
 }

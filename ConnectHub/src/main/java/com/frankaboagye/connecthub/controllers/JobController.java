@@ -4,6 +4,8 @@ import com.frankaboagye.connecthub.daos.JobDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Job;
+import com.frankaboagye.connecthub.enums.ConnectHubProfile;
+import com.frankaboagye.connecthub.enums.GeneralSkills;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
@@ -23,8 +25,12 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.*;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -73,27 +79,34 @@ public class JobController {
         if(companyOptional.isEmpty()){return "redirect:/login-company";}
 
         Company company = companyOptional.get();
-        modelMap.addAttribute("company", company);
+        modelMap.addAttribute(COMPANY.getValue(), company);
 
-        httpSession.setAttribute("companyData", company);
-        httpSession.setAttribute("sessionData", company.getEmail());
+        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());
+
+        List<String> availableSkills = GeneralSkills.getAvailableSkills();
+
+        modelMap.addAttribute("availableSkills", availableSkills );
 
         return "postJob";
     }
 
     @PostMapping("/handle-post-a-job")
-    public String handleJobPosting(@ModelAttribute JobDAO jobDAO, ModelMap modelMap, HttpSession httpSession){
+    public String handleJobPosting(
+            @ModelAttribute JobDAO jobDAO,
+            ModelMap modelMap,
+            HttpSession httpSession
+    ){
         // add securuty stuffs later, converstion stuffs
 
-        String sessionData = (String) httpSession.getAttribute("sessionData");
-        Company companyData = (Company) httpSession.getAttribute("companyData");
+        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription()); // company Id
 
-        String stop = "here";
+        Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
+        if(company == null){ return "redirect:/login-company"; }
 
-        var date = LocalDate.parse(jobDAO.getDeadline());
 
         // convert form dao to the object
-        Job newJob = Job.builder()
+        Job theJob = Job.builder()
                 .companyId(companyData.getId())
                 .companyName(companyData.getName())
                 .title(jobDAO.getJobTitle())
@@ -102,6 +115,9 @@ public class JobController {
                 .skills(jobDAO.getSkills())
                 .deadline(date)
                 .location(jobDAO.getLocation())
+                .build();
+
+        Job newJob = Job.builder()
                 .build();
 
 

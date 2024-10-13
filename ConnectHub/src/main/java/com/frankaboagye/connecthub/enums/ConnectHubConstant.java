@@ -1,4 +1,4 @@
-package com.frankaboagye.connecthub.entities;
+package com.frankaboagye.connecthub.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,9 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum ConnectHubConstant {
     CONNECT_HUB_PROFILE("profile"),
-    CONNECT_HUB_SESSION_DATA("sessionData"),
+    CONNECT_HUB_SESSION_DATA("sessionData"), // this will be the id of the user
     CONNECT_HUB_COMPANY_DATA("companyData"),
-    CONNECT_HUB_APPLICATION("connectHubApplication"),
     CONNECT_HUB_SKILL("connectHubSkill"),
     CONNECT_HUB_NOTIFICATION("connectHubNotification"),
     CONNECT_HUB_RATING("connectHubRating"),

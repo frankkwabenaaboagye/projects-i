@@ -1,52 +1,70 @@
 package com.frankaboagye.connecthub.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * The GeneralSkills enum represents various general skills that companies may require
  * and freelancers may possess. This enum can be utilized to categorize skills
  * across multiple domains and job types.
  */
+@RequiredArgsConstructor
+@Getter
 public enum GeneralSkills {
-    COMMUNICATION,
-    TEAMWORK,
-    PROBLEM_SOLVING,
-    TIME_MANAGEMENT,
-    ADAPTABILITY,
-    TECHNICAL_PROFICIENCY,
-    PROJECT_MANAGEMENT,
-    LEADERSHIP,
-    ANALYTICAL_THINKING,
-    CREATIVITY,
-    ATTENTION_TO_DETAIL,
-    CUSTOMER_SERVICE,
-    RESEARCH,
-    WRITING,
-    MARKETING,
-    PROGRAMMING,
-    DATA_ANALYSIS,
-    DESIGN,
-    SALES,
-    NETWORKING,
-    STRATEGIC_PLANNING,
-    CONFLICT_RESOLUTION,
-    NEGOTIATION,
-    PRESENTATION,
-    SOCIAL_MEDIA_MANAGEMENT,
-    DIGITAL_MARKETING,
-    SOFTWARE_DEVELOPMENT,
-    UX_UI_DESIGN,
-    CONTENT_CREATION,
-    DATABASE_MANAGEMENT,
-    CLOUD_COMPUTING,
-    MACHINE_LEARNING,
-    CYBERSECURITY,
-    BUSINESS_ANALYSIS,
-    FINANCIAL_ANALYSIS,
-    EDUCATIONAL_TECHNOLOGY,
-    ECOMMERCE,
-    SEO,
-    QUALITY_ASSURANCE,
-    EVENT_PLANNING,
-    BRAND_MANAGEMENT,
-    LOGISTICS,
-    FACILITATION
+    COMMUNICATION("Communication"),
+    TEAMWORK("Teamwork"),
+    PROBLEM_SOLVING("Problem Solving"),
+    TIME_MANAGEMENT("Time Management"),
+    ADAPTABILITY("Adaptability"),
+    TECHNICAL_PROFICIENCY("Technical Proficiency"),
+    PROJECT_MANAGEMENT("Project Management"),
+    LEADERSHIP("Leadership"),
+    ANALYTICAL_THINKING("Analytical Thinking"),
+    CREATIVITY("Creativity"),
+    ATTENTION_TO_DETAIL("Attention to Detail"),
+    CUSTOMER_SERVICE("Customer Service"),
+    RESEARCH("Research"),
+    WRITING("Writing"),
+    MARKETING("Marketing"),
+    PROGRAMMING("Programming"),
+    DATA_ANALYSIS("Data Analysis"),
+    DESIGN("Design"),
+    SALES("Sales"),
+    NETWORKING("Networking"),
+    STRATEGIC_PLANNING("Strategic Planning"),
+    CONFLICT_RESOLUTION("Conflict Resolution"),
+    NEGOTIATION("Negotiation"),
+    PRESENTATION("Presentation"),
+    SOCIAL_MEDIA_MANAGEMENT("Social Media Management"),
+    DIGITAL_MARKETING("Digital Marketing"),
+    SOFTWARE_DEVELOPMENT("Software Development"),
+    UX_UI_DESIGN("UX/UI Design"),
+    CONTENT_CREATION("Content Creation"),
+    DATABASE_MANAGEMENT("Database Management"),
+    CLOUD_COMPUTING("Cloud Computing"),
+    MACHINE_LEARNING("Machine Learning"),
+    CYBERSECURITY("Cybersecurity"),
+    BUSINESS_ANALYSIS("Business Analysis"),
+    FINANCIAL_ANALYSIS("Financial Analysis"),
+    EDUCATIONAL_TECHNOLOGY("Educational Technology"),
+    ECOMMERCE("Ecommerce"),
+    SEO("SEO"),
+    QUALITY_ASSURANCE("Quality Assurance"),
+    EVENT_PLANNING("Event Planning"),
+    BRAND_MANAGEMENT("Brand Management"),
+    LOGISTICS("Logistics"),
+    FACILITATION("Facilitation");
+
+    private final String simpleName;
+
+
+    public static List<String> getAvailableSkills() {
+        return Arrays.stream(GeneralSkills.values())
+                .map(GeneralSkills::getSimpleName) // Use simple name directly
+                .collect(Collectors.toList()); // Collect to a List<String>
+    }
 }

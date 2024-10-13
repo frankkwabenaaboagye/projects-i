@@ -1,7 +1,6 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.CompanyDAO;
-import com.frankaboagye.connecthub.daos.JobDAO;
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
 import com.frankaboagye.connecthub.entities.*;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
@@ -20,12 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.frankaboagye.connecthub.entities.ConnectHubConstant.*;
-import static com.frankaboagye.connecthub.entities.ConnectHubProfile.*;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.*;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.*;
 
 @Controller
 @RequiredArgsConstructor
