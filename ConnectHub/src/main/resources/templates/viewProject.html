@@ -30,7 +30,7 @@
             <p class="scheme-1" th:text="${project.getProjectDocument().getDocumentName()}"> </p>
             <p class="scheme-1" th:text="${project.getDeadline()}"> </p>
 
-            <form th:action="@{/handle-company-project-update/{id}(id=${project.getId()})}" method="POST" enctype="multipart/form-data">
+            <form th:action="@{/handle-company-project-update/{projectId}(projectId=${project.getId()})}" method="POST" enctype="multipart/form-data">
 
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -49,8 +49,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="documentFile" class="form-label">Change Document</label>
-                    <input type="file" class="form-control btn btn-outline-primary" id="documentFile" name="documentFile" accept="application/pdf" th:value="*{project.getDocumentName()}">
+                    <label for="projectFile" class="form-label">Change Document</label>
+                    <input type="file" class="form-control btn btn-outline-primary" id="projectFile" name="projectFile" accept="application/pdf" th:value="*{project.getProjectDocument().getDocumentName()}">
                 </div>
 
                 <div class="mb-3">

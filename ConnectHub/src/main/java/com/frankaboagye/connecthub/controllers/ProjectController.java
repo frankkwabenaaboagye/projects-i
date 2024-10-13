@@ -153,28 +153,33 @@ public class ProjectController {
     }
 
 
-    @PostMapping("/handle-company-project-update/{id}")
+    @PostMapping("/handle-company-project-update/{projectId}")
     public String updateCompanyProject(
-            @PathVariable(name = "id") String projectId,
+            @PathVariable Long projectId,
             @ModelAttribute ProjectDAO projectDAO,
-            @RequestParam("documentFile") MultipartFile documentFile,
+            @RequestParam MultipartFile projectFile,
             ModelMap modelMap,
             HttpSession httpSession
     ) {
 
-        Long id = Long.parseLong(projectId);
+        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        if (sessionData == null) {
+            return "redirect:/login-company";
+        }
 
-        boolean updateFile = !documentFile.isEmpty(); // will change the way documents are handled
+        Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
+        if (company == null) {
+            return "redirect:/login-company";
+        }
 
         Project project = null;
 
-        projectDAO.setCompanyId(String.valueOf(getCisco().getId()));
-
-        if (documentFile.isEmpty()) {
-            project = projectServiceImplementation.updateProjectWithoutFile(projectDAO, Long.parseLong(projectId), getCisco().getId());
+        if (projectFile.isEmpty()) {
+            project = projectServiceImplementation.updateProjectWithoutFile(projectDAO, projectId, company.getId() );
         } else {
-            project = projectServiceImplementation.updateProject(projectDAO, id, getCisco().getId(), documentFile);
-            modelMap.addAttribute("documentSrc", getDocumentSrc(documentFile.getOriginalFilename()));
+            project = projectServiceImplementation.updateProject(projectDAO, projectId, company.getId(), projectFile);
+            Path path = Paths.get(project.getProjectDocument().getDocumentUrl());
+            modelMap.addAttribute("documentSrc", getDocumentSrc(path));
 
         }
 
@@ -183,8 +188,11 @@ public class ProjectController {
 
         modelMap.addAttribute("project", project);
 
+        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
-        return "redirect:/view-project/" + id;
+
+        return "redirect:/view-project/" + projectId;
 
     }
 
@@ -206,7 +214,11 @@ public class ProjectController {
     }
 
     @GetMapping("view-and-apply-project/{projectId}")
-    public String viewAndApplyProject(@PathVariable Long projectId, ModelMap modelMap, HttpSession httpSession) {
+    public String viewAndApplyProject(
+            @PathVariable Long projectId,
+            ModelMap modelMap,
+            HttpSession httpSession
+    ) {
 
         Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
         if (freelancer == null) {
@@ -216,7 +228,7 @@ public class ProjectController {
         modelMap.addAttribute("freelancer", freelancer);
 
         Project project = projectServiceImplementation.getProjectById(projectId);
-        Company company = companyRepository.findById(project.getCompanyId()).orElse(null);
+        Company company = companyRepository.findById().orElse(null);
 
         if (company == null) {
             return "redirect:/login-company";
@@ -237,20 +249,13 @@ public class ProjectController {
                 .toString();
         modelMap.addAttribute("profilePicturePath", profileSrc);
 
-        modelMap.addAttribute("documentSrc", getDocumentSrc(project.getDocumentName()));
-
+        Path documentPath = Paths.get(project.getProjectDocument().getDocumentUrl());
+        modelMap.addAttribute("documentSrc", getDocumentSrc(documentPath));
 
         return "viewAndApplyProject";
 
     }
-
-
-    // will delete later - for dev purpose.
-    public Company getCisco() {
-        Optional<Company> co = companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco");
-        return co.orElse(null);
-
-    }
+    
 
     public String getDocumentSrc(Path path) {
 
