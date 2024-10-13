@@ -3,9 +3,7 @@ package com.frankaboagye.connecthub.controllers;
 import com.frankaboagye.connecthub.daos.CompanyDAO;
 import com.frankaboagye.connecthub.daos.JobDAO;
 import com.frankaboagye.connecthub.dtos.CompanyDTO;
-import com.frankaboagye.connecthub.entities.Company;
-import com.frankaboagye.connecthub.entities.Job;
-import com.frankaboagye.connecthub.entities.Project;
+import com.frankaboagye.connecthub.entities.*;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
@@ -25,6 +23,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static com.frankaboagye.connecthub.entities.ConnectHubConstant.*;
+import static com.frankaboagye.connecthub.entities.ConnectHubProfile.*;
+
 @Controller
 @RequiredArgsConstructor
 public class CompanyController {
@@ -42,33 +43,21 @@ public class CompanyController {
         return "registerCompany";
     }
 
-    @GetMapping("/login-company")
-    public String loginCompany(){
-        return "loginCompany";
-    }
-
-
-    @GetMapping("/logout-company")
-    public String logoutCompany(HttpSession httpSession){
-        httpSession.invalidate();
-        return "loginCompany";
-    }
-
     @PostMapping("/handle-register-company")
     public String handleCompanyRegisteration(
             @ModelAttribute CompanyDAO companyDAO,
             @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile,
             ModelMap modelMap
-            ){
+    ){
 
         // use aspect over here
-            // we can do some serious checks
-            // logging
+        // we can do some serious checks
+        // logging
 
 
         // compare the passwords... although we are doing it with js at the view side
 
-        if(!companyDAO.getCompanyPassword().equals(companyDAO.getCompanyConfirmPassword())){
+        if(!companyDAO.getPassword().equals(companyDAO.getConfirmPassword())){
             modelMap.addAttribute("message", "registration failed - passwords do not match");
             return "registerCompany";
         }
@@ -76,16 +65,17 @@ public class CompanyController {
         try {
             storageServiceImplementation.store(companyPhotoFile);
 
-            Company company = Company.builder()
-                    .name(companyDAO.getCompanyName())
-                    .email(companyDAO.getCompanyEmail())
-                    .phonenumber(companyDAO.getCompanyPhoneNumber())
-                    .password(companyDAO.getCompanyPassword())
-                    .website(companyDAO.getCompanyWebsite())
+            Company newCompany = Company.builder()
+                    .email(companyDAO.getEmail())
+                    .name(companyDAO.getName())
+                    .phonenumber(companyDAO.getPhonenumber())
+                    .website(companyDAO.getWebsite())
+                    .password(companyDAO.getPassword())
                     .profilepicturename(companyPhotoFile.getOriginalFilename())
+                    .description(companyDAO.getDescription())
                     .build();
 
-            companyServiceImplementation.registerCompany(company);
+            companyServiceImplementation.registerCompany(newCompany);
 
             modelMap.addAttribute("message", "registration successful");
 
@@ -95,6 +85,11 @@ public class CompanyController {
             return "registerCompany";
         }
 
+    }
+
+    @GetMapping("/login-company")
+    public String loginCompany(){
+        return "loginCompany";
     }
 
     @PostMapping("/handle-login-company")
@@ -109,8 +104,9 @@ public class CompanyController {
         if(companyData.isPresent()){
             Company company = companyData.get();
 
-            httpSession.setAttribute("sessionData",email);
-            httpSession.setAttribute("companyData", company);
+            httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(),email);
+            httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY);
+            httpSession.setAttribute(CONNECT_HUB_COMPANY_DATA.getDescription(), company);
             return "redirect:/companyHomepage";
 
         }
@@ -119,6 +115,12 @@ public class CompanyController {
 
     }
 
+
+    @GetMapping("/logout-company")
+    public String logoutCompany(HttpSession httpSession){
+        httpSession.invalidate();
+        return "loginCompany";
+    }
 
     @GetMapping("/companyHomepage")
     public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){

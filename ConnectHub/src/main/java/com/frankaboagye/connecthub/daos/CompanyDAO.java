@@ -1,6 +1,9 @@
 package com.frankaboagye.connecthub.daos;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data  // getter, setter, toString, equals, hashcode
@@ -9,11 +12,11 @@ import lombok.*;
 @AllArgsConstructor
 public class CompanyDAO {
 
-    private String companyName;
-    private String companyEmail;
-    private String companyPhoneNumber;
-    private String companyWebsite;
-    private String companyPassword;
-    private String companyConfirmPassword;
-    private String companyDescription;
+    private String name;
+    private String email;
+    private String phonenumber;
+    private String website;
+    private String password;
+    private String confirmPassword;
+    private String description;
 }

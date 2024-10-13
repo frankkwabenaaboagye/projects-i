@@ -74,15 +74,12 @@ public class Project {
     private String location;
 
     /**
-     * The name of any related document associated with the project.
+     * The related project document, if any.
+     * This creates an optional one-to-one relationship with the ProjectDocument entity.
      */
-    private String documentName;
-
-    /**
-     * The URL for the related document, providing additional project information.
-     */
-    private String documentUrl;
-
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_document_id", nullable = true) // Allows null to make it optional
+    private ProjectDocument projectDocument; // Optional associated project document
 
 
     /**
@@ -91,8 +88,11 @@ public class Project {
     private LocalDate postedDate;
 
     /**
-     * The required experience level for freelancers applying to the project.
+     * A list of required experience levels for freelancers applying to the project.
      * This can help filter applicants based on their qualifications.
      */
-    private String experienceLevel;
+    @ElementCollection
+    @CollectionTable(name = "project_experience_levels", joinColumns = @JoinColumn(name = "project_id"))
+    @Column(name = "experience_level")
+    private List<String> experienceLevels = new ArrayList<>();
 }
