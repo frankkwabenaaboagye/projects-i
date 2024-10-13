@@ -13,31 +13,30 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class JobApplication {
+public class ProjectApplication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // the freelancer
-
     private String fullName;
     private String email;
-    private String linkedin;
     private String phoneNumber;
     private String resumeLocation;
-    private LocalDate applicationDate; // for dateApplied
+    private LocalDate applicationDate;
 
-    @Lob
-    private String coverLetter;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "freelancer_id")
+    private Freelancer freelancer;
+
 
     @ManyToOne(optional = false) // optional = false ensures a JobApplication must have a Job and a Company
     @JoinColumn(name = "company_id")
     private Company company;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "job_id")
-    private Job job;
+    @JoinColumn(name = "project_id")
+    private Project project;
 
 
 }

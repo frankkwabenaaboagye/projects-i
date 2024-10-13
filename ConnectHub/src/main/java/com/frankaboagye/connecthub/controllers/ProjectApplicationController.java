@@ -28,7 +28,7 @@ import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @Controller
-public class JobApplicationController {
+public class ProjectApplicationController {
 
     private final JobServiceInterface jobServiceImplementation;
     private final CompanyRepository companyRepository;
@@ -38,8 +38,8 @@ public class JobApplicationController {
     private final JobRepository jobRepository;
     private final JobApplicationServiceInterface jobApplicationServiceImplementation;
 
-    @PostMapping("/submit-job-application/{jobId}")
-    public String handleJobApplicationSubmission(
+    @PostMapping("/submit-project-application/{jobId}")
+    public String handleProjectApplicationSubmission(
             @ModelAttribute JobApplicationDAO jobApplicationDAO,
             @PathVariable long jobId,
             HttpSession httpSession,
