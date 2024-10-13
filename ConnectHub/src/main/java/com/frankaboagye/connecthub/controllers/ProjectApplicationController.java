@@ -1,19 +1,17 @@
 package com.frankaboagye.connecthub.controllers;
 
-import com.frankaboagye.connecthub.daos.JobApplicationDAO;
 import com.frankaboagye.connecthub.daos.ProjectApplicationDAO;
-import com.frankaboagye.connecthub.entities.*;
-import com.frankaboagye.connecthub.enums.ApplicationStatus;
-import com.frankaboagye.connecthub.enums.ConnectHubConstant;
+import com.frankaboagye.connecthub.entities.Company;
+import com.frankaboagye.connecthub.entities.Freelancer;
+import com.frankaboagye.connecthub.entities.Project;
+import com.frankaboagye.connecthub.entities.ProjectApplication;
 import com.frankaboagye.connecthub.enums.ConnectHubProfile;
-import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
-import com.frankaboagye.connecthub.interfaces.JobApplicationServiceInterface;
-import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
-import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
+import com.frankaboagye.connecthub.interfaces.*;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import com.frankaboagye.connecthub.repositories.FreelancerRepository;
 import com.frankaboagye.connecthub.repositories.JobRepository;
 import com.frankaboagye.connecthub.repositories.ProjectRepository;
+import com.frankaboagye.connecthub.services.ProjectApplicationService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -29,19 +27,19 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 
 import static com.frankaboagye.connecthub.enums.ApplicationStatus.SUBMITTED;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.*;
 
 @RequiredArgsConstructor
 @Controller
 public class ProjectApplicationController {
 
-    private final JobServiceInterface jobServiceImplementation;
+    private final ProjectApplicationService projectApplicationServiceImplementation;
     private final CompanyRepository companyRepository;
     private final FreelancerRepository freelancerRepository;
     private final CompanyServiceInterface companyServiceImplementation;
     private final StorageServiceInterface storageServiceImplementation;
-    private final JobRepository jobRepository;
-    private final JobApplicationServiceInterface jobApplicationServiceImplementation;
     private final ProjectRepository projectRepository;
 
     @PostMapping("/submit-project-application/{projectId}")
@@ -93,21 +91,20 @@ public class ProjectApplicationController {
 
         // add freelancer comments - during updates
 
-        jobApplicationServiceImplementation.submitJobApplication(jobApplication);
+        projectApplicationServiceImplementation.submitProjectApplication(projectApplication);
 
 
         modelMap.addAttribute("freelancer", freelancer);
-        modelMap.addAttribute("job", job);
+        modelMap.addAttribute("project", project);
         modelMap.addAttribute("company", company);
 
-        httpSession.setAttribute("freelancer", freelancer);
-        httpSession.setAttribute("job", job);
-        httpSession.setAttribute("company", company);
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());
 
         redirectAttributes.addFlashAttribute ("successMessage", "Success! Job Application submitted successfully.");
 
 
-        return "redirect:/view-and-apply-job/" + job.getId();
+        return "redirect:/view-and-apply-project/" + project.getId();
     }
 
 

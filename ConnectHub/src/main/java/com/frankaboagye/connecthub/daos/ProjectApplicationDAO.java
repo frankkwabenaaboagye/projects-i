@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProjectApplicationDAO {
 
-    private String projectId;
-    private String freelancerId;
     private String coverLetter;
 
 }

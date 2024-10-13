@@ -61,6 +61,7 @@ public class Project {
     @ElementCollection
     @CollectionTable(name = "project_skills", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "skill")
+    @Builder.Default
     private List<String> skills = new ArrayList<>();
 
     /**
@@ -94,5 +95,6 @@ public class Project {
     @ElementCollection
     @CollectionTable(name = "project_experience_levels", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "experience_level")
+    @Builder.Default
     private List<String> experienceLevels = new ArrayList<>();
 }

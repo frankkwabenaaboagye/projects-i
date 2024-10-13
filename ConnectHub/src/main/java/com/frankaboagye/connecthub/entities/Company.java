@@ -83,5 +83,6 @@ public class Company {
      * </ul>
      */
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Job> jobs = new ArrayList<>();
 }

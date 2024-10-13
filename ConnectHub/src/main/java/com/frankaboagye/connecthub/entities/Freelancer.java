@@ -111,6 +111,7 @@ public class Freelancer {
      * </ul>
      */
     @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Resume> resumes = new ArrayList<>();
 
 }
