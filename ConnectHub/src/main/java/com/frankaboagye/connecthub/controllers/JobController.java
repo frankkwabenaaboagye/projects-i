@@ -4,7 +4,6 @@ import com.frankaboagye.connecthub.daos.JobDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Job;
-import com.frankaboagye.connecthub.enums.ConnectHubProfile;
 import com.frankaboagye.connecthub.enums.GeneralSkills;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
@@ -12,7 +11,6 @@ import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import com.frankaboagye.connecthub.repositories.FreelancerRepository;
 import com.frankaboagye.connecthub.repositories.JobRepository;
-import com.frankaboagye.connecthub.services.CompanyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,12 +24,12 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.frankaboagye.connecthub.enums.ConnectHubConstant.*;
-import static com.frankaboagye.connecthub.enums.ConnectHubProfile.*;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_PROFILE;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
 
 @RequiredArgsConstructor
 @Controller
@@ -144,7 +142,7 @@ public class JobController {
         modelMap.addAttribute("freelancer", freelancer);
 
         Job job = jobServiceImplementation.getJobById(jobId);
-        Company company = companyRepository.findById(job.getCompanyId()).orElse(null);
+        Company company = job.getCompany();
 
         if(company == null){return "redirect:/login-company";}
 
