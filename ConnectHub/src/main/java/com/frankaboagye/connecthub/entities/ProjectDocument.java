@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.nio.file.Path;
 import java.time.LocalDate;
 
 /**
@@ -47,9 +48,5 @@ public class ProjectDocument {
      * Indicates if this document is the primary document for the project.
      */
     private Boolean isPrimary;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project; // The project associated with this document
 }
 

@@ -1,15 +1,14 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.ProjectDAO;
-import com.frankaboagye.connecthub.entities.Company;
-import com.frankaboagye.connecthub.entities.Freelancer;
-import com.frankaboagye.connecthub.entities.Job;
-import com.frankaboagye.connecthub.entities.Project;
+import com.frankaboagye.connecthub.entities.*;
+import com.frankaboagye.connecthub.enums.GeneralSkills;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.ProjectServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import com.frankaboagye.connecthub.repositories.FreelancerRepository;
+import com.frankaboagye.connecthub.repositories.ProjectDocumentRepository;
 import com.frankaboagye.connecthub.repositories.ProjectRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_PROFILE;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
 
 @RequiredArgsConstructor
 @Controller
@@ -34,81 +39,116 @@ public class ProjectController {
     private final CompanyRepository companyRepository;
     private final ProjectRepository projectRepository;
     private final FreelancerRepository freelancerRepository;
+    private final ProjectDocumentRepository projectDocumentRepository;
 
     @GetMapping("/view-project/{id}")
-    public String viewProject(@PathVariable Long id, ModelMap modelMap){
+    public String viewProject(
+            @PathVariable Long id,
+            ModelMap modelMap,
+            HttpSession httpSession
+    ) {
+
+        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        if (sessionData == null) {
+            return "redirect:/login-company";
+        }
+
+        Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
+
+        if (company == null) {
+            return "redirect:/login-company";
+        }
 
         Project project = projectServiceImplementation.getProjectById(id);
-        Company company = companyRepository.findById(project.getCompanyId()).orElse(null);
 
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("project", project);
-        modelMap.addAttribute("documentSrc", getDocumentSrc(project.getDocumentName()));
+
+        Path path = Paths.get(project.getProjectDocument().getDocumentUrl());
+
+        modelMap.addAttribute("documentSrc", getDocumentSrc(path));
 
         return "viewProject";
     }
 
 
     @GetMapping("/post-a-project/{companyId}")
-    public String postAProject(@PathVariable Long companyId, HttpSession httpSession, ModelMap modelMap){
+    public String postAProject(@PathVariable Long companyId, HttpSession httpSession, ModelMap modelMap) {
         Optional<Company> companyOptional = companyRepository.findById(companyId);
 
-        if(companyOptional.isEmpty()){return "redirect:/login-company";}
+        if (companyOptional.isEmpty()) {
+            return "redirect:/login-company";
+        }
 
         Company company = companyOptional.get();
         modelMap.addAttribute("company", company);
 
-        httpSession.setAttribute("companyData", company);
-        httpSession.setAttribute("sessionData", company.getEmail());
+        List<String> availableSkills = GeneralSkills.getAvailableSkills();
+        modelMap.addAttribute("availableSkills", availableSkills );
+
+
+        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
         return "postProject";
     }
 
     @PostMapping("/handle-post-a-project")
-    public String handleProjectPosting(@ModelAttribute ProjectDAO projectDAO, ModelMap modelMap, HttpSession httpSession, @RequestParam("documentFile") MultipartFile documentFile) {
+    public String handleProjectPosting(
+            @ModelAttribute ProjectDAO projectDAO,
+            ModelMap modelMap,
+            HttpSession httpSession,
+            @RequestParam MultipartFile projectFile
+    ) {
         // add securuty stuffs later, converstion stuffs
 
-        String sessionData = (String) httpSession.getAttribute("sessionData");
-        Company companyData = (Company) httpSession.getAttribute("companyData");
+        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
 
-        if(companyData != null && sessionData != null){
-            String stop = "here";
-
-            var date = LocalDate.parse(projectDAO.getDeadline());
-
-            // use cisco id for now
-
-            storageServiceImplementation.store(documentFile); // commented out for the purpose of testing
-            Path filePath = storageServiceImplementation.load(documentFile.getOriginalFilename()); // will make this better  later
-
-            // convert form dao to the object
-            Project project = Project.builder()
-                    .companyId(companyData.getId())
-                    .companyName(companyData.getName())
-                    .title(projectDAO.getTitle())
-                    .description(projectDAO.getDescription())
-                    .skills(projectDAO.getSkills())
-                    .deadline(date)
-                    .location(projectDAO.getLocation())
-                    .documentName(documentFile.getOriginalFilename())
-                    .documentUrl(filePath.toString())
-                    .build();
-
-
-            companyServiceImplementation.postAProject(project);
-
-
-            modelMap.addAttribute("companyProject", project);
-            modelMap.addAttribute("company", companyData);
-
-            httpSession.setAttribute("sessionData", sessionData);
-            httpSession.setAttribute("companyData", companyData);
-
-
-            return "redirect:/companyHomepage";
+        if (company == null) {
+            return "redirect:/login-company";
         }
 
-        return "redirect:/login-company";
+        storageServiceImplementation.store(projectFile);
+        Path documentPath = storageServiceImplementation.load(projectFile.getOriginalFilename());
+
+        ProjectDocument newProjectDocument = ProjectDocument.builder()
+                .documentName(projectFile.getOriginalFilename())
+                .documentUrl(documentPath.toString())
+                .uploadDate(LocalDate.now())
+                .build();
+
+        // Skills
+        List<String> allSkills = new ArrayList<>(projectDAO.getSkills());
+        allSkills.addAll(projectDAO.getOtherSkills());
+
+        // convert form dao to the object
+        Project project = Project.builder()
+                .company(company)
+                .title(projectDAO.getTitle())
+                .description(projectDAO.getDescription())
+                .budget(Double.valueOf(projectDAO.getBudget()))
+                .skills(allSkills)
+                .deadline(LocalDate.parse(projectDAO.getDeadline()))
+                .location(projectDAO.getLocation())
+                .projectDocument(newProjectDocument)
+                .postedDate(LocalDate.now())
+                .build();
+
+        // experience levels and other fields will be added during updates
+
+        companyServiceImplementation.postAProject(project);
+
+
+        modelMap.addAttribute("project", project);
+        modelMap.addAttribute("company", company);
+
+        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
+
+        return "redirect:/companyHomepage";
+
 
     }
 
@@ -120,7 +160,7 @@ public class ProjectController {
             @RequestParam("documentFile") MultipartFile documentFile,
             ModelMap modelMap,
             HttpSession httpSession
-    ){
+    ) {
 
         Long id = Long.parseLong(projectId);
 
@@ -130,20 +170,18 @@ public class ProjectController {
 
         projectDAO.setCompanyId(String.valueOf(getCisco().getId()));
 
-        if(documentFile.isEmpty()){
+        if (documentFile.isEmpty()) {
             project = projectServiceImplementation.updateProjectWithoutFile(projectDAO, Long.parseLong(projectId), getCisco().getId());
-        }else{
+        } else {
             project = projectServiceImplementation.updateProject(projectDAO, id, getCisco().getId(), documentFile);
             modelMap.addAttribute("documentSrc", getDocumentSrc(documentFile.getOriginalFilename()));
 
         }
 
 
-
         modelMap.addAttribute("message", "update successful");
 
         modelMap.addAttribute("project", project);
-
 
 
         return "redirect:/view-project/" + id;
@@ -168,17 +206,21 @@ public class ProjectController {
     }
 
     @GetMapping("view-and-apply-project/{projectId}")
-    public String viewAndApplyProject(@PathVariable Long projectId, ModelMap modelMap, HttpSession httpSession){
+    public String viewAndApplyProject(@PathVariable Long projectId, ModelMap modelMap, HttpSession httpSession) {
 
         Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
-        if(freelancer == null){return "redirect:/login-freelancer";}
+        if (freelancer == null) {
+            return "redirect:/login-freelancer";
+        }
 
         modelMap.addAttribute("freelancer", freelancer);
 
         Project project = projectServiceImplementation.getProjectById(projectId);
         Company company = companyRepository.findById(project.getCompanyId()).orElse(null);
 
-        if(company == null){return "redirect:/login-company";}
+        if (company == null) {
+            return "redirect:/login-company";
+        }
 
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("project", project);
@@ -198,21 +240,20 @@ public class ProjectController {
         modelMap.addAttribute("documentSrc", getDocumentSrc(project.getDocumentName()));
 
 
-
         return "viewAndApplyProject";
 
     }
 
 
     // will delete later - for dev purpose.
-    public Company getCisco(){
-        Optional<Company> co =  companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco");
+    public Company getCisco() {
+        Optional<Company> co = companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco");
         return co.orElse(null);
 
     }
 
-    public String getDocumentSrc(String filename){
-        Path path = storageServiceImplementation.load(filename);
+    public String getDocumentSrc(Path path) {
+
         return MvcUriComponentsBuilder
                 .fromMethodName(FileUploadController.class, "displayFile", path.getFileName().toString())
                 .build()

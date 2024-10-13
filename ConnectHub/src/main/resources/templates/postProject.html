@@ -29,18 +29,32 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="documentName">Document File Name</label>
-                    <input type="text" class="form-control" id="documentName" name="documentName" placeholder="Enter document name (optional) ">
+                    <label for="projectFile">Upload Project File</label>
+                    <input type="file" id="projectFile" name="projectFile" >
                 </div>
 
                 <div class="form-group">
-                    <label for="documentFile">Upload Project File</label>
-                    <input type="file" id="documentFile" name="documentFile" >
+                    <label for="budget">Budget</label>
+                    <input type="number" class="form-control" id="budget" name="budget" required>
                 </div>
 
                 <div class="form-group">
                     <label for="skills">Skills Needed</label>
-                    <input type="text" class="form-control" id="skills" name="skills" placeholder="Enter required skills" required>
+                    <select class="form-control" id="skills" name="skills" required multiple>
+                        <option value="" disabled selected>Select required skills</option>
+                        <option th:each="skill : ${availableSkills}"
+                                th:value="${skill}"
+                                th:text="${skill}"></option>
+                    </select>
+                    <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+
+                    <div class="mt-2">
+                        <label for="otherSkills">Add Other Skills</label>
+                        <div id="additionalSkillsContainer">
+                            <input type="text" class="form-control mb-2" name="otherSkills" placeholder="Enter additional skills">
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="addSkillButton">Add Another Skill</button>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -57,7 +71,17 @@
             </form>
         </div>
 
-<!--        -->
+        <script>
+            document.getElementById('addSkillButton').addEventListener('click', function() {
+                const container = document.getElementById('additionalSkillsContainer');
+                const newInput = document.createElement('input');
+                newInput.type = 'text';
+                newInput.className = 'form-control mb-2';
+                newInput.name = 'otherSkills'; // Name should be the same to collect all in the list
+                newInput.placeholder = 'Enter additional skills';
+                container.appendChild(newInput);
+            });
+        </script>
 
 
     </section>

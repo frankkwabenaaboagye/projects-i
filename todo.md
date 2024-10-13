@@ -8,6 +8,7 @@
  - fields are not to display
  - add save for later - feature [to the Job]
  - have a DTO
+ - fix document url
  
 ## feature
 - create an application portal?

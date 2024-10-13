@@ -26,8 +26,8 @@
             <p class="scheme-1" th:text="${project.getLocation()}"> </p>
             <p class="scheme-1" th:text="${project.getSkills()}"> </p>
             <p class="scheme-1" th:text="${project.getDescription()}"> </p>
-            <p class="scheme-1" th:text="${project.getDocumentUrl()}"> </p>
-            <p class="scheme-1" th:text="${project.getDocumentName()}"> </p>
+            <p class="scheme-1" th:text="${project.getProjectDocument().getDocumentUrl()}"> </p>
+            <p class="scheme-1" th:text="${project.getProjectDocument().getDocumentName()}"> </p>
             <p class="scheme-1" th:text="${project.getDeadline()}"> </p>
 
             <form th:action="@{/handle-company-project-update/{id}(id=${project.getId()})}" method="POST" enctype="multipart/form-data">
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="documentName" class="form-label">Project Document Name</label>
-                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getDocumentName()}" readonly>
+                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getProjectDocument().getDocumentName()}" readonly>
                     </div>
                 </div>
 

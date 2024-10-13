@@ -84,7 +84,6 @@ public class JobController {
         httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
         List<String> availableSkills = GeneralSkills.getAvailableSkills();
-
         modelMap.addAttribute("availableSkills", availableSkills );
 
         return "postJob";
