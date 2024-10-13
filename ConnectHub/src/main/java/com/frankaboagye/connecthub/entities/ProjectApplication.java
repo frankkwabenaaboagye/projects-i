@@ -19,11 +19,10 @@ public class ProjectApplication {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String fullName;
-    private String email;
-    private String phoneNumber;
     private String resumeLocation;
     private LocalDate applicationDate;
+
+    private
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "freelancer_id")
