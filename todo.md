@@ -7,6 +7,7 @@
  - structure the model attribute, dont send all the data
  - fields are not to display
  - add save for later - feature [to the Job]
+ - have a DTO
  
 ## feature
 - create an application portal?
