@@ -28,6 +28,7 @@ import java.util.Optional;
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_PROFILE;
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
 
 @RequiredArgsConstructor
 @Controller
@@ -185,11 +186,10 @@ public class ProjectController {
 
 
         modelMap.addAttribute("message", "update successful");
-
         modelMap.addAttribute("project", project);
 
         httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), FREELANCER.getValue());  // e.g. ("company", company)
 
 
         return "redirect:/view-project/" + projectId;
@@ -220,8 +220,9 @@ public class ProjectController {
             HttpSession httpSession
     ) {
 
-        Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
-        if (freelancer == null) {
+        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription()); // this is the id of the freelancer
+
+        if (sessionData == null) {
             return "redirect:/login-freelancer";
         }
 
@@ -255,7 +256,7 @@ public class ProjectController {
         return "viewAndApplyProject";
 
     }
-    
+
 
     public String getDocumentSrc(Path path) {
 

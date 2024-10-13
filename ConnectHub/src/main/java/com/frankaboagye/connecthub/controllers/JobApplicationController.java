@@ -5,6 +5,8 @@ import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.entities.JobApplication;
+import com.frankaboagye.connecthub.enums.ApplicationStatus;
+import com.frankaboagye.connecthub.enums.ConnectHubConstant;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobApplicationServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
@@ -25,6 +27,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+
+import static com.frankaboagye.connecthub.enums.ApplicationStatus.SUBMITTED;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
 
 @RequiredArgsConstructor
 @Controller
@@ -50,42 +55,43 @@ public class JobApplicationController {
 
         //TODO
 
-        Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
-        if (freelancer == null) {
+        Long sessionData = (Long) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        if(sessionData == null){
+            return "redirect:/login-freelancer";
+        }
+
+        Freelancer freelancer = freelancerRepository.findById(sessionData).orElse(null);
+        if(freelancer == null){
             return "redirect:/login-freelancer";
         }
 
         Job job = jobRepository.findById(jobId).orElse(null);
+
         if (job == null) {
             return "redirect:/login-freelancer";
         }
+
+        Company company = job.getCompany();
 
         if(resumeFile.isEmpty()){
             return "redirect:/login-freelancer";
         }
 
-        JobApplication jobApplication = JobApplication.builder()
-                .fullName(jobApplicationDAO.getFullName())
-                .email(jobApplicationDAO.getEmail())
-                .linkedin(jobApplicationDAO.getLinkedin())
-                .phoneNumber(jobApplicationDAO.getPhoneNumber())
-                .applicationDate(LocalDate.now())
-                .coverLetter(jobApplicationDAO.getCoverLetter())
-                .build();
-
         // resumeLocation
         storageServiceImplementation.store(resumeFile);
         Path resumePath = storageServiceImplementation.load(resumeFile.getOriginalFilename());
+
+        JobApplication jobApplication = JobApplication.builder()
+                .resumeLocation(resumePath.toString())
+                .applicationDate(LocalDate.now())
+                .status(SUBMITTED)
+                .freelancer(freelancer)
+                .company(company)
+                .job(job)
+                .build();
+
+
         jobApplication.setResumeLocation(resumePath.toString());
-
-        // company, Job
-        jobApplication.setJob(job);
-
-        Company company = companyRepository.findById(job.getCompanyId()).orElse(null);
-        if(company == null){
-            return "redirect:/login-company";
-        }
-        jobApplication.setCompany(company);
 
         jobApplicationServiceImplementation.submitJobApplication(jobApplication);
 

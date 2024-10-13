@@ -17,11 +17,18 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.net.URL;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Optional;
+
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_PROFILE;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.CONNECT_HUB_SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,55 +47,55 @@ public class FreelancerController {
     public String handleFreelancerRegistration(
             @ModelAttribute FreelancerDAO freelancerDAO,
             @RequestParam("freelancerPhotoFile") MultipartFile freelancerPhotoFile,
-            ModelMap modelMap
+            ModelMap modelMap,
+            HttpSession httpSession,
+            RedirectAttributes redirectAttributes
     ){
 
         // will make the password check better
-        if(!freelancerDAO.getFreelancerPassword().equals(freelancerDAO.getFreelancerConfirmPassword())){
+        if(!freelancerDAO.getPassword().equals(freelancerDAO.getConfirmPassword())){
             modelMap.addAttribute("message", "Passwords do not match");
             return "redirect:/register-freelancer";
         }
 
         // do the conversion in the helper class
 
-        // date
-        // yyyy-mm-dd
-        String stringDOB = freelancerDAO.getDateOfBirth();
-        int year = Integer.parseInt(stringDOB.substring(0, 4));
-        int month = Integer.parseInt(stringDOB.substring(5, 7));
-        int day = Integer.parseInt(stringDOB.substring(8, 10));
-
-        LocalDate dob = LocalDate.of(year, month, day);
-
-        Double chargeRate = Double.parseDouble(freelancerDAO.getBasicCharge());
-
-        Gender freelancerGender = Gender.valueOf(freelancerDAO.getGender().toUpperCase());
-
-        Freelancer freelancer = Freelancer.builder()
-                .fullName(freelancerDAO.getFullName())
+        Freelancer newFreelancer = Freelancer.builder()
                 .email(freelancerDAO.getEmail())
-                .dateOfBirth(dob)
-                .gender(freelancerGender)
+                .gender(Gender.valueOf(freelancerDAO.getGender().toUpperCase()))
+                .fullName(freelancerDAO.getFullName())
+                .dateOfBirth(LocalDate.parse(freelancerDAO.getDateOfBirth()))
                 .linkedin(freelancerDAO.getLinkedin())
                 .phoneNumber(freelancerDAO.getPhoneNumber())
                 .education(freelancerDAO.getEducation())
-                .basicCharge(chargeRate)
-                .profilepicturename(freelancerPhotoFile.getOriginalFilename())
+                .basicCharge(Double.parseDouble(freelancerDAO.getBasicCharge()))
+                .password(freelancerDAO.getPassword())
                 .skills(freelancerDAO.getSkills())
-                .password(freelancerDAO.getFreelancerPassword())
                 .build();
 
-        storageServiceImplementation.store(freelancerPhotoFile);
-        freelancerServiceImplementation.registerFreelanceer(freelancer);
+        // profile picture url
 
-        modelMap.addAttribute("message", "Freelancer registered successfully");
+        storageServiceImplementation.store(freelancerPhotoFile);
+        Path photoFilePath = storageServiceImplementation.load(freelancerPhotoFile.getOriginalFilename());
+
+        newFreelancer.setProfilepictureurl(photoFilePath.toString());
+
+        freelancerServiceImplementation.registerFreelanceer(newFreelancer);
+
+        redirectAttributes.addFlashAttribute("message", "Freelancer registered successfully");
+
         return "redirect:/login-freelancer";
 
     }
 
 
     @GetMapping("/login-freelancer")
-    public String freelancerLogin(){
+    public String freelancerLogin(ModelMap modelMap){
+
+        if(modelMap.containsAttribute("message")){
+            modelMap.addAttribute("message", "Freelancer registered successfully!!");
+        }
+
         return "loginFreelancer";
     }
 
@@ -112,20 +119,33 @@ public class FreelancerController {
         httpSession.setAttribute("SessionData", email);
         httpSession.setAttribute("freelancerData", freelancer);
 
+        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), freelancer.getId());  // e.g. ("sessionData", 29919)  // for the freelancer
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
+
         return "redirect:/freelancerHomepage";
 
     }
 
     @GetMapping("/freelancerHomepage")
     public String getFreelancerHompage(HttpSession httpSession, ModelMap modelMap){
-        String sessionKey = (String) httpSession.getAttribute("SessionData");
-        Freelancer theFreelancer = (Freelancer) httpSession.getAttribute("freelancerData");
-        if(sessionKey == null || theFreelancer == null){
+
+        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        if(sessionData == null){
+            modelMap.addAttribute("message", "session data does not exist");
+            return "redirect:/login-freelancer";
+        }
+
+        Freelancer freelancer = freelancerRepository.findById(Long.parseLong(sessionData)).orElse(null);
+        if(freelancer == null){
+            modelMap.addAttribute("message", "user does not exit - try again");
             return "loginFreelancer";
         }
 
-        // modelMap.addAttribute("companyName", theCompany.getName());
-        modelMap.addAttribute("freelancer", theFreelancer);
+        modelMap.addAttribute("freelancer", freelancer);
+
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), FREELANCER.getValue());
+        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), freelancer.getId());
 
 
         return "freelancerHomepage";
@@ -140,25 +160,27 @@ public class FreelancerController {
     @GetMapping("/freelancerProfilePage")
     public String getFreelancerProfilePage(HttpSession httpSession, ModelMap modelMap){
 
-        Optional<Freelancer> fo = freelancerRepository.findByEmailAndPassword("kat@gmail.com", "kat"); // we will change this
-        if(fo.isPresent()){
-            Freelancer freelancer = fo.get();
+        Long sessionData = (Long) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription()); // the id of the freelancer
 
-            // duplicate here
-            Path path = storageServiceImplementation.load(freelancer.getProfilepicturename());
-            String profileSrc =  MvcUriComponentsBuilder
-                    .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
-                    .build()
-                    .toUri()
-                    .toString();
+        Freelancer freelancer = freelancerRepository.findById(sessionData).orElse(null);
 
-            modelMap.addAttribute("freelancer", freelancer);
-            modelMap.addAttribute("profilePicturePath", profileSrc);
-
-            return "freelancerProfilepage";
+        if(freelancer == null){
+            return "redirect:/login-freelancer";
         }
 
-        return null; // will change this
+
+        Path path = Paths.get(freelancer.getProfilepictureurl());
+        String profileSrc = MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
+                .build()
+                .toUri()
+                .toString();
+
+        modelMap.addAttribute("freelancer", freelancer);
+        modelMap.addAttribute("profilePicturePath", profileSrc);
+
+        return "freelancerProfilepage";
+
     }
 
     @PostMapping("/handle-freelancer-profile-update/{id}")

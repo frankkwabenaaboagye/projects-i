@@ -28,6 +28,6 @@ public class JobService implements JobServiceInterface {
 
     @Override
     public List<Job> getAllJobsByCompanyId(Long companyId) {
-        return jobRepository.findAllByCompanyId(companyId);
+        return jobRepository.findAllByCompany_Id(companyId);
     }
 }

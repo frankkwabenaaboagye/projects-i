@@ -71,9 +71,9 @@ public class Freelancer {
     private String education;
 
     /**
-     * The file name of the profile picture for the freelancer.
+     * The location of the profile picture for the freelancer.
      */
-    private String profilepicturename;
+    private String profilepictureurl;
 
     /**
      * The basic charge (hourly) expected by the freelancer.

@@ -20,10 +20,9 @@ public class FreelancerDAO {
     private String linkedin;
     private String phoneNumber;
     private String education;
-    private String profilepicturename;
     private String basicCharge;
     private String gender;
     private List<String> skills;
-    private String freelancerPassword;
-    private String freelancerConfirmPassword;
+    private String password;
+    private String confirmPassword;
 }

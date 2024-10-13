@@ -39,8 +39,8 @@ public class ProjectService implements ProjectServiceInterface {
         // project document
         storageServiceImplementation.store(documentFile);
         Path filePath =  storageServiceImplementation.load(documentFile.getOriginalFilename());
-        project.setDocumentUrl(filePath.toString());
-        project.setDocumentName(documentFile.getOriginalFilename());
+        project.getProjectDocument().setDocumentUrl(filePath.toString());
+        project.getProjectDocument().setDocumentName(documentFile.getOriginalFilename());
 
         return projectRepository.save(project);
     }
@@ -62,12 +62,12 @@ public class ProjectService implements ProjectServiceInterface {
 
     @Override
     public List<Project> getAllProjectsByCompanyId(Long companyId) {
-        return projectRepository.findAllByCompanyId(companyId);
+        return projectRepository.findAllByCompany_Id(companyId);
     }
 
     private Project runUpdate(ProjectDAO projectDAO, Long projectId, Long companyId){
 
-        Project project = projectRepository.findByIdAndCompanyId(projectId, companyId);
+        Project project = projectRepository.findByIdAndCompany_Id(projectId, companyId);
 
         // TODO: null checks or use the Null Object Pattern
 
@@ -76,7 +76,9 @@ public class ProjectService implements ProjectServiceInterface {
         project.setSkills(projectDAO.getSkills());
         project.setDeadline(LocalDate.parse(projectDAO.getDeadline()));
         project.setLocation(projectDAO.getLocation());
-        project.setDocumentName(projectDAO.getDocumentName());
+
+        // set the project document
+
         project.setLocation(projectDAO.getLocation());
 
         return projectRepository.save(project);
