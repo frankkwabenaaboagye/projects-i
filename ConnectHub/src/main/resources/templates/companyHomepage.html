@@ -53,14 +53,14 @@
             <h2 class="scheme-1">All Posted Projects</h2>
             <div class="row">
                 <!-- Job Cards -->
-                <div class="col-md-4" th:each="project : ${companyProject}">
+                <div class="col-md-4" th:each="project : ${companyProjects}">
                     <a th:href="@{/view-project/{id}(id=${project.getId()})}" class="text-decoration-none" >
                         <div class="card">
                             <div class="card-body">
                                 <!--                                <h5 class="card-title">Company: <span th:text="${company.getName()}">Company Name</span></h5>-->
                                 <h6 class="card-subtitle mb-2 text-muted">Job Title: <span th:text="${project.getTitle()}">Project Title</span></h6>
                                 <p class="card-text">Description: <span th:text="${project.getDescription()}">This is a brief project description.</span></p>
-                                <p class="card-text">Document Name: <span th:text="${project.getDocumentName()}">$5000</span></p>
+                                <p class="card-text">Document Name: <span th:text="${project.getProjectDocument().getDocumentUrl()}">$5000</span></p>
                                 <p class="card-text">Skills: <span th:text="${project.getSkills()}">JavaScript, React</span></p>
                                 <p class="card-text">Deadline: <span th:text="${project.getDeadline()}">2024-09-30</span></p>
                                 <p class="card-text">Location: <span th:text="${project.getLocation()}">Remote</span></p>

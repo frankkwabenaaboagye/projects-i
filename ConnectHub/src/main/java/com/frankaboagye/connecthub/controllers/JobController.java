@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -45,10 +46,10 @@ public class JobController {
 
 
     @GetMapping("/view-job/{id}")
-    public String viewJob(@PathVariable Long id, ModelMap modelMap){
+    public String viewJob(@PathVariable Long id, ModelMap modelMap, HttpSession httpSession){
 
         Job job = jobServiceImplementation.getJobById(id);
-        Company company = companyRepository.findById(job.getCompanyId()).orElse(null);
+        Company company = job.getCompany();
 
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("job", job);
@@ -81,8 +82,8 @@ public class JobController {
         Company company = companyOptional.get();
         modelMap.addAttribute(COMPANY.getValue(), company);
 
-        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());
-        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());
+        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
         List<String> availableSkills = GeneralSkills.getAvailableSkills();
 
@@ -104,29 +105,29 @@ public class JobController {
         Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
         if(company == null){ return "redirect:/login-company"; }
 
-
-        // convert form dao to the object
-        Job theJob = Job.builder()
-                .companyId(companyData.getId())
-                .companyName(companyData.getName())
-                .title(jobDAO.getJobTitle())
-                .description(jobDAO.getJobDescription())
-                .salary(Double.valueOf(jobDAO.getSalary()))
-                .skills(jobDAO.getSkills())
-                .deadline(date)
-                .location(jobDAO.getLocation())
-                .build();
+        List<String> skillForJob = new ArrayList<>(jobDAO.getSkills());
+        skillForJob.addAll(jobDAO.getOtherSkills()); // Add other skills to the existing list
 
         Job newJob = Job.builder()
+                .company(company)
+                .title(jobDAO.getTitle())
+                .description(jobDAO.getDescription())
+                .salary(Double.valueOf(jobDAO.getSalary()))
+                .skills(skillForJob)
+                .deadline(LocalDate.parse(jobDAO.getDeadline()))
+                .location(jobDAO.getLocation())
+                .moreInformation(jobDAO.getMoreInformation())
                 .build();
 
+        // associated labels, responsibilities, technology interest will be added - when company is updating the job;
 
         companyServiceImplementation.postAJob(newJob);
 
-        modelMap.addAttribute("company", companyData);
+        modelMap.addAttribute(COMPANY.getValue(), company);
 
-        httpSession.setAttribute("sessionData", sessionData);
-        httpSession.setAttribute("companyData", companyData);
+        httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
 
         return "redirect:/companyHomepage";
     }

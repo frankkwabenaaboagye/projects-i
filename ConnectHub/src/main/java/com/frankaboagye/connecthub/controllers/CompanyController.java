@@ -104,10 +104,8 @@ public class CompanyController {
         if(companyData.isPresent()){
             Company company = companyData.get();
 
-            httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), email);
-            httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY);
-
-            httpSession.setAttribute(CONNECT_HUB_COMPANY_DATA.getDescription(), company);
+            httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+            httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
             return "redirect:/companyHomepage";
 
@@ -128,15 +126,22 @@ public class CompanyController {
     public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
 
         String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
-        Company companyData = (Company) httpSession.getAttribute(CONNECT_HUB_COMPANY_DATA.getDescription());
+        if(sessionData == null){ return "redirect:/login-company"; }
 
-        if(companyData != null && sessionData != null){
-            List<Job> companyJobs = jobRepository.findAllByCompanyId(companyData.getId());
-            List<Project> companyProject = projectRepository.findAllByCompanyId(companyData.getId());
+        Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
+
+        if(company != null){
+            List<Job> companyJobs = jobRepository.findAllByCompany_Id(company.getId());
+            List<Project> companyProjects = projectRepository.findAllByCompany_Id(company.getId());
+
+            modelMap.addAttribute("company", company);
             modelMap.addAttribute("companyJobs", companyJobs);
-            modelMap.addAttribute("companyProject", companyProject);
-            modelMap.addAttribute("company", companyData);
-            modelMap.addAttribute("sessionData", companyData.getEmail());
+            modelMap.addAttribute("companyProjects", companyProjects);
+            modelMap.addAttribute("profile", company);
+
+            httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+            httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
         } else {
             return "redirect:/login-company";
         }

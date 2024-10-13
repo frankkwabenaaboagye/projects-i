@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    List<Project> findAllByCompanyId(Long companyId);
-    Project findByIdAndCompanyId(Long projectId, Long companyId);
+    List<Project> findAllByCompany_Id(Long companyId);
+    Project findByIdAndCompany_Id(Long projectId, Long companyId);
 }

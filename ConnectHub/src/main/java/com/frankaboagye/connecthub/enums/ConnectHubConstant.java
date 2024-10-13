@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum ConnectHubConstant {
     CONNECT_HUB_PROFILE("profile"),
     CONNECT_HUB_SESSION_DATA("sessionData"), // this will be the id of the user
-    CONNECT_HUB_COMPANY_DATA("companyData"),
+    COMPANY_JOBS("companyJobs"),
+    COMPANY_PROJECTS("companyProjects"),
     CONNECT_HUB_SKILL("connectHubSkill"),
     CONNECT_HUB_NOTIFICATION("connectHubNotification"),
     CONNECT_HUB_RATING("connectHubRating"),
