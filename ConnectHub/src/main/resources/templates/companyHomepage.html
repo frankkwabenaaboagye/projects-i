@@ -16,7 +16,6 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="container">
-<!--                <h1 th:text="'Welcome, ' + ${companyName} + '!'"></h1>-->
                 <h1 th:text="'Welcome, ' + ${company.getName()} + '!'"></h1>
                 <p>Your place to post jobs, projects, and connect with top freelancers.</p>
                 <a th:href="@{/post-a-job/{companyId}(companyId=${company.getId()})}" class="btn btn-primary">Post a Job</a>
@@ -65,7 +64,7 @@
                                 <p class="card-text">Skills: <span th:text="${project.getSkills()}">JavaScript, React</span></p>
                                 <p class="card-text">Deadline: <span th:text="${project.getDeadline()}">2024-09-30</span></p>
                                 <p class="card-text">Location: <span th:text="${project.getLocation()}">Remote</span></p>
-                                <p class="card-text">Path: <span th:text="${project.getDocumentUrl()}">Url</span></p>
+                                <p class="card-text">Path: <span th:text="${project.getProjectDocument().getDocumentUrl()}">Url</span></p>
                             </div>
                         </div>
                     </a>

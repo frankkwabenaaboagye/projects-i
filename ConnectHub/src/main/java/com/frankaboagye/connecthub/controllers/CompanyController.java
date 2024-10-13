@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -97,16 +98,19 @@ public class CompanyController {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             ModelMap modelMap,
-            HttpSession httpSession
+            HttpSession httpSession,
+            RedirectAttributes redirectAttributes
     ){
 
         Optional<Company> companyData = companyServiceImplementation.loginCompany(email, password);
         if(companyData.isPresent()){
             Company company = companyData.get();
 
-            httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(),email);
+            httpSession.setAttribute(CONNECT_HUB_SESSION_DATA.getDescription(), email);
             httpSession.setAttribute(CONNECT_HUB_PROFILE.getDescription(), COMPANY);
+
             httpSession.setAttribute(CONNECT_HUB_COMPANY_DATA.getDescription(), company);
+
             return "redirect:/companyHomepage";
 
         }
@@ -125,8 +129,8 @@ public class CompanyController {
     @GetMapping("/companyHomepage")
     public String getCompanyHompage(HttpSession httpSession, ModelMap modelMap){
 
-        String sessionData = (String) httpSession.getAttribute("sessionData");
-        Company companyData = (Company) httpSession.getAttribute("companyData");
+        String sessionData = (String) httpSession.getAttribute(CONNECT_HUB_SESSION_DATA.getDescription());
+        Company companyData = (Company) httpSession.getAttribute(CONNECT_HUB_COMPANY_DATA.getDescription());
 
         if(companyData != null && sessionData != null){
             List<Job> companyJobs = jobRepository.findAllByCompanyId(companyData.getId());
@@ -137,7 +141,6 @@ public class CompanyController {
             modelMap.addAttribute("sessionData", companyData.getEmail());
         } else {
             return "redirect:/login-company";
-
         }
 
 
