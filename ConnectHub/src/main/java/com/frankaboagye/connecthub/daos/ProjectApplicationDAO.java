@@ -11,12 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProjectApplicationDAO {
 
-    private String fullName;
-    private String email;
-    private String c;
-    private String skills;
-    private String deadline;
-    private String documentName;
-    private String location;
+    private String projectId;
+    private String freelancerId;
 
 }
