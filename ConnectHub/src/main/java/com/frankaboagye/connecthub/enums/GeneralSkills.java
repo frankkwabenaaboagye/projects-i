@@ -1,0 +1,52 @@
+package com.frankaboagye.connecthub.enums;
+
+/**
+ * The GeneralSkills enum represents various general skills that companies may require
+ * and freelancers may possess. This enum can be utilized to categorize skills
+ * across multiple domains and job types.
+ */
+public enum GeneralSkills {
+    COMMUNICATION,
+    TEAMWORK,
+    PROBLEM_SOLVING,
+    TIME_MANAGEMENT,
+    ADAPTABILITY,
+    TECHNICAL_PROFICIENCY,
+    PROJECT_MANAGEMENT,
+    LEADERSHIP,
+    ANALYTICAL_THINKING,
+    CREATIVITY,
+    ATTENTION_TO_DETAIL,
+    CUSTOMER_SERVICE,
+    RESEARCH,
+    WRITING,
+    MARKETING,
+    PROGRAMMING,
+    DATA_ANALYSIS,
+    DESIGN,
+    SALES,
+    NETWORKING,
+    STRATEGIC_PLANNING,
+    CONFLICT_RESOLUTION,
+    NEGOTIATION,
+    PRESENTATION,
+    SOCIAL_MEDIA_MANAGEMENT,
+    DIGITAL_MARKETING,
+    SOFTWARE_DEVELOPMENT,
+    UX_UI_DESIGN,
+    CONTENT_CREATION,
+    DATABASE_MANAGEMENT,
+    CLOUD_COMPUTING,
+    MACHINE_LEARNING,
+    CYBERSECURITY,
+    BUSINESS_ANALYSIS,
+    FINANCIAL_ANALYSIS,
+    EDUCATIONAL_TECHNOLOGY,
+    ECOMMERCE,
+    SEO,
+    QUALITY_ASSURANCE,
+    EVENT_PLANNING,
+    BRAND_MANAGEMENT,
+    LOGISTICS,
+    FACILITATION
+}
