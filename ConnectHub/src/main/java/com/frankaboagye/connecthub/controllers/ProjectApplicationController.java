@@ -1,10 +1,11 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.JobApplicationDAO;
-import com.frankaboagye.connecthub.entities.Company;
-import com.frankaboagye.connecthub.entities.Freelancer;
-import com.frankaboagye.connecthub.entities.Job;
-import com.frankaboagye.connecthub.entities.JobApplication;
+import com.frankaboagye.connecthub.daos.ProjectApplicationDAO;
+import com.frankaboagye.connecthub.entities.*;
+import com.frankaboagye.connecthub.enums.ApplicationStatus;
+import com.frankaboagye.connecthub.enums.ConnectHubConstant;
+import com.frankaboagye.connecthub.enums.ConnectHubProfile;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobApplicationServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
@@ -12,6 +13,7 @@ import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import com.frankaboagye.connecthub.repositories.FreelancerRepository;
 import com.frankaboagye.connecthub.repositories.JobRepository;
+import com.frankaboagye.connecthub.repositories.ProjectRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
+import static com.frankaboagye.connecthub.enums.ApplicationStatus.SUBMITTED;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
+
 @RequiredArgsConstructor
 @Controller
 public class ProjectApplicationController {
@@ -37,11 +42,12 @@ public class ProjectApplicationController {
     private final StorageServiceInterface storageServiceImplementation;
     private final JobRepository jobRepository;
     private final JobApplicationServiceInterface jobApplicationServiceImplementation;
+    private final ProjectRepository projectRepository;
 
-    @PostMapping("/submit-project-application/{jobId}")
+    @PostMapping("/submit-project-application/{projectId}")
     public String handleProjectApplicationSubmission(
-            @ModelAttribute JobApplicationDAO jobApplicationDAO,
-            @PathVariable long jobId,
+            @ModelAttribute ProjectApplicationDAO projectApplicationDAO,
+            @PathVariable long projectId,
             HttpSession httpSession,
             @RequestParam MultipartFile resumeFile,
             ModelMap modelMap,
@@ -50,42 +56,42 @@ public class ProjectApplicationController {
 
         //TODO
 
-        Freelancer freelancer = (Freelancer) httpSession.getAttribute("freelancer");
+        Project project = projectRepository.findById(projectId).orElse(null);
+        if (project == null) {
+            return "redirect:/login-freelancer";
+        }
+
+        Company company = project.getCompany();
+
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
+        if (sessionData == null) {
+            return "redirect:/login-freelancer";
+        }
+
+        Freelancer freelancer = freelancerRepository.findById(sessionData).orElse(null);
         if (freelancer == null) {
             return "redirect:/login-freelancer";
         }
 
-        Job job = jobRepository.findById(jobId).orElse(null);
-        if (job == null) {
-            return "redirect:/login-freelancer";
-        }
 
         if(resumeFile.isEmpty()){
             return "redirect:/login-freelancer";
         }
 
-        JobApplication jobApplication = JobApplication.builder()
-                .fullName(jobApplicationDAO.getFullName())
-                .email(jobApplicationDAO.getEmail())
-                .linkedin(jobApplicationDAO.getLinkedin())
-                .phoneNumber(jobApplicationDAO.getPhoneNumber())
-                .applicationDate(LocalDate.now())
-                .coverLetter(jobApplicationDAO.getCoverLetter())
-                .build();
-
         // resumeLocation
         storageServiceImplementation.store(resumeFile);
         Path resumePath = storageServiceImplementation.load(resumeFile.getOriginalFilename());
-        jobApplication.setResumeLocation(resumePath.toString());
 
-        // company, Job
-        jobApplication.setJob(job);
+        ProjectApplication projectApplication = ProjectApplication.builder()
+                .resumeLocation(resumePath.toString())
+                .applicationDate(LocalDate.now())
+                .status(SUBMITTED)
+                .freelancer(freelancer)
+                .company(company)
+                .project(project)
+                .build();
 
-        Company company = companyRepository.findById(job.getCompanyId()).orElse(null);
-        if(company == null){
-            return "redirect:/login-company";
-        }
-        jobApplication.setCompany(company);
+        // add freelancer comments - during updates
 
         jobApplicationServiceImplementation.submitJobApplication(jobApplication);
 
