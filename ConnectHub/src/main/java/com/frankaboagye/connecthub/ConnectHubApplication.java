@@ -26,7 +26,8 @@ public class ConnectHubApplication {
             JobRepository jobRepository,
             FreelancerRepository freelancerRepository,
             ProjectDocumentRepository projectDocumentRepository,
-            ProjectRepository projectRepository
+            ProjectRepository projectRepository,
+            ResumeRepository resumeRepository
     ) {
         return args -> {
             populateJobAndCompany(
@@ -34,7 +35,8 @@ public class ConnectHubApplication {
                     jobRepository,
                     freelancerRepository,
                     projectRepository,
-                    projectDocumentRepository
+                    projectDocumentRepository,
+                    resumeRepository
             );
         };
     }
@@ -44,7 +46,8 @@ public class ConnectHubApplication {
             JobRepository jobRepository,
             FreelancerRepository freelancerRepository,
             ProjectRepository projectRepository,
-            ProjectDocumentRepository projectDocumentRepository
+            ProjectDocumentRepository projectDocumentRepository,
+            ResumeRepository resumeRepository
     ) {
 
         System.out.println("Populating job and company");
@@ -77,6 +80,7 @@ public class ConnectHubApplication {
                 .technologyInterests(List.of("Java", "Spring Boot", "Docker", "Kubernetes"))
                 .build();
 
+
         Freelancer freelancer = Freelancer.builder()
                 .email("john.doe@example.com")
                 .gender(Gender.MALE) // Assuming Gender is an enum
@@ -90,6 +94,20 @@ public class ConnectHubApplication {
                 .password("securePassword123")
                 .skills(List.of("Java", "Spring Boot", "Microservices", "Docker"))
                 .build();
+
+        Resume resume = Resume.builder()
+                .fileName("this_resume")
+                .location("https://resume.pdf")
+                .uploadDate(LocalDate.now())
+                .title("resume_title")
+                .description("resume_description")
+                .isPrimary(true)
+                .freelancer(freelancer)
+                .build();
+
+        resumeRepository.save(resume);
+
+        freelancer.setResumes(List.of(resume));
 
         Project project = Project.builder()
                 .company(company)
@@ -117,7 +135,6 @@ public class ConnectHubApplication {
         projectRepository.save(project);
         projectDocumentRepository.save(projectDocument);
 
-
         // Add the job to the company's job list
         company.getJobs().add(job);
 
@@ -126,8 +143,6 @@ public class ConnectHubApplication {
 
         // Save the freelancer to the database
         freelancerRepository.save(freelancer);
-
-
 
         System.out.println("Dummy data populated: Company and Job created.");
     }

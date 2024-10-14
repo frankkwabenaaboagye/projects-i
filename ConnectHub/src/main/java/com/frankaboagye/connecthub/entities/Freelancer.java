@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,22 +98,22 @@ public class Freelancer {
     @CollectionTable(name = "freelancer_skills", joinColumns = @JoinColumn(name = "freelancer_id"))
     @Column(name = "skill")
     private List<String> skills;
-//
-//    /**
-//     * The list of resumes associated with the freelancer.
-//     * A freelancer can have multiple resumes.
-//     * <ul>
-//     *     <li>Each resume is linked to the freelancer via a foreign key.</li>
-//     *     <li>CascadeType.ALL ensures that any operation (save, delete, etc.)
-//     *     performed on the freelancer will also be applied to the resumes.</li>
-//     *     <li>orphanRemoval = true ensures that if a resume is removed from
-//     *     this list, it will also be deleted from the database.</li>
-//     * </ul>
-//     */
-////    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
-////    @Builder.Default
-////    private List<Resume> resumes = new ArrayList<>();
-//
+
+    /**
+     * The list of resumes associated with the freelancer.
+     * A freelancer can have multiple resumes.
+     * <ul>
+     *     <li>Each resume is linked to the freelancer via a foreign key.</li>
+     *     <li>CascadeType.ALL ensures that any operation (save, delete, etc.)
+     *     performed on the freelancer will also be applied to the resumes.</li>
+     *     <li>orphanRemoval = true ensures that if a resume is removed from
+     *     this list, it will also be deleted from the database.</li>
+     * </ul>
+     */
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Resume> resumes = new ArrayList<>();
+
 
     @Override
     public String toString() {
