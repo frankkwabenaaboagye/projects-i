@@ -1,4 +1,9 @@
 package com.frankaboagye.connecthub.interfaces;//package com.frankaboagye.connecthub.interfaces;
+
+import com.frankaboagye.connecthub.entities.Project;
+
+import java.util.List;
+
 //
 //import com.frankaboagye.connecthub.daos.ProjectDAO;
 //import com.frankaboagye.connecthub.entities.Project;
@@ -7,11 +12,11 @@ package com.frankaboagye.connecthub.interfaces;//package com.frankaboagye.connec
 //
 //import java.util.List;
 //
-//public interface ProjectServiceInterface {
+public interface ProjectServiceInterface {
 //    Project getProjectById(Long id);
 //    Project updateProject(ProjectDAO projectDAO, Long projectId, Long companyId, MultipartFile documentFile);
 //    Project updateProjectWithoutFile(ProjectDAO projectDAO, Long projectId, Long companyId);
 //    List<Project> getAllProjects();// change the wording
 //    List<Project> getAllProjectsByCompanyId(Long companyId);
-//
-//}
+
+}

@@ -110,4 +110,9 @@ public class Job {
     @Column(name = "technology_interest")
     private List<String> technologyInterests;
 
+    @Override
+    public String toString() {
+        return "Job [" + getId() + ", title=" + getTitle() + "]";
+    }
+
 }

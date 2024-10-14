@@ -1,12 +1,8 @@
 package com.frankaboagye.connecthub;
 
-import com.frankaboagye.connecthub.entities.Company;
-import com.frankaboagye.connecthub.entities.Freelancer;
-import com.frankaboagye.connecthub.entities.Job;
+import com.frankaboagye.connecthub.entities.*;
 import com.frankaboagye.connecthub.enums.Gender;
-import com.frankaboagye.connecthub.repositories.CompanyRepository;
-import com.frankaboagye.connecthub.repositories.FreelancerRepository;
-import com.frankaboagye.connecthub.repositories.JobRepository;
+import com.frankaboagye.connecthub.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,13 +24,17 @@ public class ConnectHubApplication {
             ConnectHubApplication app,
             CompanyRepository companyRepository,
             JobRepository jobRepository,
-            FreelancerRepository freelancerRepository
+            FreelancerRepository freelancerRepository,
+            ProjectDocumentRepository projectDocumentRepository,
+            ProjectRepository projectRepository
     ) {
         return args -> {
             populateJobAndCompany(
                     companyRepository,
                     jobRepository,
-                    freelancerRepository
+                    freelancerRepository,
+                    projectRepository,
+                    projectDocumentRepository
             );
         };
     }
@@ -42,7 +42,9 @@ public class ConnectHubApplication {
     private void populateJobAndCompany(
             CompanyRepository companyRepository,
             JobRepository jobRepository,
-            FreelancerRepository freelancerRepository
+            FreelancerRepository freelancerRepository,
+            ProjectRepository projectRepository,
+            ProjectDocumentRepository projectDocumentRepository
     ) {
 
         System.out.println("Populating job and company");
@@ -89,6 +91,32 @@ public class ConnectHubApplication {
                 .skills(List.of("Java", "Spring Boot", "Microservices", "Docker"))
                 .build();
 
+        Project project = Project.builder()
+                .company(company)
+                .title("AI-Powered Chatbot Development")
+                .description("Develop an AI-powered chatbot to assist customers with inquiries and support.")
+                .budget(20000.0)
+                .skills(List.of("Artificial Intelligence", "Chatbot Development", "Natural Language Processing"))
+                .deadline(LocalDate.of(2024, 12, 31))
+                .location("Remote")
+                .postedDate(LocalDate.now())
+                .experienceLevels(List.of("Intermediate", "Expert"))
+                .build();
+
+        ProjectDocument projectDocument = ProjectDocument.builder()
+                .project(project) // Associate the document with the project
+                .documentName("ProjectProposal.pdf")
+                .documentUrl("https://example.com/documents/ProjectProposal.pdf")
+                .uploadDate(LocalDate.of(2024, 10, 12))
+                .description("This document contains the initial proposal for the AI-powered chatbot project.")
+                .isPrimary(true)
+                .build();
+
+        project.setProjectDocument(List.of(projectDocument));
+
+        projectRepository.save(project);
+        projectDocumentRepository.save(projectDocument);
+
 
         // Add the job to the company's job list
         company.getJobs().add(job);
@@ -98,6 +126,8 @@ public class ConnectHubApplication {
 
         // Save the freelancer to the database
         freelancerRepository.save(freelancer);
+
+
 
         System.out.println("Dummy data populated: Company and Job created.");
     }

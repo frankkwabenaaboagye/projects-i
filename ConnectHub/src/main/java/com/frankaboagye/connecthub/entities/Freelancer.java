@@ -113,4 +113,10 @@ public class Freelancer {
 ////    @Builder.Default
 ////    private List<Resume> resumes = new ArrayList<>();
 //
+
+    @Override
+    public String toString() {
+        return "Freelancer [id=" + id + ", email=" + email + "]";
+    }
+
 }
