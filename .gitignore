@@ -47,6 +47,9 @@ ConnectHub/**.class
 .idea
 ConnectHub/src/main/resources/upload-dir/*
 
+Connect_Hub
+Connect_Hub/*
+
 
 ### Eclipse ###
 .apt_generated
