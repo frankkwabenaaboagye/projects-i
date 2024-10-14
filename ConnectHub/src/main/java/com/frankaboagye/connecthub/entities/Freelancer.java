@@ -1,4 +1,4 @@
-//package com.frankaboagye.connecthub.entities;
+package com.frankaboagye.connecthub.entities;
 //
 //import com.frankaboagye.connecthub.enums.Gender;
 //import jakarta.persistence.*;
@@ -21,7 +21,7 @@
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Entity
-//public class Freelancer {
+public class Freelancer {
 //
 //    /**
 //     * The unique ID of the freelancer.
@@ -114,4 +114,4 @@
 ////    @Builder.Default
 ////    private List<Resume> resumes = new ArrayList<>();
 //
-//}
+}

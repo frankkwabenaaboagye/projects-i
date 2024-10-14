@@ -1,4 +1,4 @@
-//package com.frankaboagye.connecthub.entities;
+package com.frankaboagye.connecthub.entities;//package com.frankaboagye.connecthub.entities;
 //
 //import jakarta.persistence.*;
 //import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Entity
-//public class ProjectDocument {
+public class ProjectDocument {
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,5 +48,4 @@
 //     * Indicates if this document is the primary document for the project.
 //     */
 //    private Boolean isPrimary;
-//}
-//
+}

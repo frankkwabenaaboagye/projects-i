@@ -1,4 +1,4 @@
-//package com.frankaboagye.connecthub.entities;
+package com.frankaboagye.connecthub.entities;
 //
 //import com.frankaboagye.connecthub.enums.ApplicationStatus;
 //import jakarta.persistence.*;
@@ -19,7 +19,7 @@
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Entity
-//public class ProjectApplication {
+public class ProjectApplication {
 //
 //    /**
 //     * The unique ID of the project application.
@@ -77,4 +77,4 @@
 //     */
 //    private String freelancerComment;
 //
-//}
+}

@@ -1,4 +1,4 @@
-//package com.frankaboagye.connecthub.entities;
+package com.frankaboagye.connecthub.entities;
 //
 //import jakarta.persistence.*;
 //import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Entity
-//public class Resume {
+public class Resume {
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,4 +30,4 @@
 //    @JoinColumn(name = "freelancer_id", nullable = false)
 //    private Freelancer freelancer;
 //
-//}
+}

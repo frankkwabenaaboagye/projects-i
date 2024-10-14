@@ -1,4 +1,4 @@
-//package com.frankaboagye.connecthub.entities;
+package com.frankaboagye.connecthub.entities;
 //
 //import jakarta.persistence.*;
 //import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Entity
-//public class Project {
+public class Project {
 //
 //    /**
 //     * The unique ID of the project.
@@ -97,4 +97,4 @@
 //    @Column(name = "experience_level")
 //    @Builder.Default
 //    private List<String> experienceLevels = new ArrayList<>();
-//}
+}

@@ -1,4 +1,4 @@
-//package com.frankaboagye.connecthub.entities;
+package com.frankaboagye.connecthub.entities;
 //
 //import com.frankaboagye.connecthub.enums.ApplicationStatus;
 //import jakarta.persistence.*;
@@ -19,7 +19,7 @@
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Entity
-//public class JobApplication {
+public class JobApplication {
 //
 //    /**
 //     * The unique ID of the job application.
@@ -84,4 +84,4 @@
 //    // @Lob
 //    private String coverLetter;
 //
-//}
+}
