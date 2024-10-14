@@ -1,12 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/base_layout}" >
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Register Company</title>
 </head>
 <body>
 
-<p>Register</p>
+<section class="the-form-body">
+
+    <section layout:fragment="content">
+        <div class="container">
+            <div class="form-container">
+                <h2 class="text-center" style="color: #1d3557;">
+                    <img th:src="@{/images/logo.png}" alt="Company Logo">
+                    <span>Company Registration</span>
+                </h2>
+                <p class="instructions">
+                    Welocome to Connect Hub company registration
+                </p>
+                <p th:text="${message}"></p>
+                <form action="/handle-register-company" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name">Company Name <i class="bi bi-buildings-fill"></i> :</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email <i class="bi bi-envelope-at-fill"></i> :</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phonenumber">Phone Number <i class="bi bi-telephone-fill"></i> :</label>
+                        <input type="tel" id="phonenumber" name="phonenumber" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="website">Company Website <i class="bi bi-globe2"></i> :</label>
+                        <input type="url" id="website" name="website" required pattern="https?://.+">
+                        <small>Please enter a valid URL starting with https://</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companyPhoto">Company Photo <i class="bi bi-file-earmark-image-fill"></i> :</label>
+                        <input type="file" id="companyPhoto" name="companyPhotoFile" accept=".jpg,.jpeg,.png,.gif">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password <i class="bi bi-key-fill"></i> :</label>
+                        <input type="password" id="password" name="password" required>
+                        <input type="checkbox" id="showPassword" onclick="togglePassword()"> Show Password
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password <i class="bi bi-key-fill"></i>  :</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Company Description (optional) <i class="bi bi-info-circle-fill"></i> :</label>
+                        <textarea id="description" name="description" rows="4" placeholder="Enter company description here..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+
+                    <div class="text-center mt-2">
+                        <span>Already Have an Account?
+                            <a th:href="@{login-company}">log in</a>
+                        </span>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function togglePassword() {
+                let passwordInput = document.getElementById("password");
+                let showPasswordCheckbox = document.getElementById("showPassword");
+
+                // Toggle the type attribute
+                if (showPasswordCheckbox.checked) {
+                    passwordInput.type = "text"; // Show the password
+                } else {
+                    passwordInput.type = "password"; // Hide the password
+                }
+            }
+        </script>
+
+    </section>
+
+</section>
 
 </body>
 </html>

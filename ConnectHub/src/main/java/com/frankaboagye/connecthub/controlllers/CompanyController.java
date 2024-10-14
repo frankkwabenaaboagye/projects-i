@@ -6,41 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
-//import com.frankaboagye.connecthub.daos.CompanyDAO;
-//import com.frankaboagye.connecthub.dtos.CompanyDTO;
-//import com.frankaboagye.connecthub.entities.Company;
-//import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
-//import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
-//import com.frankaboagye.connecthub.repositories.CompanyRepository;
-//import jakarta.servlet.http.HttpSession;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.ModelMap;
-//import org.springframework.web.bind.annotation.*;
-//import org.springframework.web.multipart.MultipartFile;
-//import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-//import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-//
-//import java.io.IOException;
-//import java.nio.file.Path;
-//import java.util.Optional;
-//
-//import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
-//import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
-//import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
-//
+
 @Controller
 @RequiredArgsConstructor
 public class CompanyController {
-//
-//    // note the use of interfaces here
-//    private final CompanyServiceInterface companyServiceImplementation;
+
 //    private final StorageServiceInterface storageServiceImplementation; // it will use the FileSystemStorageService .. since that is what has been configured
     private final CompanyRepository companyRepository;
-////    private final JobRepository jobRepository;
-////    private final ProjectRepository projectRepository;
-//
-    // company registration
+
+
     @GetMapping("/register-company")
     public String registerCompany(ModelMap modelMap){
         return "registerCompany";
