@@ -1,74 +1,83 @@
 package com.frankaboagye.connecthub.controlllers;
 
+import com.frankaboagye.connecthub.daos.CompanyDAO;
+import com.frankaboagye.connecthub.entities.Company;
+import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
+import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
 @RequiredArgsConstructor
 public class CompanyController {
 
-//    private final StorageServiceInterface storageServiceImplementation; // it will use the FileSystemStorageService .. since that is what has been configured
+    private final StorageServiceInterface storageServiceImplementation; // it will use the FileSystemStorageService .. since that is what has been configured
     private final CompanyRepository companyRepository;
+    private final CompanyServiceInterface companyServiceImplementation;
 
 
     @GetMapping("/register-company")
     public String registerCompany(ModelMap modelMap){
         return "registerCompany";
     }
-//
-//    @PostMapping("/handle-register-company")
-//    public String handleCompanyRegisteration(
-//            @ModelAttribute CompanyDAO companyDAO,
-//            @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile,
-//            ModelMap modelMap
-//    ){
-//
-//        // use aspect over here
-//        // we can do some serious checks
-//        // logging
-//
-//
-//        // compare the passwords... although we are doing it with js at the view side
-//
-//        if(!companyDAO.getPassword().equals(companyDAO.getConfirmPassword())){
-//            modelMap.addAttribute("message", "registration failed - passwords do not match");
-//            return "registerCompany";
-//        }
-//
-//        try {
-//            storageServiceImplementation.store(companyPhotoFile);
-//
-//            Company newCompany = Company.builder()
-//                    .email(companyDAO.getEmail())
-//                    .name(companyDAO.getName())
-//                    .phonenumber(companyDAO.getPhonenumber())
-//                    .website(companyDAO.getWebsite())
-//                    .password(companyDAO.getPassword())
-//                    .profilepicturename(companyPhotoFile.getOriginalFilename())
-//                    .description(companyDAO.getDescription())
-//                    .build();
-//
-//            companyServiceImplementation.registerCompany(newCompany);
-//
-//            modelMap.addAttribute("message", "registration successful");
-//
-//            return "loginCompany";
-//        } catch (Exception e) {
-//            modelMap.addAttribute("message", "registration failed");
-//            return "registerCompany";
-//        }
-//
-//    }
-//
+
+    @PostMapping("/handle-register-company")
+    public String handleCompanyRegisteration(
+            @ModelAttribute CompanyDAO companyDAO,
+            @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile,
+            ModelMap modelMap
+    ){
+
+        // use aspect over here
+        // we can do some serious checks
+        // logging
+
+
+        // compare the passwords... although we are doing it with js at the view side
+
+        if(!companyDAO.getPassword().equals(companyDAO.getConfirmPassword())){
+            modelMap.addAttribute("message", "registration failed - passwords do not match");
+            return "registerCompany";
+        }
+
+        try {
+            storageServiceImplementation.store(companyPhotoFile);
+
+            Company newCompany = Company.builder()
+                    .email(companyDAO.getEmail())
+                    .name(companyDAO.getName())
+                    .phonenumber(companyDAO.getPhonenumber())
+                    .website(companyDAO.getWebsite())
+                    .password(companyDAO.getPassword())
+                    .profilepicturename(companyPhotoFile.getOriginalFilename())
+                    .description(companyDAO.getDescription())
+                    .build();
+
+            companyServiceImplementation.registerCompany(newCompany);
+
+            modelMap.addAttribute("message", "registration successful");
+
+            return "loginCompany";
+        } catch (Exception e) {
+            modelMap.addAttribute("message", "registration failed");
+            return "registerCompany";
+        }
+
+    }
+
 //    @GetMapping("/login-company")
 //    public String loginCompany(){
 //        return "loginCompany";
 //    }
-//
+
 //    @PostMapping("/handle-login-company")
 //    public String handleCompanyLogin(
 //            @RequestParam("email") String email,
