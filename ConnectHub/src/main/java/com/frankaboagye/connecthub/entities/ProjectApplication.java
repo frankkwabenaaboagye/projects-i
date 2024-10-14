@@ -1,14 +1,4 @@
 package com.frankaboagye.connecthub.entities;
-//
-//import com.frankaboagye.connecthub.enums.ApplicationStatus;
-//import jakarta.persistence.*;
-//import lombok.AllArgsConstructor;
-//import lombok.Builder;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-//
-//import java.time.LocalDate;
-//
 
 import com.frankaboagye.connecthub.enums.ApplicationStatus;
 import jakarta.persistence.*;

@@ -31,7 +31,8 @@ public class ConnectHubApplication {
             ProjectDocumentRepository projectDocumentRepository,
             ProjectRepository projectRepository,
             ResumeRepository resumeRepository,
-            JobApplicationRepository jobApplicationRepository
+            JobApplicationRepository jobApplicationRepository,
+            ProjectApplicationRepository projectApplicationRepository
     ) {
         return args -> {
             populateJobAndCompany(
@@ -41,7 +42,8 @@ public class ConnectHubApplication {
                     projectRepository,
                     projectDocumentRepository,
                     resumeRepository,
-                    jobApplicationRepository
+                    jobApplicationRepository,
+                    projectApplicationRepository
             );
         };
     }
@@ -53,7 +55,8 @@ public class ConnectHubApplication {
             ProjectRepository projectRepository,
             ProjectDocumentRepository projectDocumentRepository,
             ResumeRepository resumeRepository,
-            JobApplicationRepository jobApplicationRepository
+            JobApplicationRepository jobApplicationRepository,
+            ProjectApplicationRepository projectApplicationRepository
     ) {
 
         System.out.println("Populating job and company");
@@ -125,7 +128,17 @@ public class ConnectHubApplication {
                 .coverLetter("this is a cover letter")
                 .build();
 
+        ProjectApplication projectApplication = ProjectApplication.builder()
+                .resumeLocation("https://resume.pdf")
+                .applicationDate(LocalDate.now())
+                .status(ACCEPTED)
+                .freelancer(freelancer)
+                .company(company)
+                .freelancerComment("this is a comment")
+                .build();
+
         freelancer.setJobApplications(List.of(jobApplication));
+        freelancer.setProjectApplications(List.of(projectApplication));
 
 
         Project project = Project.builder()
@@ -154,6 +167,9 @@ public class ConnectHubApplication {
         projectRepository.save(project);
         projectDocumentRepository.save(projectDocument);
 
+        projectApplication.setProject(project);
+
+
         // Add the job to the company's job list
         company.getJobs().add(job);
 
@@ -168,6 +184,9 @@ public class ConnectHubApplication {
 
         // save the job application
         jobApplicationRepository.save(jobApplication);
+
+        // save project application
+        projectApplicationRepository.save(projectApplication);
 
         System.out.println("More Information \n" +  job.getMoreInformation());
 

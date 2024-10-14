@@ -85,4 +85,9 @@ public class JobApplication {
      @Lob
     private String coverLetter;
 
+     @Override
+    public String toString() {
+         return "JobApplication [id=" + getId() + "]";
+     }
+
 }
