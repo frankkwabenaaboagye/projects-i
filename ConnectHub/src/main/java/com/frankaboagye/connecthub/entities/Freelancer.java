@@ -114,6 +114,14 @@ public class Freelancer {
     @Builder.Default
     private List<Resume> resumes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<JobApplication> jobApplications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "freelancer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<ProjectApplication> projectApplications = new ArrayList<>();
+
 
     @Override
     public String toString() {

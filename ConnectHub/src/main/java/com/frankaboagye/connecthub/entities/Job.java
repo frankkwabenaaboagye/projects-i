@@ -75,13 +75,14 @@ public class Job {
      * This provides applicants with information on where they will be working.
      */
     private String location;
-//
-//    /**
-//     * A more detailed field for additional information about the job posting.
-//     * This can be used to provide context or further details that don't fit into the description.
-//     */
-//    //@Lob
-//    private String moreInformation;
+
+    /**
+     * A more detailed field for additional information about the job posting.
+     * This can be used to provide context or further details that don't fit into the description.
+     */
+    @Lob
+    @Column(columnDefinition = "TEXT") // Enforce TEXT type
+    private String moreInformation;
 
     /**
      * A list of associated labels representing the nature of the employment for the job.

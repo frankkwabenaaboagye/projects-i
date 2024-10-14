@@ -1,6 +1,7 @@
 package com.frankaboagye.connecthub;
 
 import com.frankaboagye.connecthub.entities.*;
+import com.frankaboagye.connecthub.enums.ApplicationStatus;
 import com.frankaboagye.connecthub.enums.Gender;
 import com.frankaboagye.connecthub.repositories.*;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.frankaboagye.connecthub.enums.ApplicationStatus.ACCEPTED;
 
 @SpringBootApplication
 public class ConnectHubApplication {
@@ -27,7 +30,8 @@ public class ConnectHubApplication {
             FreelancerRepository freelancerRepository,
             ProjectDocumentRepository projectDocumentRepository,
             ProjectRepository projectRepository,
-            ResumeRepository resumeRepository
+            ResumeRepository resumeRepository,
+            JobApplicationRepository jobApplicationRepository
     ) {
         return args -> {
             populateJobAndCompany(
@@ -36,7 +40,8 @@ public class ConnectHubApplication {
                     freelancerRepository,
                     projectRepository,
                     projectDocumentRepository,
-                    resumeRepository
+                    resumeRepository,
+                    jobApplicationRepository
             );
         };
     }
@@ -47,7 +52,8 @@ public class ConnectHubApplication {
             FreelancerRepository freelancerRepository,
             ProjectRepository projectRepository,
             ProjectDocumentRepository projectDocumentRepository,
-            ResumeRepository resumeRepository
+            ResumeRepository resumeRepository,
+            JobApplicationRepository jobApplicationRepository
     ) {
 
         System.out.println("Populating job and company");
@@ -75,6 +81,7 @@ public class ConnectHubApplication {
                 .skills(List.of("Java", "Spring Boot", "REST APIs", "Microservices"))
                 .location("Remote")
                 .deadline(LocalDate.of(2024, 12, 31))
+                .moreInformation("This is more information")
                 .associatedLabels(List.of("Full-time", "Remote"))
                 .responsibilities(List.of("Develop new features", "Maintain the codebase", "Collaborate with teams"))
                 .technologyInterests(List.of("Java", "Spring Boot", "Docker", "Kubernetes"))
@@ -105,9 +112,21 @@ public class ConnectHubApplication {
                 .freelancer(freelancer)
                 .build();
 
-        resumeRepository.save(resume);
-
         freelancer.setResumes(List.of(resume));
+
+        JobApplication jobApplication = JobApplication.builder()
+                .resumeLocation("https://resume.pdf")
+                .applicationDate(LocalDate.now())
+                .status(ACCEPTED)
+                .freelancer(freelancer)
+                .company(company)
+                .job(job)
+                .freelancerComments("this is a comment")
+                .coverLetter("this is a cover letter")
+                .build();
+
+        freelancer.setJobApplications(List.of(jobApplication));
+
 
         Project project = Project.builder()
                 .company(company)
@@ -143,6 +162,14 @@ public class ConnectHubApplication {
 
         // Save the freelancer to the database
         freelancerRepository.save(freelancer);
+
+        //save the resume
+        resumeRepository.save(resume);
+
+        // save the job application
+        jobApplicationRepository.save(jobApplication);
+
+        System.out.println("More Information \n" +  job.getMoreInformation());
 
         System.out.println("Dummy data populated: Company and Job created.");
     }
