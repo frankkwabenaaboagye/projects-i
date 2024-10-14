@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/base_layout}" >
+
+<head>
+    <title>Login</title>
+</head>
+<body>
+
+<section class="the-form-body">
+
+    <section layout:fragment="content">
+        <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="card p-5 shadow">
+                <div class="card-body text-center">
+                    <h1 class="card-title mb-4">Logout</h1>
+                    <p class="card-text mb-4">Are you sure you want to log out?</p>
+                    <div class="d-flex justify-content-center">
+                        <a href="#" class="btn btn-danger mr-2">Yes, Logout</a>
+                        <a href="#" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</section>
+
+</body>
+</html>

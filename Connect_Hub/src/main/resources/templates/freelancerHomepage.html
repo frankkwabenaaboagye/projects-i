@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/freelancerHomepage_layout}" >
+
+<head>
+    <title>Freelancer Homepage</title>
+    <link th:href="@{/css/freelancerHomepageStyling.css}" rel="stylesheet" >
+</head>
+<body>
+
+<section class="company-homepage-body">
+    <section layout:fragment="content">
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1 th:text="'Welcome, ' + ${freelancer.getFullName()} + '!'"></h1>
+                <p>YhYh. Your place to post jobs, projects, and connect with top freelancers.</p>
+                <a th:href="@{/explore-jobs/{freelancerId}(freelancerId=${freelancer.getId()})}" class="btn btn-primary">Explore Jobs</a>
+                <a th:href="@{/explore-projects/{freelancerId}(freelancerId=${freelancer.getId()})}" class="btn btn-primary">Explore Projects</a>
+            </div>
+        </section>
+
+        <!-- Freelancers Section -->
+        <section class="container my-5">
+            <h2>All Freelancers with their Skills Here</h2>
+            <div class="row">
+                <!-- Freelancer Card -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top freelancer-img" src="/images/freelancer1.jpg" alt="Freelancer 1">
+                        <div class="card-body">
+                            <h5 class="card-title">John Doe</h5>
+                            <p class="card-text">Expert in Web Development, JavaScript, and React.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more freelancer cards as needed -->
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about container my-5">
+            <h2>About Connect Hub</h2>
+            <p>Connect Hub helps companies connect with highly skilled freelancers to meet their project needs. Whether it's posting jobs or collaborating on projects, our platform ensures a smooth and efficient hiring process.</p>
+        </section>
+
+    </section>
+</section>
+
+</body>
+</html>
