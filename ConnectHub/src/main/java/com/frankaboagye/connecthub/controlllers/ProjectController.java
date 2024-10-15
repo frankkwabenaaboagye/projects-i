@@ -5,6 +5,7 @@ import com.frankaboagye.connecthub.daos.ProjectUpdateDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Project;
 import com.frankaboagye.connecthub.entities.ProjectDocument;
+import com.frankaboagye.connecthub.enums.ExperienceLevel;
 import com.frankaboagye.connecthub.enums.GeneralSkills;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.ProjectServiceInterface;
@@ -84,7 +85,8 @@ public class ProjectController {
         List<String> availableSkills = GeneralSkills.getAvailableSkills();
         modelMap.addAttribute("availableSkills", availableSkills);
 
-
+        List<String> availableExperiences = ExperienceLevel.getAvailableSkills();
+        modelMap.addAttribute("availableExperiences", availableExperiences);
 
 
         httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)

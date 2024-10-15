@@ -20,6 +20,7 @@ public class ProjectDAO {
     private String location;
     private Set<String> skills;
     private Set<String> otherSkills;
-    private Set<String> experienceLevels;
+    private Set<String> experiences;
+    private Set<String> otherExperiences;
 
 }

@@ -60,10 +60,10 @@
 
                 <div class="form-group">
                     <!-- Experience Section -->
-                    <label for="experience">Experience</label>
-                    <select class="form-control" id="experience" name="experience" required multiple>
+                    <label for="experiences">Experience</label>
+                    <select class="form-control" id="experiences" name="experiences" required multiple>
                         <option value="" disabled selected>Select required experiences</option>
-                        <option th:each="exp : ${availableExperience}"
+                        <option th:each="exp : ${availableExperiences}"
                                 th:value="${exp}"
                                 th:text="${exp}"></option>
                     </select>
