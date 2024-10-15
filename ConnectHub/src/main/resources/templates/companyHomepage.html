@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/companyHomepageLayout}" >
+
+<head>
+    <title>Company Homepage</title>
+    <link th:href="@{/css/companyHomepageStyling.css}" rel="stylesheet" >
+</head>
+<body>
+
+<section class="company-homepage-body">
+    <section layout:fragment="content">
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1 th:text="'Welcome, ' + ${company.getName()} + '!'"></h1>
+                <p>Your place to post jobs, projects, and connect with top freelancers.</p>
+                <a th:href="@{/post-a-job/{companyId}(companyId=${company.getId()})}" class="btn btn-primary">Post a Job</a>
+                <a th:href="@{/post-a-project/{companyId}(companyId=${company.getId()})}" class="btn btn-primary">Post a Project</a>
+            </div>
+        </section>
+
+        <!-- Jobs Section -->
+        <section class="container my-5">
+            <h2 class="scheme-1">All Posted Jobs</h2>
+            <div class="row">
+                <!-- Job Cards -->
+                <div class="col-md-4" th:each="job : ${companyJobs}">
+                    <a th:href="@{/view-job/{id}(id=${job.getId()})}" class="text-decoration-none" >
+                        <div class="card">
+                            <div class="card-body">
+<!--                                <h5 class="card-title">Company: <span th:text="${company.getName()}">Company Name</span></h5>-->
+                                <h6 class="card-subtitle mb-2 text-muted">Job Title: <span th:text="${job.getTitle()}">Job Title</span></h6>
+                                <p class="card-text">Description: <span th:text="${job.getDescription()}">This is a brief job description.</span></p>
+                                <p class="card-text">Salary: <span th:text="${job.getSalary()}">$5000</span></p>
+                                <p class="card-text">Skills: <span th:text="${job.getSkills()}">JavaScript, React</span></p>
+                                <p class="card-text">Deadline: <span th:text="${job.getDeadline()}">2024-09-30</span></p>
+                                <p class="card-text">Location: <span th:text="${job.getLocation()}">Remote</span></p>
+                            </div>
+                        </div>
+                    </a>
+                    <br>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Project Section -->
+        <section class="container my-5">
+            <h2 class="scheme-1">All Posted Projects</h2>
+            <div class="row">
+                <!-- Job Cards -->
+                <div class="col-md-4" th:each="project : ${companyProjects}">
+                    <a th:href="@{/view-project/{id}(id=${project.getId()})}" class="text-decoration-none" >
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Company: <span th:text="${company.getName()}">Company Name</span></h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Job Title: <span th:text="${project.getTitle()}">Project Title</span></h6>
+                                <p class="card-text">Description: <span th:text="${project.getDescription()}">This is a brief project description.</span></p>
+                                <p class="card-text">Document Name: <span th:text="${project.getProjectDocument().getDocumentUrl()}">$5000</span></p>
+                                <p class="card-text">Skills: <span th:text="${project.getSkills()}">JavaScript, React</span></p>
+                                <p class="card-text">Deadline: <span th:text="${project.getDeadline()}">2024-09-30</span></p>
+                                <p class="card-text">Location: <span th:text="${project.getLocation()}">Remote</span></p>
+                                <p class="card-text">Path:<span th:text="${#lists.isEmpty(project.getProjectDocument()) ? 'No document' : project.getProjectDocument().get(0)}">Url</span></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- About Section -->
+        <section class="about container my-5">
+            <h2>About Connect Hub</h2>
+            <p>Connect Hub helps companies connect with highly skilled freelancers to meet their project needs. Whether it's posting jobs or collaborating on projects, our platform ensures a smooth and efficient hiring process.</p>
+        </section>
+
+    </section>
+</section>
+
+</body>
+</html>

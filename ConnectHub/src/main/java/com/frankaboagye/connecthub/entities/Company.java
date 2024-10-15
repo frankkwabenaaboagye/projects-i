@@ -59,9 +59,9 @@ public class Company {
     private String password;
 
     /**
-     * The file name of the company's profile picture.
+     * The file name of the company's profile picture (location)
      */
-    private String profilepicturename;
+    private String profilePictureLocation;
 
     /**
      * A brief description of the company, including its services and values.

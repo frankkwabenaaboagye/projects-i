@@ -67,7 +67,7 @@ public class ConnectHubApplication {
                 .phonenumber("555-1234")
                 .website("https://techcorp.com")
                 .password("password123")
-                .profilepicturename("techcorp_logo.png")
+                .profilePictureLocation("techcorp_logo.png")
                 .description("TechCorp Solutions is a leader in innovative tech services.")
                 .address("123 Silicon Avenue, Tech City, Innovation Country")
                 .build();

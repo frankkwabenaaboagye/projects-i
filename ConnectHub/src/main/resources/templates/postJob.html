@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/homepage_layout}" >
+
+<head>
+    <title>Post A Job</title>
+    <link th:href="@{/css/companyHomepageStyling.css}" rel="stylesheet" >
+</head>
+<body>
+
+<section class="company-homepage-body">
+    <section layout:fragment="content">
+
+        <div class="container my-5">
+            <h2 class="text-center mb-4">Post a Job</h2>
+            <form th:action="@{/handle-post-a-job}" method="POST">
+                <div class="form-group">
+                    <label for="title">Job Title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter job title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Job Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="5" placeholder="Describe the job" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="salary">Salary</label>
+                    <input type="number" class="form-control" id="salary"  name="salary" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="skills">Skills Needed</label>
+                    <select class="form-control" id="skills" name="skills" required multiple>
+                        <option value="" disabled selected>Select required skills</option>
+                        <option th:each="skill : ${availableSkills}"
+                                th:value="${skill}"
+                                th:text="${skill}"></option>
+                    </select>
+                    <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+
+                    <div class="mt-2">
+                        <label for="otherSkills">Add Other Skills</label>
+                        <div id="additionalSkillsContainer">
+                            <input type="text" class="form-control mb-2" name="otherSkills" placeholder="Enter additional skills">
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="addSkillButton">Add Another Skill</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="deadline">Application Deadline</label>
+                    <input type="date" class="form-control" id="deadline" name="deadline" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Job Location</label>
+                    <input type="text" class="form-control" id="location" name="location" placeholder="Enter job location" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="moreInformation">More Information</label>
+                    <textarea class="form-control" id="moreInformation" name="moreInformation" rows="5" placeholder="Enter additional information about the job..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Post Job</button>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById('addSkillButton').addEventListener('click', function() {
+                const container = document.getElementById('additionalSkillsContainer');
+                const newInput = document.createElement('input');
+                newInput.type = 'text';
+                newInput.className = 'form-control mb-2';
+                newInput.name = 'otherSkills'; // Name should be the same to collect all in the list
+                newInput.placeholder = 'Enter additional skills';
+                container.appendChild(newInput);
+            });
+        </script>
+
+
+    </section>
+</section>
+
+</body>
+</html>
