@@ -114,7 +114,7 @@ public class CompanyController {
             httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
             httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
-            return "redirect:/companyHomepage";
+            return "redirect:/company-homepage";
 
         }
         modelMap.addAttribute("message", "Login Failed, Try Again");
@@ -129,7 +129,7 @@ public class CompanyController {
         return "loginCompany";
     }
 
-    @GetMapping("/companyHomepage")
+    @GetMapping("/company-homepage")
     public String getCompanyHomepage(HttpSession httpSession, ModelMap modelMap){
 
         Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());

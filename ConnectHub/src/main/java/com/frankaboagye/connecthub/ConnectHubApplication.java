@@ -3,6 +3,7 @@ package com.frankaboagye.connecthub;
 import com.frankaboagye.connecthub.entities.*;
 import com.frankaboagye.connecthub.enums.ApplicationStatus;
 import com.frankaboagye.connecthub.enums.Gender;
+import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -32,9 +33,11 @@ public class ConnectHubApplication {
             ProjectRepository projectRepository,
             ResumeRepository resumeRepository,
             JobApplicationRepository jobApplicationRepository,
-            ProjectApplicationRepository projectApplicationRepository
+            ProjectApplicationRepository projectApplicationRepository,
+            StorageServiceInterface storageServiceImplementation
     ) {
         return args -> {
+            createFileUploadDir(storageServiceImplementation);
             populateJobAndCompany(
                     companyRepository,
                     jobRepository,
@@ -46,6 +49,10 @@ public class ConnectHubApplication {
                     projectApplicationRepository
             );
         };
+    }
+
+    private void createFileUploadDir(StorageServiceInterface storageServiceImplementation){
+        storageServiceImplementation.init();
     }
 
     private void populateJobAndCompany(
