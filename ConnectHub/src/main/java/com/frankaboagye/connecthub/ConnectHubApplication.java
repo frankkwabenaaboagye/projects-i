@@ -38,6 +38,7 @@ public class ConnectHubApplication {
     ) {
         return args -> {
             createFileUploadDir(storageServiceImplementation);
+            /*
             populateJobAndCompany(
                     companyRepository,
                     jobRepository,
@@ -48,6 +49,7 @@ public class ConnectHubApplication {
                     jobApplicationRepository,
                     projectApplicationRepository
             );
+            */
         };
     }
 
