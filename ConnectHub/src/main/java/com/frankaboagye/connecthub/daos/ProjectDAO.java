@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -15,9 +15,11 @@ public class ProjectDAO {
 
     private String title;
     private String description;
+    private String budget;
     private String deadline;
     private String location;
-    private List<String> skills;
-    private List<String> otherSkills;
-    private String budget;
+    private Set<String> skills;
+    private Set<String> otherSkills;
+    private Set<String> experienceLevels;
+
 }

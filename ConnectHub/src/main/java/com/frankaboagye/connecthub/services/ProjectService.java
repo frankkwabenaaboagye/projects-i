@@ -1,9 +1,12 @@
 package com.frankaboagye.connecthub.services;
 
 import com.frankaboagye.connecthub.daos.ProjectDAO;
+import com.frankaboagye.connecthub.daos.ProjectUpdateDAO;
 import com.frankaboagye.connecthub.entities.Project;
+import com.frankaboagye.connecthub.entities.ProjectDocument;
 import com.frankaboagye.connecthub.interfaces.ProjectServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
+import com.frankaboagye.connecthub.repositories.ProjectDocumentRepository;
 import com.frankaboagye.connecthub.repositories.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -20,6 +25,7 @@ public class ProjectService implements ProjectServiceInterface {
 
     private final ProjectRepository projectRepository;
     private final StorageServiceInterface storageServiceImplementation;
+    private final ProjectDocumentRepository projectDocumentRepository;
 
 
     @Override
@@ -30,29 +36,38 @@ public class ProjectService implements ProjectServiceInterface {
 
     @Override
     public Project updateProject(
-            ProjectDAO projectDAO,
+            ProjectUpdateDAO projectUpdateDAO,
             Long projectId, Long companyId,
-            MultipartFile documentFile
+            MultipartFile projectFile
     ) {
 
         // TODO: checks for the project id, company id, e.t.c
-        Project project = runUpdate(projectDAO, projectId, companyId);
+        Project project = runUpdate(projectUpdateDAO, projectId, companyId);
 
         // project document
-        storageServiceImplementation.store(documentFile);
-        Path filePath =  storageServiceImplementation.load(documentFile.getOriginalFilename());
-//        project.getProjectDocument().setDocumentUrl(filePath.toString());
-//        project.getProjectDocument().setDocumentName(documentFile.getOriginalFilename());
+        storageServiceImplementation.store(projectFile);
+        Path filePath =  storageServiceImplementation.load(projectFile.getOriginalFilename());
 
-        return projectRepository.save(project);
+        ProjectDocument newProjectDocument = ProjectDocument.builder()
+                .documentName(projectFile.getOriginalFilename())
+                .documentUrl(filePath.toString())
+                .uploadDate(LocalDate.now())
+                .project(project)
+                .build();
+
+        project.setProjectDocument(List.of(newProjectDocument));
+
+        Project saveProject = projectRepository.save(project);
+        projectDocumentRepository.save(newProjectDocument);
+        return saveProject;
     }
 
 
     @Override
-    public Project updateProjectWithoutFile (ProjectDAO projectDAO, Long projectId, Long companyId) {
+    public Project updateProjectWithoutFile (ProjectUpdateDAO projectUpdateDAO, Long projectId, Long companyId) {
 
         // TODO: checks for the project id, company id, e.t.c
-        return runUpdate(projectDAO, projectId, companyId);
+        return runUpdate(projectUpdateDAO, projectId, companyId);
     }
 
 
@@ -67,21 +82,26 @@ public class ProjectService implements ProjectServiceInterface {
         return projectRepository.findAllByCompany_Id(companyId);
     }
 
-    private Project runUpdate(ProjectDAO projectDAO, Long projectId, Long companyId){
-
+    private Project runUpdate(ProjectUpdateDAO projectUpdateDAO, Long projectId, Long companyId){
+        // run the update without the file
         Project project = projectRepository.findByIdAndCompany_Id(projectId, companyId);
 
         // TODO: null checks or use the Null Object Pattern
 
-        project.setTitle(projectDAO.getTitle());
-        project.setDescription(projectDAO.getDescription());
-        project.setSkills(projectDAO.getSkills());
-        project.setDeadline(LocalDate.parse(projectDAO.getDeadline()));
-        project.setLocation(projectDAO.getLocation());
+        Set<String> allSkills = new HashSet<>();
+        allSkills.addAll(projectUpdateDAO.getSkills());
+        allSkills.addAll(projectUpdateDAO.getOtherSkills());
 
-        // set the project document
+        project.setTitle(projectUpdateDAO.getTitle());
+        project.setDescription(projectUpdateDAO.getDescription());
+        project.setBudget(Double.parseDouble(projectUpdateDAO.getBudget()));
 
-        project.setLocation(projectDAO.getLocation());
+        project.getSkills().addAll(allSkills);
+
+        project.setDeadline(LocalDate.parse(projectUpdateDAO.getDeadline()));
+        project.setLocation(projectUpdateDAO.getLocation());
+
+        // handle the experience levels
 
         return projectRepository.save(project);
 

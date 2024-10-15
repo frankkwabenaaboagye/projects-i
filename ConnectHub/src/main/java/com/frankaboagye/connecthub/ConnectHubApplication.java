@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.frankaboagye.connecthub.enums.ApplicationStatus.ACCEPTED;
 
@@ -155,11 +156,11 @@ public class ConnectHubApplication {
                 .title("AI-Powered Chatbot Development")
                 .description("Develop an AI-powered chatbot to assist customers with inquiries and support.")
                 .budget(20000.0)
-                .skills(List.of("Artificial Intelligence", "Chatbot Development", "Natural Language Processing"))
+                .skills(Set.of("Artificial Intelligence", "Chatbot Development", "Natural Language Processing"))
                 .deadline(LocalDate.of(2024, 12, 31))
                 .location("Remote")
                 .postedDate(LocalDate.now())
-                .experienceLevels(List.of("Intermediate", "Expert"))
+                .experienceLevels(Set.of("Intermediate", "Expert"))
                 .build();
 
         ProjectDocument projectDocument = ProjectDocument.builder()

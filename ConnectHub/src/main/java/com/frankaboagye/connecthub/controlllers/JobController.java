@@ -1,69 +1,67 @@
-package com.frankaboagye.connecthub.controlllers;//package com.frankaboagye.connecthub.controllers;
+package com.frankaboagye.connecthub.controlllers;
 
-import com.frankaboagye.connecthub.repositories.CompanyRepository;
-import com.frankaboagye.connecthub.repositories.JobRepository;
+import com.frankaboagye.connecthub.daos.JobDAO;
+import com.frankaboagye.connecthub.entities.Company;
+import com.frankaboagye.connecthub.entities.Job;
+import com.frankaboagye.connecthub.enums.GeneralSkills;
+import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
+import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
-//
-//import com.frankaboagye.connecthub.daos.JobDAO;
-//import com.frankaboagye.connecthub.entities.Company;
-//import com.frankaboagye.connecthub.entities.Freelancer;
-//import com.frankaboagye.connecthub.entities.Job;
-//import com.frankaboagye.connecthub.enums.GeneralSkills;
-//import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
-//import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
-//import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
-//import com.frankaboagye.connecthub.repositories.CompanyRepository;
-//import com.frankaboagye.connecthub.repositories.FreelancerRepository;
-//import com.frankaboagye.connecthub.repositories.JobRepository;
-//import jakarta.servlet.http.HttpSession;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.ModelMap;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.ModelAttribute;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-//
-//import java.nio.file.Path;
-//import java.time.LocalDate;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
-//import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
-//import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
-//import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
-//
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
+import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
+import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
+
 @RequiredArgsConstructor
 @Controller
 public class JobController {
-//
-//    private final JobServiceInterface jobServiceImplementation;
-//    private final FreelancerRepository freelancerRepository;
-//    private final CompanyServiceInterface companyServiceImplementation;
-//    private final StorageServiceInterface storageServiceImplementation;
-    private final JobRepository jobRepository;
-    private final CompanyRepository companyRepository;
+
+    private final CompanyServiceInterface companyServiceImplementation;
+    private final JobServiceInterface jobServiceImplementation;
 
 
-//
-//
-//    @GetMapping("/view-job/{id}")
-//    public String viewJob(@PathVariable Long id, ModelMap modelMap, HttpSession httpSession){
-//
-//        Job job = jobServiceImplementation.getJobById(id);
-//        Company company = job.getCompany();
-//
-//        modelMap.addAttribute("company", company);
-//        modelMap.addAttribute("job", job);
-//
-//        return "viewJob";
-//    }
-//
+    @GetMapping("/view-job/{jobId}")
+    public String viewJob(@PathVariable Long jobId, ModelMap modelMap, HttpSession httpSession) {
+
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
+        if (sessionData == null) {
+            return "redirect:/login-company";
+        }
+
+        Company company = companyServiceImplementation.getCompanyById(sessionData).orElse(null);
+        if (company == null) {
+            return "redirect:/login-company";
+        }
+
+        Job job = jobServiceImplementation.getJobById(jobId);
+        if (job == null) {
+            return "redirect:/login-company";
+        }
+
+        // you can check for mismatch from of the company from the: jobId and the sessionID
+        // we have to get a DTO for the company
+
+        modelMap.addAttribute("company", company);
+        modelMap.addAttribute("job", job);
+
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
+        return "viewJob";
+    }
+
+    //
 //    @GetMapping("/explore-jobs/{freelancerId}")
 //    public String exploreJobs(@PathVariable Long freelancerId, ModelMap modelMap, HttpSession httpSession) {
 //
@@ -84,63 +82,76 @@ public class JobController {
 //
 //    }
 //
-//    @GetMapping("/post-a-job/{companyId}")
-//    public String postAJob(@PathVariable Long companyId, HttpSession httpSession, ModelMap modelMap){
-//        Optional<Company> companyOptional = companyRepository.findById(companyId);
-//
-//        if(companyOptional.isEmpty()){return "redirect:/login-company";}
-//
-//        Company company = companyOptional.get();
-//        modelMap.addAttribute(COMPANY.getValue(), company);
-//
-//        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-//        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
-//
-//        List<String> availableSkills = GeneralSkills.getAvailableSkills();
-//        modelMap.addAttribute("availableSkills", availableSkills );
-//
-//        return "postJob";
-//    }
-//
-//    @PostMapping("/handle-post-a-job")
-//    public String handleJobPosting(
-//            @ModelAttribute JobDAO jobDAO,
-//            ModelMap modelMap,
-//            HttpSession httpSession
-//    ){
-//        // add securuty stuffs later, converstion stuffs
-//
-//        String sessionData = (String) httpSession.getAttribute(SESSION_DATA.getDescription()); // company Id
-//
-//        Company company = companyRepository.findById(Long.parseLong(sessionData)).orElse(null);
-//        if(company == null){ return "redirect:/login-company"; }
-//
-//        List<String> skillForJob = new ArrayList<>(jobDAO.getSkills());
-//        skillForJob.addAll(jobDAO.getOtherSkills()); // Add other skills to the existing list
-//
-//        Job newJob = Job.builder()
-//                .company(company)
-//                .title(jobDAO.getTitle())
-//                .description(jobDAO.getDescription())
-//                .salary(Double.valueOf(jobDAO.getSalary()))
-//                .skills(skillForJob)
-//                .deadline(LocalDate.parse(jobDAO.getDeadline()))
-//                .location(jobDAO.getLocation())
-//                .moreInformation(jobDAO.getMoreInformation())
-//                .build();
-//
-//        // associated labels, responsibilities, technology interest will be added - when company is updating the job;
-//
-//        companyServiceImplementation.postAJob(newJob);
-//
-//        modelMap.addAttribute(COMPANY.getValue(), company);
-//
-//        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-//        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
-//
-//
-//        return "redirect:/companyHomepage";
-//    }
+    @GetMapping("/post-a-job/{companyId}")
+    public String postAJob(@PathVariable Long companyId, HttpSession httpSession, ModelMap modelMap) {
+
+
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
+        if (sessionData == null) {
+            return "redirect:/login-company";
+        }
+
+        Company company = companyServiceImplementation.getCompanyById(sessionData).orElse(null);
+        if (company == null) {
+            return "redirect:/login-company";
+        }
+
+
+        modelMap.addAttribute("company", company);
+
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
+        List<String> availableSkills = GeneralSkills.getAvailableSkills();
+        modelMap.addAttribute("availableSkills", availableSkills);
+
+        return "postJob";
+    }
+
+    @PostMapping("/handle-post-a-job")
+    public String handleJobPosting(
+            @ModelAttribute JobDAO jobDAO,
+            ModelMap modelMap,
+            HttpSession httpSession
+    ) {
+        // add securuty stuffs later, converstion stuffs
+
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
+        if (sessionData == null) {
+            return "redirect:/login-company";
+        }
+
+        Company company = companyServiceImplementation.getCompanyById(sessionData).orElse(null);
+        if (company == null) {
+            return "redirect:/login-company";
+        }
+
+        List<String> skillForJob = new ArrayList<>(jobDAO.getSkills());
+        skillForJob.addAll(jobDAO.getOtherSkills()); // Add other skills to the existing list
+
+        Job newJob = Job.builder()
+                .company(company)
+                .title(jobDAO.getTitle())
+                .description(jobDAO.getDescription())
+                .salary(Double.valueOf(jobDAO.getSalary()))
+                .skills(skillForJob)
+                .deadline(LocalDate.parse(jobDAO.getDeadline()))
+                .location(jobDAO.getLocation())
+                .moreInformation(jobDAO.getMoreInformation())
+                .build();
+
+        // associated labels, responsibilities, technology interest will be added - when company is updating the job;
+
+        companyServiceImplementation.postAJob(newJob);
+
+        modelMap.addAttribute("company", company);
+
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
+
+        return "redirect:/company-homepage";
+    }
 //
 //    @GetMapping("view-and-apply-job/{jobId}")
 //    public String viewAndApplyJob(@PathVariable Long jobId, ModelMap modelMap, HttpSession httpSession){

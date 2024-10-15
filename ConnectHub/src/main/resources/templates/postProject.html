@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/homepage_layout}" >
+      layout:decorate="~{/fragments/companyHomepageLayout}" >
 
 <head>
     <title>Post A Project</title>
@@ -30,7 +30,7 @@
 
                 <div class="form-group">
                     <label for="projectFile">Upload Project File</label>
-                    <input type="file" id="projectFile" name="projectFile" >
+                    <input type="file" id="projectFile" name="projectFile" required>
                 </div>
 
                 <div class="form-group">
@@ -39,6 +39,7 @@
                 </div>
 
                 <div class="form-group">
+                    <!-- Skills Section -->
                     <label for="skills">Skills Needed</label>
                     <select class="form-control" id="skills" name="skills" required multiple>
                         <option value="" disabled selected>Select required skills</option>
@@ -58,6 +59,26 @@
                 </div>
 
                 <div class="form-group">
+                    <!-- Experience Section -->
+                    <label for="experience">Experience</label>
+                    <select class="form-control" id="experience" name="experience" required multiple>
+                        <option value="" disabled selected>Select required experiences</option>
+                        <option th:each="exp : ${availableExperience}"
+                                th:value="${exp}"
+                                th:text="${exp}"></option>
+                    </select>
+                    <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+
+                    <div class="mt-2">
+                        <label for="otherExperiences">Add Other Experiences</label>
+                        <div id="additionalExperiencesContainer">
+                            <input type="text" class="form-control mb-2" name="otherExperiences" placeholder="Enter additional experiences">
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="addExperienceButton">Add Another Experience</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="deadline">Project Deadline</label>
                     <input type="date" class="form-control" id="deadline" name="deadline" required>
                 </div>
@@ -67,19 +88,52 @@
                     <input type="text" class="form-control" id="location" name="location" placeholder="Enter job location" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">Post Job</button>
+                <button type="submit" class="btn btn-primary btn-block">Post Project</button>
             </form>
         </div>
 
         <script>
+            // Function to add input field with remove button
+            function addInput(containerId, inputName, placeholderText) {
+                const container = document.getElementById(containerId);
+
+                // Create a new div to hold both the input and remove button
+                const div = document.createElement('div');
+                div.className = 'd-flex mb-2';
+
+                // Create new input field
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'form-control';
+                input.name = inputName;
+                input.placeholder = placeholderText;
+
+                // Create remove button
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'btn btn-danger ml-2';
+                removeButton.textContent = 'Remove';
+
+                // Append input and remove button to the div
+                div.appendChild(input);
+                div.appendChild(removeButton);
+
+                // Add the div to the container
+                container.appendChild(div);
+
+                // Add click event to remove the div
+                removeButton.addEventListener('click', function() {
+                    container.removeChild(div);
+                });
+            }
+
+            // Event listeners for adding skills and experiences
             document.getElementById('addSkillButton').addEventListener('click', function() {
-                const container = document.getElementById('additionalSkillsContainer');
-                const newInput = document.createElement('input');
-                newInput.type = 'text';
-                newInput.className = 'form-control mb-2';
-                newInput.name = 'otherSkills'; // Name should be the same to collect all in the list
-                newInput.placeholder = 'Enter additional skills';
-                container.appendChild(newInput);
+                addInput('additionalSkillsContainer', 'otherSkills', 'Enter additional skills');
+            });
+
+            document.getElementById('addExperienceButton').addEventListener('click', function() {
+                addInput('additionalExperiencesContainer', 'otherExperiences', 'Enter additional experiences');
             });
         </script>
 

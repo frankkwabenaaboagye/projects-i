@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The Project entity represents a project posted by a company.
@@ -63,7 +65,7 @@ public class Project {
     @CollectionTable(name = "project_skills", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "skill")
     @Builder.Default
-    private List<String> skills = new ArrayList<>();
+    private Set<String> skills = new HashSet<>();
 
     /**
      * The deadline for project completion.
@@ -75,7 +77,7 @@ public class Project {
      */
     private String location;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<ProjectDocument> projectDocument = new ArrayList<>(); // This can be null if no documents are associated
 
@@ -93,7 +95,7 @@ public class Project {
     @CollectionTable(name = "project_experience_levels", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "experience_level")
     @Builder.Default
-    private List<String> experienceLevels = new ArrayList<>();
+    private Set<String> experienceLevels = new HashSet<>();
 
     @Override
     public String toString() {

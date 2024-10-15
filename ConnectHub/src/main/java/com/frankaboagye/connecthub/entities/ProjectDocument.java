@@ -48,7 +48,7 @@ public class ProjectDocument {
      */
     private Boolean isPrimary;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 

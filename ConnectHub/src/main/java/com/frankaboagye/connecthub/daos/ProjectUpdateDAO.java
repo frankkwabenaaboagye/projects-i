@@ -6,19 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class JobDAO {
+public class ProjectUpdateDAO {
 
     private String title;
     private String description;
-    private String salary;
     private String deadline;
     private String location;
-    private List<String> skills;
-    private List<String> otherSkills;
-    private String moreInformation;
+    private Set<String> skills;
+    private Set<String> otherSkills;
+    private String budget;
 }

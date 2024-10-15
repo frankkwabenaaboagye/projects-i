@@ -18,5 +18,7 @@ public enum ExperienceLevel {
     EXPERT("For individuals recognized as experts in their field, with extensive experience."),
     EXECUTIVE("For high-level management positions, such as C-level roles.");
 
+    // create a separate customer info page where detaisl fo these will be availale
+
     private final String description;
 }

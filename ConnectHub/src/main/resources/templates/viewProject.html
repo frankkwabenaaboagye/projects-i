@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/homepage_layout}" >
+      layout:decorate="~{/fragments/companyHomepageLayout}" >
 
 <head>
     <title>Company Homepage</title>
@@ -19,15 +19,14 @@
 
         </section>
 
-        <!-- About Section -->
         <section class="about container my-5">
             <h2>Additional Stuffs</h2>
             <p class="scheme-1" th:text="${project.getTitle()}"> </p>
             <p class="scheme-1" th:text="${project.getLocation()}"> </p>
             <p class="scheme-1" th:text="${project.getSkills()}"> </p>
             <p class="scheme-1" th:text="${project.getDescription()}"> </p>
-            <p class="scheme-1" th:text="${project.getProjectDocument().getDocumentUrl()}"> </p>
-            <p class="scheme-1" th:text="${project.getProjectDocument().getDocumentName()}"> </p>
+            <p class="scheme-1" th:text="${project.getProjectDocument().getFirst().getDocumentUrl()}"> </p>
+            <p class="scheme-1" th:text="${project.getProjectDocument().getFirst().getDocumentName()}"> </p>
             <p class="scheme-1" th:text="${project.getDeadline()}"> </p>
 
             <form th:action="@{/handle-company-project-update/{projectId}(projectId=${project.getId()})}" method="POST" enctype="multipart/form-data">
@@ -39,7 +38,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="documentName" class="form-label">Project Document Name</label>
-                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getProjectDocument().getDocumentName()}" readonly>
+                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getProjectDocument().getFirst().getDocumentName()}" readonly>
                     </div>
                 </div>
 
@@ -50,7 +49,7 @@
 
                 <div class="mb-3">
                     <label for="projectFile" class="form-label">Change Document</label>
-                    <input type="file" class="form-control btn btn-outline-primary" id="projectFile" name="projectFile" accept="application/pdf" th:value="*{project.getProjectDocument().getDocumentName()}">
+                    <input type="file" class="form-control btn btn-outline-primary" id="projectFile" name="projectFile" accept="application/pdf" th:value="*{project.getProjectDocument().getFirst().getDocumentUrl()}">
                 </div>
 
                 <div class="mb-3">

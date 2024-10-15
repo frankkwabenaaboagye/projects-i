@@ -82,7 +82,6 @@ public class JobApplication {
      * The cover letter submitted by the freelancer.
      * This field is marked as a large object (LOB) to handle lengthy content.
      */
-     @Lob
     private String coverLetter;
 
      @Override

@@ -135,15 +135,15 @@ public class CompanyController {
         Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
         if(sessionData == null){ return "redirect:/login-company"; }
 
-        Company company = companyRepository.findById(sessionData).orElse(null);
+        Company company = companyServiceImplementation.getCompanyById(sessionData).orElse(null);
 
         if(company != null){
             List<Job> companyJobs = jobServiceImplementation.getAllJobsByCompanyId(company.getId());
             List<Project> companyProjects = projectServiceImplementation.getAllProjectsByCompanyId(company.getId());
 
             modelMap.addAttribute("company", company);
-            modelMap.addAttribute("companyJobs", companyJobs);
-            modelMap.addAttribute("companyProjects", companyProjects);
+            modelMap.addAttribute("jobs", companyJobs);
+            modelMap.addAttribute("projects", companyProjects);
 
             httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
             httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
@@ -169,7 +169,7 @@ public class CompanyController {
         Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
         if(sessionData == null){ return "redirect:/login-company"; }
 
-        Company company = companyRepository.findById(sessionData).orElse(null);
+        Company company = companyServiceImplementation.getCompanyById(sessionData).orElse(null);
 
         if(company == null){ return "redirect:/login-company"; }
 

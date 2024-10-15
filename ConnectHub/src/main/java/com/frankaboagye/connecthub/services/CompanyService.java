@@ -1,19 +1,23 @@
-package com.frankaboagye.connecthub.services;//package com.frankaboagye.connecthub.services;
+package com.frankaboagye.connecthub.services;
 
 import com.frankaboagye.connecthub.daos.CompanyUpdateDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.entities.Project;
+import com.frankaboagye.connecthub.entities.ProjectDocument;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import com.frankaboagye.connecthub.repositories.CompanyRepository;
 import com.frankaboagye.connecthub.repositories.JobRepository;
+import com.frankaboagye.connecthub.repositories.ProjectDocumentRepository;
 import com.frankaboagye.connecthub.repositories.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +28,7 @@ public class CompanyService implements CompanyServiceInterface {
     private final StorageServiceInterface storageServiceImplementation;
     private final JobRepository jobRepository;
     private final ProjectRepository projectRepository;
+    private final ProjectDocumentRepository projectDocumentRepository;
 
     @Override
     public void registerCompany(Company company) {
@@ -36,6 +41,11 @@ public class CompanyService implements CompanyServiceInterface {
     public Optional<Company> loginCompany(String email, String password) {
         // ustilise aop, security e.t.c
         return companyRepository.findByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public Optional<Company> getCompanyById(Long companyId) {
+        return companyRepository.findById(companyId);
     }
 
     @Override
@@ -64,13 +74,19 @@ public class CompanyService implements CompanyServiceInterface {
     }
 
 
+    @Transactional
     @Override
     public void postAJob(Job job) {
         jobRepository.save(job);
     }
 
     @Override
-    public void postAProject(Project project){
-        projectRepository.save(project);
+    public void postAProject(Project project, ProjectDocument projectDocument){
+
+        Project savedProject = projectRepository.save(project);
+
+        projectDocument.setProject(savedProject);
+        projectDocumentRepository.save(projectDocument);
+
     }
 }
