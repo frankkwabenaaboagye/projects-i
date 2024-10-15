@@ -41,8 +41,8 @@ public class ProjectService implements ProjectServiceInterface {
         // project document
         storageServiceImplementation.store(documentFile);
         Path filePath =  storageServiceImplementation.load(documentFile.getOriginalFilename());
-        project.getProjectDocument().setDocumentUrl(filePath.toString());
-        project.getProjectDocument().setDocumentName(documentFile.getOriginalFilename());
+//        project.getProjectDocument().setDocumentUrl(filePath.toString());
+//        project.getProjectDocument().setDocumentName(documentFile.getOriginalFilename());
 
         return projectRepository.save(project);
     }

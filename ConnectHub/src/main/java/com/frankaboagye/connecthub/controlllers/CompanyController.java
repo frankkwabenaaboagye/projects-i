@@ -1,6 +1,7 @@
 package com.frankaboagye.connecthub.controlllers;
 
 import com.frankaboagye.connecthub.daos.CompanyDAO;
+import com.frankaboagye.connecthub.daos.CompanyUpdateDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.entities.Project;
@@ -180,50 +181,41 @@ public class CompanyController {
                 .toUri()
                 .toString();
 
-        modelMap.addAttribute("company", theCompany);
+        modelMap.addAttribute("company", company);
         modelMap.addAttribute("profilePicturePath", profileSrc);
 
-        httpSession.setAttribute("sessionData", theCompany.getEmail());
-        httpSession.setAttribute("companyData", theCompany);
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
 
         return "companyProfilepage";
 
     }
-//
-//    @PostMapping("/handle-company-profile-update/{id}")
-//    public String updateCompanyProfile(
-//            @PathVariable(name = "id") Long companyId,
-//            @ModelAttribute CompanyDTO companyDTO,
-//            @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile,
-//            ModelMap modelMap,
-//            HttpSession httpSession
-//    ){
-//
-//        boolean updateFile =  false;
-//
-//        if(!companyPhotoFile.isEmpty()){updateFile = true;}
-//
-//        Company company = companyServiceImplementation.updateCompany(companyId, companyDTO, updateFile,companyPhotoFile);
-//        modelMap.addAttribute("message", "update successful");
-//
-//        modelMap.addAttribute("company", company);
-//
-//        httpSession.setAttribute("sessionData",company.getEmail());
-//        httpSession.setAttribute("companyData", company);
-//
-//        return "redirect:/companyProfilepage/" + company.getId();
-//
-//    }
-//
-//
-//
-//
-//    // will delete later - for dev purpose
-//    public Company getCisco(){
-//        Optional<Company> co =  companyRepository.findByEmailAndPassword("cisco@gmail.com", "cisco");
-//        return co.orElse(null);
-//
-//    }
-//
-//
+
+    @PostMapping("/handle-company-profile-update/{id}")
+    public String updateCompanyProfile(
+            @PathVariable(name = "id") Long companyId,
+            @ModelAttribute CompanyUpdateDAO companyUpdateDAO,
+            @RequestParam("companyPhotoFile") MultipartFile companyPhotoFile,
+            ModelMap modelMap,
+            HttpSession httpSession
+    ){
+
+        boolean updateFile =  false;
+
+        if(!companyPhotoFile.isEmpty()){updateFile = true;}
+
+        Company company = companyServiceImplementation.updateCompany(companyId, companyUpdateDAO, updateFile,companyPhotoFile);
+        if(company == null){return "redirect:/login-company";}
+
+        modelMap.addAttribute("message", "update successful");
+        modelMap.addAttribute("company", company);
+
+        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+
+
+        return "redirect:/company-profile-page/" + company.getId();
+
+    }
 }

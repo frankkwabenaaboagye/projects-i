@@ -1,6 +1,6 @@
 package com.frankaboagye.connecthub.services;//package com.frankaboagye.connecthub.services;
 
-import com.frankaboagye.connecthub.dtos.CompanyDTO;
+import com.frankaboagye.connecthub.daos.CompanyUpdateDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.entities.Project;
@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
 import java.util.Optional;
 
 @Service
@@ -38,25 +39,27 @@ public class CompanyService implements CompanyServiceInterface {
     }
 
     @Override
-    public Company updateCompany(Long id, CompanyDTO companyDTO, boolean updateFile, MultipartFile companyPhotoFile) {
+    public Company updateCompany(Long id, CompanyUpdateDAO companyUpdateDAO, boolean updateFile, MultipartFile companyPhotoFile) {
 
-        Optional<Company> companyOptional = companyRepository.findByIdAndEmail(id, companyDTO.getCompanyEmail());
+        Optional<Company> companyOptional = companyRepository.findByIdAndEmail(id, companyUpdateDAO.getEmail());
         if(companyOptional.isEmpty()){return null;} // handle this well
 
         Company company = companyOptional.get();
 
-        company.setName(companyDTO.getCompanyName());
-        company.setPhonenumber(companyDTO.getCompanyPhonenumber());
-        company.setWebsite(companyDTO.getCompanyWebsite());
-        company.setDescription(companyDTO.getCompanyDescription());
+        // handle this well
+        company.setName(companyUpdateDAO.getName());
+        company.setPhonenumber(companyUpdateDAO.getPhonenumber());
+        company.setWebsite(companyUpdateDAO.getWebsite());
+        company.setDescription(companyUpdateDAO.getDescription());
+        company.setAddress(companyUpdateDAO.getAddress());
 
         //profile picture
         if(updateFile){
             storageServiceImplementation.store(companyPhotoFile);
-            company.setProfilepicturename(companyPhotoFile.getOriginalFilename());
+            Path photoPath = storageServiceImplementation.load(companyPhotoFile.getOriginalFilename());
+//            company.setProfilePictureLocation(photoPath.toFile().getAbsolutePath());
+            company.setProfilePictureLocation(photoPath.toString());
         }
-
-
         return companyRepository.save(company);
     }
 
