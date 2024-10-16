@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
@@ -125,9 +126,23 @@ public class ProjectController {
                 .uploadDate(LocalDate.now())
                 .build();
 
-        // Skills
-        Set<String> projectSkills = new HashSet<>(projectDAO.getSkills());
-        projectSkills.addAll(projectDAO.getOtherSkills());
+        Set<String> projectSkills = projectDAO.getSkills().stream()
+                .filter(skill -> skill != null && !skill.trim().isEmpty())
+                .collect(Collectors.toSet());
+        projectSkills.addAll(
+                projectDAO.getOtherSkills().stream()
+                        .filter(skill -> skill != null && !skill.trim().isEmpty())
+                        .collect(Collectors.toSet())
+        );
+
+        Set<String> projectExperiences = projectDAO.getExperiences().stream()
+                .filter(experience -> experience != null && !experience.trim().isEmpty())
+                .collect(Collectors.toSet());
+        projectExperiences.addAll(
+                projectDAO.getOtherExperiences().stream()
+                        .filter(experience -> experience != null && !experience.trim().isEmpty())
+                        .collect(Collectors.toSet())
+        );
 
         // convert form dao to the object
         Project project = Project.builder()
@@ -139,6 +154,7 @@ public class ProjectController {
                 .deadline(LocalDate.parse(projectDAO.getDeadline()))
                 .location(projectDAO.getLocation())
                 .postedDate(LocalDate.now())
+                .experienceLevels(projectExperiences)
                 .build();
 
 

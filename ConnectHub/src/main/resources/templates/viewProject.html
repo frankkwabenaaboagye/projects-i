@@ -9,7 +9,7 @@
     <link th:href="@{/css/companyHomepageStyling.css}" rel="stylesheet" >
 
     <style>
-        .skill-bubble {
+        .skill-bubble, .experience-bubble {
             display: inline-block;
             padding: 5px 10px;
             margin: 5px;
@@ -18,7 +18,7 @@
             position: relative;
         }
 
-        .remove-skill {
+        .remove-skill, .remove-experience {
             position: absolute;
             top: -5px;
             right: -5px;
@@ -44,60 +44,105 @@
         </section>
 
         <section class="about container my-5">
-            <h2>Additional Stuffs</h2>
-            <p class="scheme-1" th:text="${project.getTitle()}"> </p>
-            <p class="scheme-1" th:text="${project.getLocation()}"> </p>
-            <p class="scheme-1" th:text="${project.getSkills()}"> </p>
-            <p class="scheme-1" th:text="${project.getDescription()}"> </p>
-            <p class="scheme-1" th:text="${project.getProjectDocument().getFirst().getDocumentUrl()}"> </p>
-            <p class="scheme-1" th:text="${project.getProjectDocument().getFirst().getDocumentName()}"> </p>
-            <p class="scheme-1" th:text="${project.getDeadline()}"> </p>
-
-
-
 
             <form th:action="@{/handle-company-project-update/{projectId}(projectId=${project.getId()})}" method="POST" enctype="multipart/form-data">
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="title" class="form-label">Project Title</label>
+                        <label for="title" class="form-label scheme-1">Project Title</label>
                         <input type="text" class="form-control" id="title" name="title" th:value="*{project.getTitle()}" >
                     </div>
                     <div class="col-md-6">
-                        <label for="documentName" class="form-label">Project Document Name</label>
-                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getProjectDocument().getFirst().getDocumentName()}" readonly>
+                        <label for="documentName" class="form-label  scheme-1">Project Document Name</label>
+                        <input type="text" class="form-control" id="documentName" name="documentName" th:value="*{project.getProjectDocument().getFirst().getDocumentUrl()}" readonly>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="document" class="form-label">Document2</label>
+                    <label for="document" class="form-label  scheme-1">Document2</label>
                     <iframe th:src="@{${documentSrc}}" id="document" name="document" width="100%" height="600px"></iframe>
                 </div>
 
                 <div class="mb-3">
-                    <label for="projectFile" class="form-label">Change Document</label>
+                    <label for="projectFile" class="form-label  scheme-1">Change Document</label>
                     <input type="file" class="form-control btn btn-outline-primary" id="projectFile" name="projectFile" accept="application/pdf" th:value="*{project.getProjectDocument().getFirst().getDocumentUrl()}">
                 </div>
 
                 <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
+                    <label for="location" class="form-label  scheme-1">Location</label>
                     <input type="text" class="form-control" id="location" name="location" th:value="*{project.getLocation()}">
                 </div>
 
-                <div class="mb-3">
-                    <label for="deadline">Project Deadline</label>
-                    <input type="date" class="form-control" id="deadline" name="deadline" th:value="*{project.getDeadline()}">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="postedDate" class="form-label  scheme-1">Date Posted</label>
+                        <input type="date" class="form-control" id="postedDate" name="postedDate" th:value="*{project.getPostedDate() }" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="deadline" class="form-label  scheme-1">Project Deadline</label>
+                        <input type="date" class="form-control" id="deadline" name="deadline" th:value="*{project.getDeadline()}">
+                    </div>
                 </div>
 
 
                 <div class="mb-3">
-                    <label for="skills" class="form-label">Skills</label>
+                    <label for="budget" class="form-label scheme-1">Project Budget</label>
+                    <input type="number" class="form-control" id="budget" name="budget" th:value="*{project.getBudget()}">
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="skills" class="form-label  scheme-1">Skills</label>
                     <input type="text" class="form-control" id="skills" name= "skills" th:value="*{project.getSkills()}">
                 </div>
 
                 <div class="mb-3">
-                    <label for="description" class="form-label">Project Description</label>
+                    <label for="description" class="form-label scheme-1">Project Description</label>
                     <textarea class="form-control" id="description" name= "description" rows="4" th:text="${project.getDescription()}"></textarea>
+                </div>
+
+                <div class="container mt-5">
+                    <h2 class="mb-4 text-center">Others</h2>
+                    <div class="card p-4">
+
+                        <!-- Skills Section -->
+                        <div class="mt-4">
+                            <h5>Skills Required:</h5>
+                            <div id="skills-container">
+                                <!-- Thymeleaf loop to render skills -->
+                                <div th:each="skill : ${project.getSkills()}" class="skill-bubble">
+                                    <span th:text="${skill}">Skill</span>
+                                    <span class="remove-skill" onclick="removeSkill(this)">x</span>
+                                </div>
+                            </div>
+
+                            <!-- Add New Skill -->
+                            <div class="mt-3">
+                                <input type="text" id="new-skill" class="form-control mb-2" placeholder="Add a new skill" />
+                                <button type="button" class="btn btn-primary" onclick="addSkill()">Add Skill</button>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Experience Section -->
+                        <div class="mt-4">
+                            <h5>Experiences Required:</h5>
+                            <div id="experience-container">
+                                <!-- Thymeleaf loop to render skills -->
+                                <div th:each="experience : ${project.getExperienceLevels()}" class="experience-bubble">
+                                    <span th:text="${experience}">Skill</span>
+                                    <span class="remove-experience" onclick="removeExperience(this)">x</span>
+                                </div>
+                            </div>
+
+                            <!-- Add New Experience -->
+                            <div class="mt-3">
+                                <input type="text" id="new-experience" class="form-control mb-2" placeholder="Add a new experience" />
+                                <button type="button" class="btn btn-primary" onclick="addExperience()">Add Experience</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="text-center">
@@ -106,37 +151,12 @@
             </form>
         </section>
 
-        <div class="container mt-5">
-            <h2 class="mb-4">Project Details</h2>
-            <div class="card p-4">
-                <h4 th:text="${project.getTitle()}">Project Name</h4>
-                <p><strong>Description:</strong> <span th:text="${project.getDescription() }">Project Description</span></p>
-                <p><strong>Start Date:</strong> <span th:text="${project.getPostedDate()}">2023-01-01</span></p>
-                <p><strong>End Date:</strong> <span th:text="${project.getDeadline()}">2023-12-31</span></p>
-
-                <!-- Skills Section -->
-                <div class="mt-4">
-                    <h5>Skills Required:</h5>
-                    <div id="skills-container">
-                        <!-- Thymeleaf loop to render skills -->
-                        <div th:each="skill : ${project.skills}" class="skill-bubble">
-                            <span th:text="${skill}">Skill</span>
-                            <span class="remove-skill" onclick="removeSkill(this)">x</span>
-                        </div>
-                    </div>
-
-                    <!-- Add New Skill -->
-                    <div class="mt-3">
-                        <input type="text" id="new-skill" class="form-control mb-2" placeholder="Add a new skill" />
-                        <button class="btn btn-primary" onclick="addSkill()">Add Skill</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
         <script>
             function removeSkill(element) {
+                element.parentElement.remove();
+            }
+
+            function removeExperience(element) {
                 element.parentElement.remove();
             }
 
@@ -154,7 +174,7 @@
 
                     const removeButton = document.createElement('span');
                     removeButton.className = 'remove-skill';
-                    removeButton.textContent = '×';  // Make sure the cross is visible
+                    removeButton.textContent = '×';
                     removeButton.setAttribute('onclick', 'removeSkill(this)');
                     skillBubble.appendChild(removeButton);
 
@@ -166,23 +186,54 @@
                 }
             }
 
+            function addExperience() {
+                const experienceInput = document.getElementById('new-experience');
+                const experience = experienceInput.value.trim();
+                if(experience) {
+                    const experienceContainer = document.getElementById('experience-container');
+                    const experienceBubble = document.createElement('div');
+                    experienceBubble.className = 'skill-bubble';
+
+                    const experienceText = document.createElement('span');
+                    experienceText.textContent = experience;
+                    experienceBubble.appendChild(experienceText);
+
+                    const removeButton = document.createElement('span');
+                    removeButton.className = 'remove-experience';
+                    removeButton.textContent = '×';
+                    removeButton.setAttribute('onclick', 'removeSkill(this)');
+                    experienceBubble.appendChild(removeButton);
+
+                    // Set random color for the new skill
+                    experienceBubble.style.backgroundColor = generateRandomColor();
+
+                    experienceContainer.appendChild(experienceBubble);
+                    experienceInput.value = '';
+
+
+                }
+            }
+
             function generateRandomColor() {
                 const colors = ['#f39c12', '#3498db', '#2ecc71', '#e74c3c', '#9b59b6'];
                 return colors[Math.floor(Math.random() * colors.length)];
             }
 
-            // Set random colors for initial skill bubbles on page load
+            // Set random colors for initial skill and experience bubbles on page load
             window.onload = function() {
                 const skillBubbles = document.querySelectorAll('.skill-bubble');
+
                 skillBubbles.forEach(function(bubble) {
                     bubble.style.backgroundColor = generateRandomColor();
                 });
+
+                const experienceBubbles = document.querySelectorAll('.experience-bubble');
+                experienceBubbles.forEach(function(bubble) {
+                    bubble.style.backgroundColor = generateRandomColor();
+                });
+
             };
         </script>
-
-
-
-
 
     </section>
 </section>
