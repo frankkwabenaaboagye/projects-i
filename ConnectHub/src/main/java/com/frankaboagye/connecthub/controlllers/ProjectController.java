@@ -186,6 +186,8 @@ public class ProjectController {
             HttpSession httpSession
     ) {
 
+        // clean the skill and experiences
+
         Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
         if (sessionData == null) { return "redirect:/login-company"; }
 

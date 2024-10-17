@@ -18,7 +18,7 @@ public class ProjectUpdateDAO {
     private String description;
     private String deadline;
     private String location;
-    private Set<String> skills;
-    private Set<String> otherSkills;
+    private List<String> skills;
+    private List<String> experiences;
     private String budget;
 }

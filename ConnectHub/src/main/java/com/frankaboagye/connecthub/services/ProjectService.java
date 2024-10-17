@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -88,20 +89,32 @@ public class ProjectService implements ProjectServiceInterface {
 
         // TODO: null checks or use the Null Object Pattern
 
-        Set<String> allSkills = new HashSet<>();
-        allSkills.addAll(projectUpdateDAO.getSkills());
-        allSkills.addAll(projectUpdateDAO.getOtherSkills());
+        // work on the skills and experiences
+
+        Set<String> allSkills = projectUpdateDAO
+                .getSkills()
+                .stream()
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toSet());
+
+        Set<String> allExperiences = projectUpdateDAO
+                .getExperiences()
+                .stream()
+                .filter(e -> !e.isEmpty())
+                .collect(Collectors.toSet());
+
 
         project.setTitle(projectUpdateDAO.getTitle());
         project.setDescription(projectUpdateDAO.getDescription());
         project.setBudget(Double.parseDouble(projectUpdateDAO.getBudget()));
 
-        project.getSkills().addAll(allSkills);
+        project.setSkills(allSkills);
+        project.setExperienceLevels(allExperiences); // same for this
 
         project.setDeadline(LocalDate.parse(projectUpdateDAO.getDeadline()));
         project.setLocation(projectUpdateDAO.getLocation());
 
-        // handle the experience levels
+        // NICE!!
 
         return projectRepository.save(project);
 

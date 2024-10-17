@@ -107,7 +107,7 @@
                         <!-- Thymeleaf loop to render skills -->
                         <div th:each="skill : ${project.getSkills()}" class="skill-bubble">
                             <span th:text="${skill}">Skill</span>
-                            <input type="hidden" name="skills[]" th:value="${skill}" />
+                            <input type="hidden" name="skills" th:value="${skill}" />
                             <span class="remove-skill" onclick="removeSkill(this)">x</span>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                         <!-- Thymeleaf loop to render experiences -->
                         <div th:each="experience : ${project.getExperienceLevels()}" class="experience-bubble">
                             <span th:text="${experience}">Experience</span>
-                            <input type="hidden" name="skills[]" th:value="${experience}" />
+                            <input type="hidden" name="experiences" th:value="${experience}" />
                             <span class="remove-skill" onclick="removeExperience(this)">x</span>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                     // Create hidden input to store the skill value
                     const hiddenInput = document.createElement('input');
                     hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'skills[]';
+                    hiddenInput.name = 'skills';
                     hiddenInput.value = skill;
                     skillBubble.appendChild(hiddenInput);
 
@@ -214,7 +214,7 @@
                     // Create hidden input to store the experience value
                     const hiddenInput = document.createElement('input');
                     hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'experiences[]';
+                    hiddenInput.name = 'experiences';
                     hiddenInput.value = experience;
                     experienceBubble.appendChild(hiddenInput);
 
