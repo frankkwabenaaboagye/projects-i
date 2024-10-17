@@ -25,4 +25,9 @@ public class FreelancerService implements FreelancerServiceInterface {
     public Optional<Freelancer> loginFreelancer(String email, String password) {
         return freelancerRepository.findByEmailAndPassword(email, password);
     }
+
+    @Override
+    public Optional<Freelancer> getFreelancerById(Long freelancerId) {
+        return freelancerRepository.findById(freelancerId);
+    }
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The Freelancer entity represents a freelancer in the system.
@@ -97,7 +98,7 @@ public class Freelancer {
     @ElementCollection
     @CollectionTable(name = "freelancer_skills", joinColumns = @JoinColumn(name = "freelancer_id"))
     @Column(name = "skill")
-    private List<String> skills;
+    private Set<String> skills;
 
     /**
      * The list of resumes associated with the freelancer.

@@ -112,7 +112,7 @@ public class ConnectHubApplication {
                 .profilepictureurl("https://example.com/images/johndoe.png")
                 .basicCharge(50.0)
                 .password("securePassword123")
-                .skills(List.of("Java", "Spring Boot", "Microservices", "Docker"))
+                .skills(Set.of("Java", "Spring Boot", "Microservices", "Docker"))
                 .build();
 
         Resume resume = Resume.builder()

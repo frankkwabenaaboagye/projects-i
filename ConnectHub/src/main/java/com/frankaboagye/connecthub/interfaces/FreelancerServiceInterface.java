@@ -8,4 +8,5 @@ public interface FreelancerServiceInterface {
 
     void registerFreelancer(Freelancer freelancer);
     Optional<Freelancer> loginFreelancer(String email, String password);
+    Optional<Freelancer> getFreelancerById(Long freelancerId);
 }
