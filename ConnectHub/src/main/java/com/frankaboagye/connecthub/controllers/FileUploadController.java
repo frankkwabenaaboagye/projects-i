@@ -1,4 +1,4 @@
-package com.frankaboagye.connecthub.controlllers;
+package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.exceptions.StorageFileNotFoundException;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;

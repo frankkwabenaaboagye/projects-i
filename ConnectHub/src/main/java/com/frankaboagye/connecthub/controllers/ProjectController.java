@@ -1,4 +1,4 @@
-package com.frankaboagye.connecthub.controlllers;
+package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.ProjectDAO;
 import com.frankaboagye.connecthub.daos.ProjectUpdateDAO;
@@ -215,74 +215,11 @@ public class ProjectController {
         return "redirect:/view-project/" + projectId;
 
     }
-//
-//
-//    @GetMapping("/explore-projects/{freelancerId}")
-//    public String exploreJobs(@PathVariable Long freelancerId, ModelMap modelMap, HttpSession httpSession) {
-//
-//        // for dev-purpose - will change this
-//        //TODO
-//        Freelancer freelancer = freelancerRepository.findById(freelancerId).orElse(null);
-//        modelMap.addAttribute("freelancer", freelancer);
-//        httpSession.setAttribute("freelancer", freelancer);
-//
-//        List<Project> projects = projectServiceImplementation.getAllProjects();
-//        modelMap.addAttribute("projects", projects);
-//
-//        return "/projects/exploreProjectsPage";
-//
-//    }
-//
-//    @GetMapping("view-and-apply-project/{projectId}")
-//    public String viewAndApplyProject(
-//            @PathVariable Long projectId,
-//            ModelMap modelMap,
-//            HttpSession httpSession
-//    ) {
-//
-//        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription()); // this is the id of the freelancer
-//
-//        if (sessionData == null) {
-//            return "redirect:/login-freelancer";
-//        }
-//
-//        Freelancer freelancer = freelancerRepository.findById(sessionData).orElse(null);
-//        if (freelancer == null) {
-//            return "redirect:/login-freelancer";
-//        }
-//
-//        modelMap.addAttribute("freelancer", freelancer);
-//
-//        Project project = projectServiceImplementation.getProjectById(projectId);
-//        if (project == null) {
-//            return "redirect:/login-company";
-//        }
-//
-//        Company company = project.getCompany();
-//
-//        modelMap.addAttribute("company", company);
-//        modelMap.addAttribute("project", project);
-//
-//        // company specific projects
-//        List<Project> companyProjects = projectServiceImplementation.getAllProjectsByCompanyId(company.getId());
-//        modelMap.addAttribute("companyProjects", companyProjects);
-//
-//        Path path = storageServiceImplementation.load(company.getProfilepicturename());
-//        String profileSrc = MvcUriComponentsBuilder
-//                .fromMethodName(FileUploadController.class, "serveFile", path.getFileName().toString())
-//                .build()
-//                .toUri()
-//                .toString();
-//        modelMap.addAttribute("profilePicturePath", profileSrc);
-//
-//        Path documentPath = Paths.get(project.getProjectDocument().getDocumentUrl());
-//        modelMap.addAttribute("documentSrc", getDocumentSrc(documentPath));
-//
-//        return "viewAndApplyProject";
-//
-//    }
-//
-//
+
+    // TODO: Explore Project
+
+    // TODO: View and Apply Project
+
     public String getDocumentSrc(Path path) {
 
         return MvcUriComponentsBuilder

@@ -1,4 +1,4 @@
-package com.frankaboagye.connecthub.controlllers;
+package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.CompanyDAO;
 import com.frankaboagye.connecthub.daos.CompanyUpdateDAO;
