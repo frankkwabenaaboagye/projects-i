@@ -69,19 +69,16 @@
                             Prompt Engineer
                         </a>
                     </th>
-                    <td th:text="${project.getCompanyName()}">Perplexity</td>
+                    <td th:text="${project.getCompany().getName()}">Perplexity</td>
                     <td th:text="${project.getDescription()}" >2000</td>
                     <td th:text="${project.getSkills()}" >CUDA, C++, Vhdl, Linux, GenAI, PSS</td>
                     <td th:text="${project.getDeadline()}" >06-03-2027</td>
                     <td th:text="${project.getLocation()}">Canada</td>
-                    <td th:text="${project.getDocumentName()}">Canada</td> <!-- should be a link -->
+                    <td th:text="${project.getProjectDocument().getFirst().getDocumentUrl()}">Canada</td> <!-- should be a link -->
                 </tr>
                 </tbody>
             </table>
         </div>
-
-
-
 
     </section>
 </section>

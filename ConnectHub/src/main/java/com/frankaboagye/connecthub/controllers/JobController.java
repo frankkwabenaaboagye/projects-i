@@ -236,7 +236,5 @@ public class JobController {
         return "viewAndApplyJob";
 
 
-
-
     }
 }

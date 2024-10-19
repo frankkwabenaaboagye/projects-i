@@ -3,11 +3,13 @@ package com.frankaboagye.connecthub.controllers;
 import com.frankaboagye.connecthub.daos.ProjectDAO;
 import com.frankaboagye.connecthub.daos.ProjectUpdateDAO;
 import com.frankaboagye.connecthub.entities.Company;
+import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Project;
 import com.frankaboagye.connecthub.entities.ProjectDocument;
 import com.frankaboagye.connecthub.enums.ExperienceLevel;
 import com.frankaboagye.connecthub.enums.GeneralSkills;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
+import com.frankaboagye.connecthub.interfaces.FreelancerServiceInterface;
 import com.frankaboagye.connecthub.interfaces.ProjectServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +38,7 @@ public class ProjectController {
     private final CompanyServiceInterface companyServiceImplementation;
     private final StorageServiceInterface storageServiceImplementation;
     private final ProjectServiceInterface projectServiceImplementation;
+    private final FreelancerServiceInterface freelancerServiceImplementation;
 
 
     @GetMapping("/view-project/{projectId}")
@@ -216,9 +219,88 @@ public class ProjectController {
 
     }
 
-    // TODO: Explore Project
+    @GetMapping("/explore-projects/{freelancerId}")
+    public String exploreProjects(
+            @PathVariable Long freelancerId,
+            ModelMap modelMap,
+            HttpSession httpSession
+    ){
 
-    // TODO: View and Apply Project
+        // TODO: will handle the logic well - at a later time
+
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
+        if(sessionData == null){
+            modelMap.addAttribute("message", "session data does not exist");
+            return "redirect:/login-freelancer";
+        }
+
+        Freelancer freelancer = freelancerServiceImplementation.getFreelancerById(sessionData).orElse(null);
+        if(freelancer == null){
+            modelMap.addAttribute("message", "Freelancer not found");
+            return "redirect:/login-freelancer";
+        }
+        modelMap.addAttribute("freelancer", freelancer);
+
+        // projects
+        List<Project> projects = projectServiceImplementation.getAllProjects();
+        modelMap.addAttribute("projects", projects);
+
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());  // e.g. ("freelancer", freelancer)
+
+        return "projects/exploreProjectsPage";
+
+    }
+
+    @GetMapping("/view-and-apply-project/{projectId}")
+    public String viewAndApplyProject(
+            @PathVariable Long projectId,
+            ModelMap modelMap,
+            HttpSession httpSession
+    ){
+
+        // TODO: will handle the logic well - at a later time
+
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
+        if(sessionData == null){
+            modelMap.addAttribute("message", "session data does not exist");
+            return "redirect:/login-freelancer";
+        }
+
+        Freelancer freelancer = freelancerServiceImplementation.getFreelancerById(sessionData).orElse(null);
+        if(freelancer == null){
+            modelMap.addAttribute("message", "Freelancer not found");
+            return "redirect:/login-freelancer";
+        }
+        modelMap.addAttribute("freelancer", freelancer);
+
+        Project project = projectServiceImplementation.getProjectById(projectId);
+        if(project == null){return "redirect:/login-freelancer";}
+
+        Company company = project.getCompany();
+
+        modelMap.addAttribute("company", company);
+        modelMap.addAttribute("project", project);
+
+        List<Project> companyProjects = projectServiceImplementation.getAllProjectsByCompanyId(company.getId());
+        modelMap.addAttribute("companyProjects", companyProjects);
+
+        // the company profile src
+        Path profilePath = Paths.get(company.getProfilePictureLocation());
+        String profileSrc = MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class, "serveFile", profilePath.getFileName().toString())
+                .build()
+                .toUri()
+                .toString();
+
+        modelMap.addAttribute("profilePicturePath", profileSrc);
+
+        Path documentPath = Paths.get(project.getProjectDocument().getFirst().getDocumentUrl());
+        modelMap.addAttribute("documentSrc", getDocumentSrc(documentPath));
+
+        return "viewAndApplyProject";
+
+    }
 
     public String getDocumentSrc(Path path) {
 
