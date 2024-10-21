@@ -13,6 +13,7 @@ Feel free to explore and learn as well
 
 ## Connect Hub
 * [Project Board](https://github.com/users/frankkwabenaaboagye/projects/1)
+* [Youtube Updates](https://www.youtube.com/playlist?list=PLQCdchUBBxzLgM2c56-Cqkf4pEasl5dD3)
 
 ### Project Description
 
