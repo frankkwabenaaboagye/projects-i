@@ -1,18 +1,18 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.FreelancerDAO;
+import com.frankaboagye.connecthub.daos.FreelancerUpdateDAO;
 import com.frankaboagye.connecthub.entities.Freelancer;
+import com.frankaboagye.connecthub.entities.Resume;
 import com.frankaboagye.connecthub.enums.Gender;
 import com.frankaboagye.connecthub.interfaces.FreelancerServiceInterface;
 import com.frankaboagye.connecthub.interfaces.StorageServiceInterface;
+import com.frankaboagye.connecthub.repositories.ResumeRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -20,6 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
@@ -32,6 +35,7 @@ public class FreelancerController {
 
     private final StorageServiceInterface storageServiceImplementation;
     private final FreelancerServiceInterface freelancerServiceImplementation;
+    private final ResumeRepository resumeRepository;
 
     @GetMapping("/register-freelancer")
     public String registerFreelancer() {
@@ -182,16 +186,113 @@ public class FreelancerController {
         modelMap.addAttribute("freelancer", freelancer);
         modelMap.addAttribute("profilePicturePath", profileSrc);
 
+        List<Resume> resumes = freelancer.getResumes();
+        modelMap.addAttribute("resumes", resumes);
+
+        if (!resumes.isEmpty()) {
+            Resume resume = resumes.getFirst();
+            // only these two
+            modelMap.addAttribute("resumeSrc", getDocumentSrc(Paths.get(resume.getLocation())));
+            modelMap.addAttribute("resumeTitle", resume.getTitle());
+        }
+
+
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());  // e.g. ("freelancer", freelancer)
+
         return "freelancerProfilepage";
 
     }
 
 
+    @PostMapping("/handle-freelancer-profile-update/{freelancerId}")
     public String updateFreelancerProfile(
-
+            @PathVariable Long freelancerId,
+            MultipartFile freelancerPhotoFile,
+            MultipartFile newResume,
+            HttpSession httpSession,
+            @ModelAttribute FreelancerUpdateDAO freelancerUpdateDAO,
+            ModelMap modelMap
     ){
-        // TODO: update logic for freelancer profile
-        return null;
+
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription()); // todo: handle duplicate
+        if(sessionData == null){
+            modelMap.addAttribute("message", "session data does not exist");
+            return "redirect:/login-freelancer";
+        }
+
+        Freelancer freelancer = freelancerServiceImplementation.getFreelancerById(sessionData).orElse(null);
+        if(freelancer == null){
+            modelMap.addAttribute("message", "Freelancer not found");
+            return "redirect:/login-freelancer";
+        }
+
+        // update // TODO: handle this properly
+        freelancer.setGender(Gender.valueOf(freelancerUpdateDAO.getGender().toUpperCase()));
+        freelancer.setFullName(freelancerUpdateDAO.getFullName());
+        freelancer.setDateOfBirth(freelancerUpdateDAO.getDateOfBirth());
+        freelancer.setPhoneNumber(freelancerUpdateDAO.getPhoneNumber());
+        freelancer.setEducation(freelancerUpdateDAO.getEducation());
+        freelancer.setBasicCharge(freelancerUpdateDAO.getBasicCharge());
+        freelancer.setLinkedin(freelancerUpdateDAO.getLinkedin());
+
+        List<String> theSkills = new ArrayList<>(freelancerUpdateDAO.getSkills());
+        theSkills.removeIf(String::isEmpty);
+
+        freelancer.setSkills(new HashSet<>(theSkills));
+
+
+        if(!freelancerPhotoFile.isEmpty()){
+            storageServiceImplementation.store(freelancerPhotoFile);
+            Path path = storageServiceImplementation.load(freelancerPhotoFile.getOriginalFilename());
+            freelancer.setProfilepictureurl(path.toString());
+        }
+
+        if(!newResume.isEmpty()){
+            storageServiceImplementation.store(newResume);
+            Path path = storageServiceImplementation.load(newResume.getOriginalFilename());
+            Resume resume = Resume.builder()
+                    .fileName(newResume.getOriginalFilename())
+                    .location(path.toString())
+                    .uploadDate(LocalDate.now())
+                    .title(newResume.getOriginalFilename()) // todo: will change the logic for title
+                    .description("default for now")
+                    .freelancer(freelancer)
+                    .isPrimary(true) // default for now
+                    .build();
+
+            freelancer.getResumes().add(resume);
+
+            Freelancer updatedFreelancer = freelancerServiceImplementation.updateFreelancer(freelancer);
+
+            resume.setFreelancer(updatedFreelancer);
+
+            resumeRepository.save(resume);
+
+
+        } else{
+            freelancerServiceImplementation.updateFreelancer(freelancer);
+
+        }
+
+        // job applications
+        // project applications
+
+
+        httpSession.setAttribute(SESSION_DATA.getDescription(), freelancer.getId());  // e.g. ("sessionData", 29919)
+        httpSession.setAttribute(PROFILE.getDescription(), FREELANCER.getValue());  // e.g. ("freelancer", freelancer)
+
+
+        return "redirect:/freelancer-profilepage";
+    }
+
+    public String getDocumentSrc(Path path) {
+
+        return MvcUriComponentsBuilder
+                .fromMethodName(FileUploadController.class, "displayFile", path.getFileName().toString())
+                .build()
+                .toUri()
+                .toString();
     }
 
 }
