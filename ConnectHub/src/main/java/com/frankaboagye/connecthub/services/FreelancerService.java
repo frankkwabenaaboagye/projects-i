@@ -30,4 +30,10 @@ public class FreelancerService implements FreelancerServiceInterface {
     public Optional<Freelancer> getFreelancerById(Long freelancerId) {
         return freelancerRepository.findById(freelancerId);
     }
+
+    @Override
+    public Freelancer updateFreelancer(Freelancer freelancer) {
+        System.out.println("Updating freelancer: " + freelancer.getFullName());
+        return freelancerRepository.save(freelancer);
+    }
 }
