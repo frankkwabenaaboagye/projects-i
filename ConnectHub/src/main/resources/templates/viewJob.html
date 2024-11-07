@@ -7,6 +7,30 @@
 <head>
     <title>Company Homepage</title>
     <link th:href="@{/css/companyHomepageStyling.css}" rel="stylesheet" >
+
+    <style>
+        .skill-bubble{
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 20px;
+            color: white;
+            position: relative;
+        }
+
+        .remove-skill {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 14px;
+            color: black;
+            cursor: pointer;
+            font-weight: bold;
+            background: transparent;
+            border: none;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -15,17 +39,148 @@
 
         <!-- Jobs Section -->
         <section class="container my-5">
-            <h2 class="scheme-1" th:text="'Job with id, ' + ${job.getId()} + '!'"> </h2>
+            <h2 class="scheme-1" th:text="'Job Id #' + ${job.getId()} + ' !'"> </h2>
 
         </section>
 
-        <!-- About Section -->
         <section class="about container my-5">
-            <h2>Additional Stuffs</h2>
-            <p class="scheme-1" th:text="${job.getTitle()}"> </p>
-            <p class="scheme-1" th:text="${job.getDescription()}"> </p>
-            <p class="scheme-1" th:text="${job.getSkills()}"> </p>
+
+            <form th:action="@{/handle-company-job-update/{jobId}(jobId=${job.getId()})}" method="POST" enctype="multipart/form-data">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="title" class="form-label scheme-1">Job Title</label>
+                        <input type="text" class="form-control" id="title" name="title" th:value="*{job.getTitle()}" >
+                    </div>
+                    <div class="col-md-6">
+                        <label for="salary" class="form-label  scheme-1">Salary</label>
+                        <input type="number" class="form-control" id="salary" name="salary" th:value="*{job.getSalary()}">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label  scheme-1">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" th:value="*{job.getLocation()}">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="postedDate" class="form-label  scheme-1">Date Posted</label>
+                        <input type="date" class="form-control" id="postedDate" name="postedDate" th:value="*{job.getDeadline() }" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="deadline" class="form-label  scheme-1">Job Deadline</label>
+                        <input type="date" class="form-control" id="deadline" name="deadline" th:value="*{job.getDeadline()}">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label scheme-1">Job Description</label>
+                    <textarea class="form-control" id="description" name= "description" rows="4" th:text="${job.getDescription()}"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="moreInformation" class="form-label scheme-1">More Information</label>
+                    <textarea class="form-control" id="moreInformation" name= "description" rows="4" th:text="${job.getMoreInformation()}"></textarea>
+                </div>
+
+                <!-- Hidden input fields to hold all skills and experiences -->
+                <input type="hidden" id="skillsField" name="skills">
+
+
+                <!-- Skills Section -->
+                <div class="mt-4">
+                    <h5>Skills Required:</h5>
+                    <div id="skills-container">
+                        <!-- Thymeleaf loop to render skills -->
+                        <div th:each="skill : ${job.getSkills()}" class="skill-bubble">
+                            <span th:text="${skill}">Skill</span>
+                            <input type="hidden" name="skills" th:value="${skill}" />
+                            <span class="remove-skill" onclick="removeBubble(this)">x</span>
+                        </div>
+                    </div>
+
+                    <!-- Add New Skill -->
+                    <div class="mt-3">
+                        <input type="text" id="new-skill" class="form-control mb-2" placeholder="Add a new skill" />
+                        <button type="button" class="btn btn-primary" onclick="addBubble('skills-container', 'new-skill', 'skill')">Add Skill</button>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- others -->
+
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
         </section>
+
+        <script>
+
+            // Function to remove a bubble
+            function removeBubble(element) {
+                element.parentElement.remove();
+            }
+
+            // Function to add a new bubble
+            function addBubble(containerId, inputId, fieldName) {
+                const inputElement = document.getElementById(inputId);
+                const inputValue = inputElement.value.trim();
+                if (inputValue) {
+                    const container = document.getElementById(containerId);
+                    const bubble = document.createElement('div');
+                    bubble.className = `${fieldName}-bubble`;
+
+                    const text = document.createElement('span');
+                    text.textContent = inputValue;
+                    bubble.appendChild(text);
+
+                    const removeButton = document.createElement('span');
+                    removeButton.className = `remove-${fieldName}`;
+                    removeButton.textContent = '×';
+                    removeButton.setAttribute('onclick', 'removeBubble(this)');
+                    bubble.appendChild(removeButton);
+
+                    // Set random color for the new bubble
+                    bubble.style.backgroundColor = generateRandomColor();
+
+                    // Create hidden input to store the value
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = fieldName;
+                    hiddenInput.value = inputValue;
+                    bubble.appendChild(hiddenInput);
+
+                    container.appendChild(bubble);
+                    inputElement.value = '';
+                }
+            }
+
+            // Function to generate random colors
+            function generateRandomColor() {
+                const colors = ['#f39c12', '#3498db', '#2ecc71', '#e74c3c', '#9b59b6'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            // Set random colors for initial bubbles on page load
+            window.onload = function() {
+                const bubbleSelectors = [
+                    '.skill-bubble'
+                ];
+
+                bubbleSelectors.forEach(selector => {
+                    const bubbles = document.querySelectorAll(selector);
+                    bubbles.forEach(function(bubble) {
+                        bubble.style.backgroundColor = generateRandomColor();
+                    });
+                });
+            };
+
+
+        </script>
+
 
     </section>
 </section>

@@ -31,24 +31,74 @@
                     <input type="number" class="form-control" id="salary"  name="salary" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="skills">Skills Needed</label>
-                    <select class="form-control" id="skills" name="skills" required multiple>
-                        <option value="" disabled selected>Select required skills</option>
-                        <option th:each="skill : ${availableSkills}"
-                                th:value="${skill}"
-                                th:text="${skill}"></option>
-                    </select>
-                    <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+                <div class="form-group row mb-3">
+                    <!--  skills -->
+                    <div class="col-md-6" data-group-name="skills">
+                        <label for="skills">Skills Needed</label>
+                        <select class="form-control" id="skills" name="skills" required multiple>
+                            <option value="" disabled selected>Select required skills</option>
+                            <option th:each="skill : ${availableSkills}"
+                                    th:value="${skill}"
+                                    th:text="${skill}"></option>
+                        </select>
+                        <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
 
-                    <div class="mt-2">
-                        <label for="otherSkills">Add Other Skills</label>
-                        <div id="additionalSkillsContainer">
-                            <input type="text" class="form-control mb-2" name="otherSkills" placeholder="Enter additional skills">
+                        <div class="mt-2">
+                            <label for="otherSkills">Add Other Skills</label>
+                            <div id="additionalInputsContainer-skills" class="additional-inputs-container">
+
+                            </div>
+                            <button type="button" class="btn btn-secondary add-input-button" data-target="skills">Add Another Skill</button>
                         </div>
-                        <button type="button" class="btn btn-secondary" id="addSkillButton">Add Another Skill</button>
+                    </div>
+                    <!-- associated labels -->
+                    <div class="col-md-6" data-group-name="associatedLabels">
+                        <label for="associatedLabels">Associated Labels</label>
+                        <select class="form-control" id="associatedLabels" name="associatedLabels" required multiple>
+                            <option value="" disabled selected>Select associated labels</option>
+                            <option th:each="label : ${availableLabels}"
+                                    th:value="${label}"
+                                    th:text="${label}"></option>
+                        </select>
+                        <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+
+                        <div class="mt-2">
+                            <label for="otherAssociatedLabels">Add Other Labels</label>
+                            <div id="additionalInputsContainer-associatedLabels" class="additional-inputs-container">
+
+                            </div>
+                            <button type="button" class="btn btn-secondary add-input-button" data-target="associatedLabels">Add Another Label</button>
+                        </div>
+                    </div>
+                    <!-- Technology Interests -->
+                    <div class="col-md-6" data-group-name="technologyInterests">
+                        <label for="technologyInterests">Technology Interests</label>
+                        <select class="form-control" id="technologyInterests" name="technologyInterests" required multiple>
+                            <option value="" disabled selected>Select your technology interests</option>
+                            <option th:each="tech : ${availableTechnologies}"
+                                    th:value="${tech}"
+                                    th:text="${tech}"></option>
+                        </select>
+                        <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+
+                        <div class="mt-2">
+                            <label for="otherTechnologyInterests">Add Other Technology Interests</label>
+                            <div id="additionalInputsContainer-technologyInterests" class="additional-inputs-container"></div>
+                            <button type="button" class="btn btn-secondary add-input-button" data-target="technologyInterests">Add Another Interest</button>
+                        </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="responsibilities">Responsibilities</label>
+                    <div id="responsibilitiesContainer">
+                        <div class="input-group mb-2">
+
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="addResponsibility">Add Responsibility</button>
+                </div>
+
 
                 <div class="form-group">
                     <label for="deadline">Application Deadline</label>
@@ -70,16 +120,82 @@
         </div>
 
         <script>
-            document.getElementById('addSkillButton').addEventListener('click', function() {
-                const container = document.getElementById('additionalSkillsContainer');
-                const newInput = document.createElement('input');
-                newInput.type = 'text';
-                newInput.className = 'form-control mb-2';
-                newInput.name = 'otherSkills'; // Name should be the same to collect all in the list
-                newInput.placeholder = 'Enter additional skills';
-                container.appendChild(newInput);
+            document.addEventListener('DOMContentLoaded', function () {
+                // Add new input field with remove button
+                document.querySelectorAll('.add-input-button').forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        const target = button.getAttribute('data-target');
+                        const container = document.getElementById(`additionalInputsContainer-${target}`);
+
+                        // Create input group with remove button
+                        const inputGroup = document.createElement('div');
+                        inputGroup.className = 'input-group mb-2';
+
+                        const newInput = document.createElement('input');
+                        newInput.type = 'text';
+                        newInput.className = 'form-control';
+                        newInput.name = `other${target.charAt(0).toUpperCase() + target.slice(1)}`;
+                        newInput.placeholder = `Enter additional ${target}`;
+
+                        const removeButton = document.createElement('button');
+                        removeButton.type = 'button';
+                        removeButton.className = 'btn btn-danger';
+                        removeButton.textContent = 'Remove';
+                        removeButton.addEventListener('click', function () {
+                            container.removeChild(inputGroup);
+                        });
+
+                        // Append input and button to input group
+                        inputGroup.appendChild(newInput);
+                        inputGroup.appendChild(removeButton);
+
+                        // Append input group to container
+                        container.appendChild(inputGroup);
+                    });
+                });
+
+                document.getElementById('addResponsibility').addEventListener('click', function() {
+                    const container = document.getElementById('responsibilitiesContainer');
+
+                    // Create a new input group for the responsibility
+                    const inputGroup = document.createElement('div');
+                    inputGroup.className = 'input-group mb-2';
+
+                    const newInput = document.createElement('input');
+                    newInput.type = 'text';
+                    newInput.className = 'form-control';
+                    newInput.name = 'responsibilities';
+                    newInput.placeholder = 'Enter responsibility';
+
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.className = 'btn btn-danger removeResponsibility';
+                    removeButton.textContent = 'Remove';
+                    removeButton.style.display = 'inline-block';
+
+                    // Event listener for removing the responsibility
+                    removeButton.addEventListener('click', function () {
+                        container.removeChild(inputGroup);
+                    });
+
+                    // Append the input and remove button to the input group
+                    inputGroup.appendChild(newInput);
+                    inputGroup.appendChild(removeButton);
+
+                    // Append the new input group to the container
+                    container.appendChild(inputGroup);
+                });
+
+                // Show the remove button for the first input
+                document.querySelectorAll('.removeResponsibility').forEach(button => {
+                    button.style.display = 'inline-block';
+                });
             });
+
+
+
         </script>
+
 
 
     </section>

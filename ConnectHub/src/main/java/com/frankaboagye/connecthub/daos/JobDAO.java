@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -21,4 +22,14 @@ public class JobDAO {
     private List<String> skills;
     private List<String> otherSkills;
     private String moreInformation;
+    private Set<String> responsibilities;
+    private Set<String> associatedLabels;
+    private Set<String> otherAssociatedLabels;
+    private Set<String> technologyInterests;
+    private Set<String> otherTechnologyInterests;
+
+    @Override
+    public String toString(){
+        return "JobDAO [title=" + title + ", description=" + description + ", salary=" + salary + "]" ;
+    }
 }

@@ -3,6 +3,10 @@ package com.frankaboagye.connecthub.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * The TechnologyInterest enum represents various technology-related skills
  * and areas of expertise that can be relevant to job or project postings or freelancer profiles.
@@ -28,5 +32,11 @@ public enum TechnologyInterest {
     SECURITY("Cybersecurity practices and technologies");
 
     private final String description;
+
+    public static List<String> getAvailableTechnologyInterest() {
+        return Arrays.stream(TechnologyInterest.values())
+                .map(TechnologyInterest::name)
+                .collect(Collectors.toList());
+    }
 
 }

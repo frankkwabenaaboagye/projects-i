@@ -3,6 +3,10 @@ package com.frankaboagye.connecthub.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @RequiredArgsConstructor
 public enum WorkLabel {
@@ -25,4 +29,10 @@ public enum WorkLabel {
     SHIFT_BASED("Work done in rotating shifts, typically in 24/7 operations");
 
     private final String description;
+
+    public static List<String> getAvailableWorkLabels() {
+        return Arrays.stream(WorkLabel.values())
+                .map(worklabel -> worklabel.name().replace("_", " "))
+                .collect(Collectors.toList()); // Collect to a List<String>
+    }
 }

@@ -5,6 +5,8 @@ import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.enums.GeneralSkills;
+import com.frankaboagye.connecthub.enums.TechnologyInterest;
+import com.frankaboagye.connecthub.enums.WorkLabel;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.FreelancerServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
@@ -12,16 +14,14 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
@@ -106,7 +106,11 @@ public class JobController {
     }
 
     @GetMapping("/post-a-job/{companyId}")
-    public String postAJob(@PathVariable Long companyId, HttpSession httpSession, ModelMap modelMap) {
+    public String postAJob(
+            @PathVariable Long companyId,
+            HttpSession httpSession,
+            ModelMap modelMap
+    ) {
 
 
         Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
@@ -126,7 +130,12 @@ public class JobController {
         httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
 
         List<String> availableSkills = GeneralSkills.getAvailableSkills();
+        List<String> availableLabels = WorkLabel.getAvailableWorkLabels();
+        List<String> availableTechnologies = TechnologyInterest.getAvailableTechnologyInterest();
+
         modelMap.addAttribute("availableSkills", availableSkills);
+        modelMap.addAttribute("availableLabels", availableLabels);
+        modelMap.addAttribute("availableTechnologies", availableTechnologies);
 
         return "postJob";
     }
@@ -150,14 +159,16 @@ public class JobController {
         }
 
         List<String> skillForJob = new ArrayList<>(jobDAO.getSkills());
+        skillForJob.removeIf(String::isEmpty);
         skillForJob.addAll(jobDAO.getOtherSkills()); // Add other skills to the existing list
+
 
         Job newJob = Job.builder()
                 .company(company)
                 .title(jobDAO.getTitle())
                 .description(jobDAO.getDescription())
                 .salary(Double.valueOf(jobDAO.getSalary()))
-                .skills(skillForJob)
+                .skills(new HashSet<>(skillForJob))
                 .deadline(LocalDate.parse(jobDAO.getDeadline()))
                 .location(jobDAO.getLocation())
                 .moreInformation(jobDAO.getMoreInformation())
@@ -235,6 +246,19 @@ public class JobController {
 
         return "viewAndApplyJob";
 
+
+    }
+
+    @PostMapping("/handle-company-job-update/{jobId}")
+    public String updateCompanyJob(
+            @PathVariable Long jobId,
+            ModelMap modelMap,
+            HttpSession httpSession
+    ) {
+
+        // TODO: update company Job
+
+        return null;
 
     }
 }

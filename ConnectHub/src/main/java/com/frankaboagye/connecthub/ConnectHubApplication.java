@@ -91,7 +91,7 @@ public class ConnectHubApplication {
                 .title("Software Engineer")
                 .description("Responsible for developing and maintaining web applications.")
                 .salary(75000.0)
-                .skills(List.of("Java", "Spring Boot", "REST APIs", "Microservices"))
+                .skills(Set.of("Java", "Spring Boot", "REST APIs", "Microservices"))
                 .location("Remote")
                 .deadline(LocalDate.of(2024, 12, 31))
                 .moreInformation("This is more information")
