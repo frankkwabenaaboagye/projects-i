@@ -91,7 +91,7 @@ public class Job {
     @ElementCollection
     @CollectionTable(name = "associated_labels", joinColumns = @JoinColumn(name = "job_id"))
     @Column(name = "label")
-    private List<String> associatedLabels;
+    private Set<String> associatedLabels;
 
     /**
      * A list of responsibilities associated with the job.
@@ -109,7 +109,7 @@ public class Job {
     @ElementCollection
     @CollectionTable(name = "job_technology_interests", joinColumns = @JoinColumn(name = "job_id"))
     @Column(name = "technology_interest")
-    private List<String> technologyInterests;
+    private Set<String> technologyInterests;
 
     @Override
     public String toString() {

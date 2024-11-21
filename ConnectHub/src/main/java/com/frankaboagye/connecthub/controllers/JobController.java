@@ -1,15 +1,18 @@
 package com.frankaboagye.connecthub.controllers;
 
 import com.frankaboagye.connecthub.daos.JobDAO;
+import com.frankaboagye.connecthub.daos.JobUpdateDAO;
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Freelancer;
 import com.frankaboagye.connecthub.entities.Job;
 import com.frankaboagye.connecthub.enums.GeneralSkills;
+import com.frankaboagye.connecthub.enums.Item;
 import com.frankaboagye.connecthub.enums.TechnologyInterest;
 import com.frankaboagye.connecthub.enums.WorkLabel;
 import com.frankaboagye.connecthub.interfaces.CompanyServiceInterface;
 import com.frankaboagye.connecthub.interfaces.FreelancerServiceInterface;
 import com.frankaboagye.connecthub.interfaces.JobServiceInterface;
+import com.frankaboagye.connecthub.utils.CompanyUtils;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,14 +23,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
+import static com.frankaboagye.connecthub.enums.Item.TECH_INTEREST;
 
 @RequiredArgsConstructor
 @Controller
@@ -61,6 +63,9 @@ public class JobController {
 
         modelMap.addAttribute("company", company);
         modelMap.addAttribute("job", job);
+
+        Set<String> defaultTechInterest = CompanyUtils.getDefaultValueFor(TECH_INTEREST);
+        modelMap.addAttribute("defaultTechInterest", defaultTechInterest);
 
         httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
         httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
@@ -131,7 +136,7 @@ public class JobController {
 
         List<String> availableSkills = GeneralSkills.getAvailableSkills();
         List<String> availableLabels = WorkLabel.getAvailableWorkLabels();
-        List<String> availableTechnologies = TechnologyInterest.getAvailableTechnologyInterest();
+        Set<String> availableTechnologies = TechnologyInterest.getAvailableTechnologyInterest();
 
         modelMap.addAttribute("availableSkills", availableSkills);
         modelMap.addAttribute("availableLabels", availableLabels);
@@ -160,7 +165,11 @@ public class JobController {
 
         List<String> skillForJob = new ArrayList<>(jobDAO.getSkills());
         skillForJob.removeIf(String::isEmpty);
-        skillForJob.addAll(jobDAO.getOtherSkills()); // Add other skills to the existing list
+
+        Optional.ofNullable(jobDAO.getOtherSkills())
+                .ifPresent( otherSkills -> skillForJob.addAll(
+                        otherSkills.stream().filter( s -> !s.isEmpty()).toList()
+                ));// Add other skills to the existing list
 
 
         Job newJob = Job.builder()
@@ -187,7 +196,7 @@ public class JobController {
         return "redirect:/company-homepage";
     }
 
-    // TODO- started: View and Apply Job
+
     @GetMapping("/view-and-apply-job/{jobId}")
     public String viewAndApplyJob(
             @PathVariable Long jobId,
@@ -251,14 +260,43 @@ public class JobController {
 
     @PostMapping("/handle-company-job-update/{jobId}")
     public String updateCompanyJob(
+            @ModelAttribute JobUpdateDAO jobUpdateDAO,
             @PathVariable Long jobId,
             ModelMap modelMap,
             HttpSession httpSession
     ) {
 
-        // TODO: update company Job
+
+
+        // CompanyUtils.setHttpSession(httpSession, com); // TODO: set the session
 
         return null;
 
+    }
+
+
+    @PostMapping("/update-job-items/{jobId}/{item}")
+    public String updateJobItems(@PathVariable Long jobId, @PathVariable Item item, Set<String> theItems, ModelMap modelMap, HttpSession httpSession){
+        Long sessionData = (Long) httpSession.getAttribute(SESSION_DATA.getDescription());
+        if (sessionData == null) {
+            return "redirect:/login-company";
+        }
+
+        Company company = companyServiceImplementation.getCompanyById(sessionData).orElse(null);
+        if (company == null) {
+            return "redirect:/login-company";
+        }
+
+        Job job = jobServiceImplementation.getJobById(jobId);
+        if(job == null){ return "redirect:/login-company";}
+
+        if(item.equals(TECH_INTEREST)){
+            CompanyUtils.updateTechInterest(job, theItems);
+        }
+
+
+        CompanyUtils.setHttpSession(httpSession, company);
+
+        return "redirect:/view-job/" + jobId;
     }
 }
