@@ -299,4 +299,11 @@ public class JobController {
 
         return "redirect:/view-job/" + jobId;
     }
+
+    @GetMapping("/default-items/{section}")
+    @ResponseBody
+    public Set<String> getDefaultItems(@PathVariable Item section) {
+        return CompanyUtils.getDefaultValueFor(section);
+    }
+
 }

@@ -84,6 +84,8 @@
                     <textarea class="form-control" id="moreInformation" name= "description" rows="4" th:text="${job.getMoreInformation()}"></textarea>
                 </div>
 
+                <hr>
+
 
                 <div class="bubble-section" data-section="skills">
                     <h5>Skills Required:</h5>
@@ -116,7 +118,6 @@
                         <button type="button" class="btn btn-primary" onclick="addBubble('associatedLabels')">Add Label</button>
                     </div>
                 </div>
-
                 <hr>
 
                 <div class="bubble-section" data-section="technologyInterest">
@@ -138,8 +139,6 @@
                         </span>
                     </div>
                 </div>
-
-                <!-- Modal -->
                 <div class="modal fade" id="addFromDefault" tabindex="-1" aria-labelledby="addFromDefaultLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -158,10 +157,13 @@
                                         <div th:each="dti : ${defaultTechInterest}">
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input tech-interest-checkbox" id="theItems" name="theItems"
-                                                       th:value="${dti}" th:checked="${job.getTechnologyInterests().contains(dti)}">
+                                                       th:value="${dti}"
+                                                       th:checked="${job.getTechnologyInterests().contains(dti)}"
+                                                       th:disabled="${job.getTechnologyInterests().contains(dti)}">
                                                 <label class="form-check-label" th:for="${'theItems_' + dti}" th:text="${dti}"></label>
                                             </div>
                                         </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -173,8 +175,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <hr>
 
                 <div class="text-center">
@@ -245,34 +245,44 @@
                 const selectedCheckboxes = document.querySelectorAll('.tech-interest-checkbox:checked');
                 const container = document.getElementById('technologyInterest-container');
 
+                // Create an array of already added technology interests (using hidden inputs for comparison)
+                const existingTechInterests = Array.from(container.getElementsByClassName('bubble'))
+                    .map(bubble => bubble.querySelector('input[type="hidden"]').value);
+
                 selectedCheckboxes.forEach(checkbox => {
                     const techInterest = checkbox.value;
-                    const bubble = document.createElement('div');
-                    bubble.className = 'bubble';
 
-                    const text = document.createElement('span');
-                    text.textContent = techInterest;
-                    bubble.appendChild(text);
+                    // Check if the tech interest is already added (by checking the hidden input value)
+                    if (!existingTechInterests.includes(techInterest)) {
+                        const bubble = document.createElement('div');
+                        bubble.className = 'bubble';
 
-                    const removeButton = document.createElement('span');
-                    removeButton.className = 'remove-bubble';
-                    removeButton.textContent = '×';
-                    removeButton.setAttribute('onclick', 'removeBubble(this)');
-                    bubble.appendChild(removeButton);
+                        const text = document.createElement('span');
+                        text.textContent = techInterest;
+                        bubble.appendChild(text);
 
-                    // Set random color for the new bubble
-                    bubble.style.backgroundColor = generateRandomColor();
+                        const removeButton = document.createElement('span');
+                        removeButton.className = 'remove-bubble';
+                        removeButton.textContent = '×';
+                        removeButton.setAttribute('onclick', 'removeBubble(this)');
+                        bubble.appendChild(removeButton);
 
-                    // Create hidden input to store the value
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'technologyInterest'; // This should match your form's name attribute for technologyInterest
-                    hiddenInput.value = techInterest;
-                    bubble.appendChild(hiddenInput);
+                        // Set random color for the new bubble
+                        bubble.style.backgroundColor = generateRandomColor();
 
-                    container.appendChild(bubble);
+                        // Create hidden input to store the value
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'technologyInterest';
+                        hiddenInput.value = techInterest;
+                        bubble.appendChild(hiddenInput);
+
+                        container.appendChild(bubble);
+                    }
                 });
             }
+
+
 
 
 

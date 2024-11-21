@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -66,5 +67,11 @@ public enum GeneralSkills {
         return Arrays.stream(GeneralSkills.values())
                 .map(GeneralSkills::getSimpleName) // Use simple name directly
                 .collect(Collectors.toList()); // Collect to a List<String>
+    }
+
+    public static Set<String> getSetOfAvailableSkills(){
+        return Arrays.stream(GeneralSkills.values())
+                .map(GeneralSkills::getSimpleName)
+                .collect(Collectors.toSet());
     }
 }

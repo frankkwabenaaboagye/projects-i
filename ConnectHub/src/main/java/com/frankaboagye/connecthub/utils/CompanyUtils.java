@@ -2,6 +2,7 @@ package com.frankaboagye.connecthub.utils;
 
 import com.frankaboagye.connecthub.entities.Company;
 import com.frankaboagye.connecthub.entities.Job;
+import com.frankaboagye.connecthub.enums.GeneralSkills;
 import com.frankaboagye.connecthub.enums.Item;
 import com.frankaboagye.connecthub.enums.TechnologyInterest;
 import com.frankaboagye.connecthub.enums.WorkLabel;
@@ -31,6 +32,7 @@ public class CompanyUtils {
         return switch (item) {
             case TECH_INTEREST -> TechnologyInterest.getAvailableTechnologyInterest();
             case LABELS -> WorkLabel.getSetOfAvailableWorkLabels();
+            case SKILLS -> GeneralSkills.getSetOfAvailableSkills();
             default -> Set.of("");
         };
     }
