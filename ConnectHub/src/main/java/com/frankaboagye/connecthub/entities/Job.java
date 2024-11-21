@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The Job entity represents a job posting made by a company.
@@ -62,7 +63,7 @@ public class Job {
     @ElementCollection
     @CollectionTable(name = "job_skills", joinColumns = @JoinColumn(name = "job_id"))
     @Column(name = "skill")
-    private List<String> skills;
+    private Set<String> skills;
 
     /**
      * The deadline for applications to the job posting.
