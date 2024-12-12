@@ -29,6 +29,7 @@ import static com.frankaboagye.connecthub.enums.ConnectHubConstant.PROFILE;
 import static com.frankaboagye.connecthub.enums.ConnectHubConstant.SESSION_DATA;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.COMPANY;
 import static com.frankaboagye.connecthub.enums.ConnectHubProfile.FREELANCER;
+import static com.frankaboagye.connecthub.enums.Item.LABELS;
 import static com.frankaboagye.connecthub.enums.Item.TECH_INTEREST;
 
 @RequiredArgsConstructor
@@ -65,10 +66,12 @@ public class JobController {
         modelMap.addAttribute("job", job);
 
         Set<String> defaultTechInterest = CompanyUtils.getDefaultValueFor(TECH_INTEREST);
-        modelMap.addAttribute("defaultTechInterest", defaultTechInterest);
+        Set<String> defaultAssociatedLabels = CompanyUtils.getDefaultValueFor(LABELS);
 
-        httpSession.setAttribute(SESSION_DATA.getDescription(), company.getId());  // e.g. ("sessionData", 29919)
-        httpSession.setAttribute(PROFILE.getDescription(), COMPANY.getValue());  // e.g. ("company", company)
+        modelMap.addAttribute("defaultTechInterest", defaultTechInterest);
+        modelMap.addAttribute("defaultAssociatedLabels", defaultAssociatedLabels);
+
+        CompanyUtils.setHttpSession(httpSession, company);
 
         return "viewJob";
     }

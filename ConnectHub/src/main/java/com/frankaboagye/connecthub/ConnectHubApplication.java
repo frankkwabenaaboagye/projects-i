@@ -22,6 +22,7 @@ public class ConnectHubApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ConnectHubApplication.class, args);
+        // populat teh
     }
 
     @Bean

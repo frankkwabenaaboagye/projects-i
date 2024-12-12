@@ -111,11 +111,53 @@
                     </div>
                     <div class="mt-3">
                         <input type="text" id="associatedLabels-input" class="form-control mb-2" placeholder="Add a new label" />
-                        <button type="button" class="btn btn-primary" onclick="addBubble('associatedLabels')">Add Label</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="addBubble('associatedLabels')">Add Label</button>
+                        <span>
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addFromDefault_al">
+                                Choose From Defaults
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal fade" id="addFromDefault_al" tabindex="-1" aria-labelledby="addFromDefaultLabel_al" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="addFromDefaultLabel_al">Associated Labels</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <!-- Modal Body -->
+                            <div class="modal-body">
+                                <form id="modal-form_al" th:action="@{/update-job-items/{jobId}/TECH_INTEREST(jobId=${job.id})}" method="POST">
+                                    <!-- Checkbox list for selecting items -->
+                                    <div class="mb-3">
+                                        <label for="theItems" class="form-label">Select Associated Labels</label>
+                                        <div th:each="dal : ${defaultAssociatedLabels}">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input tech-interest-checkbox" id="theItems_al" name="theItems_al"
+                                                       th:value="${dal}"
+                                                       th:checked="${job.getAssociatedLabels().contains(dal)}"
+                                                       th:disabled="${job.getAssociatedLabels().contains(dal)}">
+                                                <label class="form-check-label" th:for="${'theItems_al_' + dal}" th:text="${dal}"></label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Modal Footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="submit-modal-form_al" onclick="addSelectedAssociatedLabels()">Add</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>
 
+                <!-- technology interest     -->
                 <div class="bubble-section" data-section="technologyInterest">
                     <h5>Technology Interests:</h5>
                     <div id="technologyInterest-container" class="bubble-container">
@@ -278,9 +320,47 @@
                 });
             }
 
+            // Function to add selected technology interests from checkboxes to bubbles
+            function addSelectedAssociatedLabels() {
+                const selectedCheckboxes = document.querySelectorAll('.tech-interest-checkbox:checked');
+                const container = document.getElementById('technologyInterest-container');
 
+                // Create an array of already added technology interests (using hidden inputs for comparison)
+                const existingTechInterests = Array.from(container.getElementsByClassName('bubble'))
+                    .map(bubble => bubble.querySelector('input[type="hidden"]').value);
 
+                selectedCheckboxes.forEach(checkbox => {
+                    const techInterest = checkbox.value;
 
+                    // Check if the tech interest is already added (by checking the hidden input value)
+                    if (!existingTechInterests.includes(techInterest)) {
+                        const bubble = document.createElement('div');
+                        bubble.className = 'bubble';
+
+                        const text = document.createElement('span');
+                        text.textContent = techInterest;
+                        bubble.appendChild(text);
+
+                        const removeButton = document.createElement('span');
+                        removeButton.className = 'remove-bubble';
+                        removeButton.textContent = '×';
+                        removeButton.setAttribute('onclick', 'removeBubble(this)');
+                        bubble.appendChild(removeButton);
+
+                        // Set random color for the new bubble
+                        bubble.style.backgroundColor = generateRandomColor();
+
+                        // Create hidden input to store the value
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'technologyInterest';
+                        hiddenInput.value = techInterest;
+                        bubble.appendChild(hiddenInput);
+
+                        container.appendChild(bubble);
+                    }
+                });
+            }
 
 
         </script>
