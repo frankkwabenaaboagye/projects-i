@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -33,10 +34,10 @@ public enum TechnologyInterest {
 
     private final String description;
 
-    public static List<String> getAvailableTechnologyInterest() {
+    public static Set<String> getAvailableTechnologyInterest() {
         return Arrays.stream(TechnologyInterest.values())
                 .map(TechnologyInterest::name)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
 }

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -34,5 +35,11 @@ public enum WorkLabel {
         return Arrays.stream(WorkLabel.values())
                 .map(worklabel -> worklabel.name().replace("_", " "))
                 .collect(Collectors.toList()); // Collect to a List<String>
+    }
+
+    public static Set<String> getSetOfAvailableWorkLabels() {
+        return Arrays.stream(WorkLabel.values())
+                .map(worklabel -> worklabel.name().replace("_", " "))  // Replace underscores with spaces
+                .collect(Collectors.toSet());  // Collect to a Set<String>
     }
 }

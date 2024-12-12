@@ -22,6 +22,7 @@ public class ConnectHubApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ConnectHubApplication.class, args);
+        // populat teh
     }
 
     @Bean
@@ -95,9 +96,9 @@ public class ConnectHubApplication {
                 .location("Remote")
                 .deadline(LocalDate.of(2024, 12, 31))
                 .moreInformation("This is more information")
-                .associatedLabels(List.of("Full-time", "Remote"))
+                .associatedLabels(Set.of("Full-time", "Remote"))
                 .responsibilities(List.of("Develop new features", "Maintain the codebase", "Collaborate with teams"))
-                .technologyInterests(List.of("Java", "Spring Boot", "Docker", "Kubernetes"))
+                .technologyInterests(Set.of("Java", "Spring Boot", "Docker", "Kubernetes"))
                 .build();
 
 
