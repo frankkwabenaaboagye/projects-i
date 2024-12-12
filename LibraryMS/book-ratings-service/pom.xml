@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.frank</groupId>
-	<artifactId>book-catalog-service</artifactId>
+	<artifactId>book-ratings-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>book-catalog-service</name>
+	<name>book-ratings-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
