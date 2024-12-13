@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookRatingsController {
 
     @GetMapping("/rating/{bookId}")
-    public Rating getRating(@PathVariable Long bookId) {
+    public Rating getRating(@PathVariable String bookId) {
         return new Rating(
                 bookId,
                 5

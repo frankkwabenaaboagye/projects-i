@@ -1,4 +1,4 @@
-package com.frank.book_ratings_service.model;
+package com.frank.book_catalog_service.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Rating {
+public class Book {
 
     private String bookId;
-    private int rating;
+    private String name;
 
 }

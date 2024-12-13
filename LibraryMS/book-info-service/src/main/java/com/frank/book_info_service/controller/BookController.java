@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/books")
 public class BookController {
 
-    @GetMapping("/book/{bookId}")
-    public Book getBookInfo(@PathVariable Long bookId) {
+    @GetMapping("/{bookId}")
+    public Book getBookInfo(@PathVariable String bookId) {
         return new Book(
                 bookId,
                 "Example Book"
