@@ -14,8 +14,15 @@ public class BookController {
     public Book getBookInfo(@PathVariable String bookId) {
         return new Book(
                 bookId,
-                "Example Book"
+                getRandomBook()
         );
+    }
+
+
+    private String getRandomBook(){
+        String[] books = {"Things Fall Apart", "No Longer At Ease", "Arrow of God"};
+        int a = (int)(Math.random() * books.length);
+        return books[a];
     }
 
 }
