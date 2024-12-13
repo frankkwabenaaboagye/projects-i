@@ -5,6 +5,7 @@ import com.frank.book_catalog_service.model.BookCatalog;
 import com.frank.book_catalog_service.model.Rating;
 import com.frank.book_catalog_service.model.UserRating;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,8 @@ public class BookCatalogController {
 
     private final RestTemplate restTemplate;
     private final WebClient.Builder webClientBuilder;
+
+    private final DiscoveryClient discoveryClient;
 
 
     @GetMapping("/{userId}")
