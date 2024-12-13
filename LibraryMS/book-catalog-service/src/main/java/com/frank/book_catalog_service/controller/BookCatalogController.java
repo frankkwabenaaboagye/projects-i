@@ -23,17 +23,20 @@ public class BookCatalogController {
     private final RestTemplate restTemplate;
     private final WebClient.Builder webClientBuilder;
 
+
     @GetMapping("/{userId}")
     public List<BookCatalog> getCatalog(@PathVariable String userId) {
 
-        UserRating userRating = restTemplate.getForObject("http://localhost:8082/ratings/users/"+ userId, UserRating.class);
+        // UserRating userRating = restTemplate.getForObject("http://localhost:8082/ratings/users/"+ userId, UserRating.class);
+            // using eureka
+        UserRating userRating = restTemplate.getForObject("http://book-ratings-service/ratings/users/"+ userId, UserRating.class);
 
         List<Rating> ratings = userRating.getTheUserRating();
 
         return ratings.stream().map((rating)->{
 
                 // rest template
-            Book book = restTemplate.getForObject("http://localhost:8083/books/" + rating.getBookId(), Book.class);
+            Book book = restTemplate.getForObject("http://book-info-service/books/" + rating.getBookId(), Book.class);
 
             /*
             Book book = webClientBuilder.build()

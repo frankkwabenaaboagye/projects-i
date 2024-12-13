@@ -2,6 +2,7 @@ package com.frank.book_ratings_service.controller;
 
 import com.frank.book_ratings_service.model.Rating;
 import com.frank.book_ratings_service.model.UserRating;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,9 @@ import java.util.Arrays;
 @RequestMapping("/ratings")
 public class BookRatingsController {
 
+    @Value("${server.port}")
+    private String thePort;
+
     @GetMapping("/rating/{bookId}")
     public Rating getRating(@PathVariable String bookId) {
         return new Rating(
@@ -23,6 +27,8 @@ public class BookRatingsController {
 
     @GetMapping("/users/{userId}")
     public UserRating getUserRatings(@PathVariable String userId) {
+
+        System.out.println("Using the port..: " + thePort);
 
         UserRating userRating  = new UserRating();
 
